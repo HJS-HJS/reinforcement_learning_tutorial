@@ -1,0 +1,9 @@
+numpy
+tensorflow
+matplotlib
+ipython
+torch
+gym
+pillow
+pyglet
+pygame
