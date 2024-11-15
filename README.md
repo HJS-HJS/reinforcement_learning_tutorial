@@ -20,7 +20,7 @@
     5. [#TODO SARSA](#-)
     6. [#TODO PPO](#-)
 
-### 1. Setup
+## 1. Setup
 
 1. **Download tutorial code**
    ```bash
@@ -35,32 +35,32 @@
    pip3 install -r requirements.txt
    ```
 
-### 2. Tutorial
+## 2. Tutorial 
 
-0. **Check environments**
-    #### Check CUDA
+### 0. Check environments
+1. Check CUDA
     - Check if CUDA is properly installed
         ```bash
         cd ~/reinforcement_learning_tutorial
         python3 tutorial0_check_cuda.py
         ```
-    #### Check cartpole
+2.  Check cartpole
     - Check if cartpole is running
         ```bash
         cd ~/reinforcement_learning_tutorial
         python3 tutorial0_start_gym.py
         ```
 
-1. **Simple policy**
+### 1. Simple policy
+- An example of moving a cartpole with an unchanging policy.
+    ```bash
+    cd ~/reinforcement_learning_tutorial
+    python3 tutorial1_start_policy.py
+    ```
 
-        ```bash
-        cd ~/reinforcement_learning_tutorial
-        python3 tutorial1_start_policy.py
-        ```
-
-2. **Q-learning**
-
-        ```bash
-        cd ~/reinforcement_learning_tutorial
-        python3 tutorial2_q_learning.py
-        ```
+### 2. Q-learning
+- Reinforcement learning using Q-learning (not using a neural network)
+    ```bash
+    cd ~/reinforcement_learning_tutorial
+    python3 tutorial2_q_learning.py
+    ```
