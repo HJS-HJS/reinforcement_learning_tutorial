@@ -9,12 +9,12 @@ sim = BasicCartpole('None')
 # Policy Parameters
 N_INPUTS    = sim.env.observation_space.shape[0] # 4
 N_OUTPUT    = sim.env.action_space.n             # 2
-Observation = [30, 30, 50, 50]
+Observation = np.array([30, 30, 70, 70])
 discrete    = np.array([0.25, 0.25, 0.01, 0.1])
 # Learning Parameters
 LEARNING_RATE   = 0.1   # alpha
 DISCOUNT_FACTOR = 0.95  # gamma
-EPISODES      = 60000
+EPISODES        = 60000
 # Greedy parameter
 EPSILON       = 1.0
 EPSILON_DECAY_VALUE = 0.99995
@@ -30,8 +30,9 @@ q_table = np.random.uniform(
     )
 
 def get_discrete_state(state):
-    discrete_state = state/discrete
+    discrete_state = state/discrete + Observation/2
     return tuple(discrete_state.astype(np.int))
+
 def live_plot(total_rewards):
     plt.figure(1)
     plt.xlabel('Episode')
@@ -99,10 +100,10 @@ for episode in range(EPISODES):
     step_rewards.append(step_reward)
     # Visualize
     if visulaize:
-        total_rewards.append(np.mean(step_reward))
-        step_rewards = []
-        print("#{}: ".format(episode), np.mean(step_reward), EPSILON)
+        total_rewards.append(np.mean(step_rewards))
+        print("#{}: ".format(episode), np.mean(step_rewards).astype(np.int), EPSILON)
         live_plot(total_rewards, visulaize_step)
+        step_rewards = []
 
 # Turn the sim off
 sim.env.close()
