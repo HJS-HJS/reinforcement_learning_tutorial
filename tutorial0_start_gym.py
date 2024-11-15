@@ -1,5 +1,5 @@
 import time
-from cartpole import BasicCartpole
+from utils.cartpole import BasicCartpole
 
 sim = BasicCartpole()
 sim.render_scene()

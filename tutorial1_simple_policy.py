@@ -1,4 +1,4 @@
-from cartpole import BasicCartpole
+from utils.cartpole import BasicCartpole
 import numpy as np
 
 sim = BasicCartpole()

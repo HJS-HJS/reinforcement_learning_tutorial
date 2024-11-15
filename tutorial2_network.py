@@ -1,4 +1,4 @@
-from cartpole import BasicCartpole
+from utils.cartpole import BasicCartpole
 import numpy as np
 import tensorflow as tf
 
@@ -15,7 +15,7 @@ N_OUTPUTS = 1  # 왼쪽(0)으로 이동할 확률을 출력
 initializer = tf.keras.initializers.he_normal()
 
 # Network Set
-model = tf.keras.Sequential([tf.keras.Input(shape=N_INPUTS),
+model = tf.keras.Sequential([tf.keras.Input(shape=(N_INPUTS,)),
                              tf.keras.layers.Dense(units=N_HIDDEN, activation=tf.nn.elu, kernel_initializer=initializer),
                              tf.keras.layers.Dense(units=N_OUTPUTS, activation=tf.nn.sigmoid, kernel_initializer=initializer)])
 

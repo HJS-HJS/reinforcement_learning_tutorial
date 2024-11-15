@@ -1,6 +1,39 @@
-from PIL import Image, ImageDraw
+import time
 import numpy as np
+from PIL import Image, ImageDraw
 
+import gym
+
+class BasicCartpole():
+    def __init__(self):
+
+        self.env = gym.make("CartPole-v1", render_mode='human')
+        print('obs :', self.obs)
+        self.obs = self.env.reset()
+        print('env.action_space :', self.env.action_space)
+        return
+
+
+    def update_scene(num, frames, patch):
+        patch.set_data(frames[num])
+        return patch,
+    
+    def render_scene(self):
+        render_cart_pole(self.env, self.obs)
+        return
+
+    def update_obs(self, obs):
+        self.obs = obs
+        return
+    
+    @staticmethod
+    def obs(self):
+        return(self.obs)
+    
+    @staticmethod
+    def env(self):
+        return(self.env)
+    
 try:
     from pyglet.gl import gl_info
     openai_cart_pole_rendering = True   # 문제없음, OpenAI 짐의 렌더링 함수를 사용합니다
@@ -37,3 +70,10 @@ def render_cart_pole(env, obs):
         draw.rectangle((cart_x - cart_w // 2, cart_y - cart_h // 2, cart_x + cart_w // 2, cart_y + cart_h // 2), fill=cart_col) # draw cart
         draw.line((cart_x, cart_y - cart_h // 2, top_pole_x, top_pole_y), fill=pole_col, width=pole_w) # draw pole
         return np.array(img)
+
+
+
+if __name__=="__main__":
+    run = BasicCartpole()
+    run.render_scene()
+    time.sleep(5)
