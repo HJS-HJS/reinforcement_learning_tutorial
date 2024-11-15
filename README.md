@@ -7,14 +7,14 @@
 
 # Table of Contents
 
-1. [Setup](#1setup)
-2. [Tutorial](#2tutorial)
+1. [Setup](#1-setup)
+2. [Tutorial](#2-tutorial)
 
-    0. [Check environments](#0check-environments)
+    0. [Check environments](#0-check-environments)
         1. Check CUDA
         2. Check cartpole
-    1. [Simple policy](#1simple-polisy)
-    2. [#TODO Q-learning](#2q-learning)
+    1. [Simple policy](#1-simple-polisy)
+    2. [#TODO Q-learning](#2-q-learning)
     3. [#TODO DQN](#-)
     4. [#TODO DDQN](#-)
     5. [#TODO SARSA](#-)
