@@ -13,10 +13,10 @@
     0. [Check environments](#0-check-environments)
         1. Check CUDA
         2. Check cartpole
-    1. [Simple policy](#1-simple-polisy)
-    2. [#TODO Q-learning](#2-q-learning)
-    3. [#TODO DQN](#-)
-    4. [#TODO DDQN](#-)
+    1. [Simple policy](#1-simple-policy)
+    2. [Q-learning](#2-q-learning)
+    3. [#TODO DQN](#3-dqn)
+    4. [#TODO DDQN](#4-ddqn)
     5. [#TODO SARSA](#-)
     6. [#TODO PPO](#-)
 
@@ -38,18 +38,16 @@
 ## 2. Tutorial 
 
 ### 0. Check environments
-1. Check CUDA
-    - Check if CUDA is properly installed
-        ```bash
-        cd ~/reinforcement_learning_tutorial
-        python3 tutorial0_check_cuda.py
-        ```
-2.  Check cartpole
-    - Check if cartpole is running
-        ```bash
-        cd ~/reinforcement_learning_tutorial
-        python3 tutorial0_start_gym.py
-        ```
+- Check if CUDA is properly installed
+    ```bash
+    cd ~/reinforcement_learning_tutorial
+    python3 tutorial0_check_cuda.py
+    ```
+- Check if cartpole is running
+    ```bash
+    cd ~/reinforcement_learning_tutorial
+    python3 tutorial0_start_gym.py
+    ```
 
 ### 1. Simple policy
 - An example of moving a cartpole with an unchanging policy.
@@ -59,8 +57,21 @@
     ```
 
 ### 2. Q-learning
-- Reinforcement learning using Q-learning (not using a neural network)
+- Reinforcement learning wth Q table
     ```bash
     cd ~/reinforcement_learning_tutorial
     python3 tutorial2_q_learning.py
     ```
+- Reinforcement learning wth Q-learning (with epsilon greedy)
+    ```bash
+    cd ~/reinforcement_learning_tutorial
+    python3 tutorial2_q_learning_greedy.py
+    ```
+
+### 3. DQN
+- TODO
+
+### 4. DDQN
+- TODO
+
+
