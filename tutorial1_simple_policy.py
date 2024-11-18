@@ -1,5 +1,6 @@
 from utils.cartpole import BasicCartpole
 import numpy as np
+from utils.utils import live_plot, show_result
 
 sim = BasicCartpole()
 sim.render_scene()
@@ -23,8 +24,6 @@ for episode in range(20):
         if done:
             break
     total_steps.append(steps_done)
+    live_plot(total_steps, 1)
 
-print('step mean:', np.mean(total_steps))
-print('step  std:', np.std(total_steps))
-print('step  min:', np.min(total_steps))
-print('step  max:', np.max(total_steps))
+show_result(total_steps, 1)

@@ -2,8 +2,9 @@ from utils.cartpole import BasicCartpole
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+from utils.utils import live_plot, show_result
 
-sim = BasicCartpole('None')
+sim = BasicCartpole(None)
 
 ## Parameters
 # Policy Parameters
@@ -32,14 +33,6 @@ q_table = np.random.uniform(
 def get_discrete_state(state):
     discrete_state = state/discrete + Observation/2
     return tuple(discrete_state.astype(np.int))
-
-def live_plot(total_steps):
-    plt.figure(1)
-    plt.xlabel('Episode')
-    plt.ylabel('Duration')
-    plt.plot(total_steps, c="black")
-    # pause a bit so that plots are updated
-    plt.pause(0.001)
 
 total_steps = []
 step_done_set = []
@@ -101,7 +94,7 @@ for episode in range(EPISODES):
     # Visualize
     if visulaize:
         total_steps.append(np.mean(step_done_set))
-        print("#{}: ".format(episode), np.mean(step_done_set).astype(np.int), EPSILON)
+        print("#{}: ".format(episode), np.mean(step_done_set).astype(int), EPSILON)
         live_plot(total_steps, visulaize_step)
         step_done_set = []
 
@@ -109,13 +102,4 @@ for episode in range(EPISODES):
 sim.env.close()
 
 # Show the results
-print('step mean:', np.mean(total_steps))
-print('step  std:', np.std(total_steps))
-print('step  min:', np.min(total_steps))
-print('step  max:', np.max(total_steps))
-# Show results with grapth
-plt.figure(1)
-plt.xlabel('Episode')
-plt.ylabel('Duration')
-plt.plot(total_steps)
-plt.show()
+show_result(total_steps, visulaize_step)
