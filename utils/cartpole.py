@@ -8,9 +8,7 @@ class BasicCartpole():
     def __init__(self, visualize:str = 'human'):
 
         self.env = gym.make("CartPole-v1", render_mode = visualize)
-        print('obs :', self.obs)
         self.obs = self.env.reset()
-        print('env.action_space :', self.env.action_space)
         return
 
 
