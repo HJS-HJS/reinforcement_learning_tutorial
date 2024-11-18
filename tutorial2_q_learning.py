@@ -30,23 +30,23 @@ def get_discrete_state(state):
     discrete_state = state/discrete + Observation/2
     return tuple(discrete_state.astype(np.int))
 
-def live_plot(total_rewards):
+def live_plot(total_steps):
     plt.figure(1)
     plt.xlabel('Episode')
     plt.ylabel('Duration')
-    plt.plot(total_rewards)
+    plt.plot(total_steps)
     # pause a bit so that plots are updated
     plt.pause(0.001)
 
-total_rewards = []
-step_rewards = []
+total_steps = []
+step_done_set = []
 for episode in range(EPISODES):
     if episode%visulaize_step == 0:
         visulaize = True
     else: 
         visulaize = False
 
-    step_reward = 0
+    step_done = 0
     observe, _ = sim.env.reset()
     state_curr = get_discrete_state(observe)
 
@@ -58,7 +58,7 @@ for episode in range(EPISODES):
         observe, reward, done, _, _ = sim.env.step(action)
         
         # 3. Calculate reward
-        step_reward += reward
+        step_done += 1
         
         if done:
             break
@@ -84,25 +84,25 @@ for episode in range(EPISODES):
 
     ## Episode is finished
     # Save episode reward
-    step_rewards.append(step_reward)
+    step_done_set.append(step_done)
     # Visualize
     if visulaize:
-        total_rewards.append(np.mean(step_rewards))
-        print("#{}: ".format(episode), np.mean(step_rewards).astype(np.int))
-        live_plot(total_rewards, visulaize_step)
-        step_rewards = []
+        total_steps.append(np.mean(step_done_set))
+        print("#{}: ".format(episode), np.mean(step_done_set).astype(np.int))
+        live_plot(total_steps, visulaize_step)
+        step_done_set = []
 
 # Turn the sim off
 sim.env.close()
 
 # Show the results
-print('total rewards mean:  ', np.mean(total_rewards))
-print('total rewards std :  ', np.std(total_rewards))
-print('total rewards min :  ', np.min(total_rewards))
-print('total rewards max :  ', np.max(total_rewards))
+print('total rewards mean:  ', np.mean(total_steps))
+print('total rewards std :  ', np.std(total_steps))
+print('total rewards min :  ', np.min(total_steps))
+print('total rewards max :  ', np.max(total_steps))
 # Show results with grapth
 plt.figure(1)
 plt.xlabel('Episode')
 plt.ylabel('Duration')
-plt.plot(total_rewards)
+plt.plot(total_steps)
 plt.show()

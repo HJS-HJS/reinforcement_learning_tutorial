@@ -12,19 +12,19 @@ def basic_policy(obs):
 
 totals = []
 for episode in range(20):
-    episode_rewards = 0
+    steps_done = 0
     obs, _temp = sim.env.reset()
     for step in range(1000):  # 최대 스텝을 1000번으로 설정
         sim.render_scene()
         
         action = basic_policy(obs)
         obs, reward, done, info, _temp = sim.env.step(action)
-        episode_rewards += reward
+        steps_done += reward
         if done:
             break
-    totals.append(episode_rewards)
+    totals.append(steps_done)
 
-print('totals mean :', np.mean(totals))
-print('totals std :', np.std(totals))
-print('totals min :', np.min(totals))
-print('totals max :', np.max(totals))
+print('step mean:', np.mean(totals))
+print('step  std:', np.std(totals))
+print('step  min:', np.min(totals))
+print('step  max:', np.max(totals))
