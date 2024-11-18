@@ -78,7 +78,7 @@ for episode in range(EPISODES):
             # 5. Get next state q value
             maximum_future_q = np.max(q_table[state_next])
 
-            # 6. Get current state q value
+            # 6. Update step of current episode
             current_q = q_table[state_curr + (action,)]
 
             # 7. Calculate updated q value

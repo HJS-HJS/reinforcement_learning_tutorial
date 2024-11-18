@@ -19,7 +19,7 @@ for episode in range(20):
         
         action = basic_policy(obs)
         obs, reward, done, info, _temp = sim.env.step(action)
-        steps_done += reward
+        steps_done += 1
         if done:
             break
     totals.append(steps_done)
