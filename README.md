@@ -69,7 +69,14 @@
     ```
 
 ### 3. DQN
-- TODO
+- paper
+    - [Playing Atari with Deep Reinforcement Learning (2013)](https://arxiv.org/pdf/1312.5602)
+    - [Human-level control through deep reinforcement learning (2015)](https://www.nature.com/articles/nature14236)
+- Reinforcement learning wth DQN
+    ```bash
+    cd ~/reinforcement_learning_tutorial
+    python3 tutorial3_dqn.py
+    ```
 
 ### 4. DDQN
 - TODO
