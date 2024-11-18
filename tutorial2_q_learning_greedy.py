@@ -109,10 +109,10 @@ for episode in range(EPISODES):
 sim.env.close()
 
 # Show the results
-print('step mean:', np.mean(totals))
-print('step  std:', np.std(totals))
-print('step  min:', np.min(totals))
-print('step  max:', np.max(totals))
+print('step mean:', np.mean(total_steps))
+print('step  std:', np.std(total_steps))
+print('step  min:', np.min(total_steps))
+print('step  max:', np.max(total_steps))
 # Show results with grapth
 plt.figure(1)
 plt.xlabel('Episode')

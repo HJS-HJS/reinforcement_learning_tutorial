@@ -10,7 +10,7 @@ def basic_policy(obs):
     return 1 if angle > 0 else 0
 
 
-totals = []
+total_steps = []
 for episode in range(20):
     steps_done = 0
     obs, _temp = sim.env.reset()
@@ -22,9 +22,9 @@ for episode in range(20):
         steps_done += 1
         if done:
             break
-    totals.append(steps_done)
+    total_steps.append(steps_done)
 
-print('step mean:', np.mean(totals))
-print('step  std:', np.std(totals))
-print('step  min:', np.min(totals))
-print('step  max:', np.max(totals))
+print('step mean:', np.mean(total_steps))
+print('step  std:', np.std(total_steps))
+print('step  min:', np.min(total_steps))
+print('step  max:', np.max(total_steps))
