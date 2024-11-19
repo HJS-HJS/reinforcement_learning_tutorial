@@ -15,10 +15,9 @@
         2. Check cartpole
     1. [Simple policy](#1-simple-policy)
     2. [Q-learning](#2-q-learning)
-    3. [#TODO DQN](#3-dqn)
-    4. [#TODO DDQN](#4-ddqn)
-    5. [#TODO SARSA](#-)
-    6. [#TODO PPO](#-)
+    3. [DQN](#3-dqn)
+    4. [#TODO PPO](#-)
+    5. [#TODO SAC](#-)
 
 ## 1. Setup
 
@@ -78,7 +77,8 @@
     python3 tutorial3_dqn.py
     ```
 
-### 4. DDQN
+### 4. PPO
 - TODO
 
-
+### 5. SAC
+- TODO
