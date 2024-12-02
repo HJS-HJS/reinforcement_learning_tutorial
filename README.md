@@ -16,9 +16,10 @@
     2. [DQN](#2-dqn)
 4. [Policy_based](#4-policy-based)
     1. [REINFORCE](#1-reinforce)
-    2. [#TODO A2C](#2-a2c)
-    3. [#TODO PPO](#3-ppo)
-    4. [#TODO SAC](#4-sac)
+    2. [Actor Critic](#2-actor-critic)
+    3. [#TODO A2C](#2-a2c)
+    4. [#TODO PPO](#3-ppo)
+    5. [#TODO SAC](#4-sac)
 
 ## 1. Setup
 
@@ -77,6 +78,12 @@
 - Reinforcement learning wth REINFORCE
     ```bash
     python3 ~/reinforcement_learning_tutorial/policy_based_1_REINFORCE.py
+    ```
+
+### 2. Actor Critic
+- Reinforcement learning wth actor critic
+    ```bash
+    python3 ~/reinforcement_learning_tutorial/policy_based_2_actor_critic.py
     ```
 
 ### 2. A2C
