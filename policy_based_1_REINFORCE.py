@@ -1,3 +1,10 @@
+'''
+policy based reinforcement learning
+ - policy probability is parameterized as neural network
+ - use Gt
+ - policy model is updated only when each episode is finished.
+'''
+
 import numpy as np
 import torch
 from torch.distributions    import Categorical
@@ -96,7 +103,6 @@ for episode in range(1, EPISODES + 1):
         print("#{}: ".format(episode), np.mean(step_done_set).astype(int))
         live_plot(total_steps, visulaize_step)
         step_done_set = []
-
 
 # Turn the sim off
 sim.env.close()
