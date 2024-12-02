@@ -15,9 +15,10 @@
     1. [Q-learning](#1-q-learning)
     2. [DQN](#2-dqn)
 4. [Policy_based](#4-policy-based)
-    1. [#TODO A2C](#1-a2c)
-    2. [#TODO PPO](#2-ppo)
-    3. [#TODO SAC](#3-sac)
+    1. [REINFORCE](#1-reinforce)
+    2. [#TODO A2C](#2-a2c)
+    3. [#TODO PPO](#3-ppo)
+    4. [#TODO SAC](#4-sac)
 
 ## 1. Setup
 
@@ -79,11 +80,18 @@
     ```
 
 ## 4. Policy-Based
-### 1. A2C
+### 1. REINFORCE
+- Reinforcement learning wth REINFORCE
+    ```bash
+    cd ~/reinforcement_learning_tutorial
+    python3 policy_based_1_REINFORCE.py
+    ```
+
+### 2. A2C
 - TODO
 
-### 2. PPO
+### 3. PPO
 - TODO
 
-### 3. SAC
+### 4. SAC
 - TODO
