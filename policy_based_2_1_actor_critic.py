@@ -25,7 +25,7 @@ class ActorNetwork(Network):
     def __init__(self, n_state:int = 4, n_action:int = 2):
         super(ActorNetwork, self).__init__(n_state, n_action)
         self.layer.add_module("linear", nn.Linear(128, n_action))
-        self.layer.add_module("softmax", nn.Softmax())
+        self.layer.add_module("softmax", nn.Softmax(dim=0))
 
 class CriticNetwork(Network):
     def __init__(self, n_state:int = 4, n_action:int = 2):
@@ -59,8 +59,8 @@ def optimize_model(s, p, a, r, s_next):
     Qw_curr = critic_net(s)
     Qw_next = torch.zeros(1, device=device) if s_next is None else critic_net(s_next)
     Qw_expected = r + DISCOUNT_FACTOR * Qw_next
-    TD = Qw_expected - Qw_curr
-    actor_loss = -torch.log(p) * TD
+    TD_error = Qw_expected - Qw_curr
+    actor_loss = -torch.log(p) * TD_error
     actor_loss.backward()
 
     actor_optimizer.step()

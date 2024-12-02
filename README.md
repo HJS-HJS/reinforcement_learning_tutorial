@@ -83,7 +83,11 @@
 ### 2. Actor Critic
 - Reinforcement learning wth actor critic
     ```bash
-    python3 ~/reinforcement_learning_tutorial/policy_based_2_actor_critic.py
+    python3 ~/reinforcement_learning_tutorial/policy_based_2_1_actor_critic.py
+    ```
+- Reinforcement learning wth actor critic (Sharing network param)
+    ```bash
+    python3 ~/reinforcement_learning_tutorial/policy_based_2_2_actor_critic.py
     ```
 
 ### 2. A2C
