@@ -24,8 +24,7 @@
 
 1. **Download tutorial code**
    ```bash
-   cd
-   mkdir reinforcement_learning_tutorial
+   mkdir ~/reinforcement_learning_tutorial
    git clone https://github.com/HJS-HJS/reinforcement_learning_tutorial.git reinforcement_learning_tutorial
    ```
 
@@ -40,33 +39,28 @@
 ### 1. Check environments
 - Check if CUDA is properly installed
     ```bash
-    cd ~/reinforcement_learning_tutorial
-    python3 tutorial1_1_check_cuda.py
+    python3 ~/reinforcement_learning_tutorial/tutorial1_1_check_cuda.py
     ```
 - Check if cartpole is running
     ```bash
-    cd ~/reinforcement_learning_tutorial
-    python3 tutorial1_2_start_gym.py
+    python3 ~/reinforcement_learning_tutorial/tutorial1_2_start_gym.py
     ```
 
 ### 2. Simple policy
 - An example of moving a cartpole with an unchanging policy.
     ```bash
-    cd ~/reinforcement_learning_tutorial
-    python3 tutorial2_start_policy.py
+    python3 ~/reinforcement_learning_tutorial/tutorial2_start_policy.py
     ```
 
 ## 3. Value-Based
 ### 1. Q-learning
 - Reinforcement learning wth Q table
     ```bash
-    cd ~/reinforcement_learning_tutorial
-    python3 value_based_1_1_q_learning.py
+    python3 ~/reinforcement_learning_tutorial/value_based_1_1_q_learning.py
     ```
 - Reinforcement learning wth Q-learning (with epsilon greedy)
     ```bash
-    cd ~/reinforcement_learning_tutorial
-    python3 value_based_1_2_q_learning_greedy.py
+    python3 ~/reinforcement_learning_tutorial/value_based_1_2_q_learning_greedy.py
     ```
 
 ### 2. DQN
@@ -75,16 +69,14 @@
     - [Human-level control through deep reinforcement learning (2015)](https://www.nature.com/articles/nature14236)
 - Reinforcement learning wth DQN
     ```bash
-    cd ~/reinforcement_learning_tutorial
-    python3 value_based_2_dqn.py
+    python3 ~/reinforcement_learning_tutorial/value_based_2_dqn.py
     ```
 
 ## 4. Policy-Based
 ### 1. REINFORCE
 - Reinforcement learning wth REINFORCE
     ```bash
-    cd ~/reinforcement_learning_tutorial
-    python3 policy_based_1_REINFORCE.py
+    python3 ~/reinforcement_learning_tutorial/policy_based_1_REINFORCE.py
     ```
 
 ### 2. A2C
