@@ -2,14 +2,13 @@
 policy based reinforcement learning
  - policy probability is parameterized as neural network
  - use Gt
- - policy model is updated only when each episode is finished.
+ - policy model is updated for every step.
+ - actor and critic share network parameters.
 '''
 
-import copy
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from torch.distributions import Categorical
 from utils.cartpole      import BasicCartpole
 from utils.policy_model  import Network
