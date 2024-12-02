@@ -11,8 +11,6 @@ class Network(nn.Module):
             nn.ReLU(),
             nn.Linear(128, 128),
             nn.ReLU(),
-            nn.Linear(128, n_action),
-            nn.Softmax(),
         )
         
     def forward(self, state):

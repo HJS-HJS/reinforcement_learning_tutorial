@@ -7,16 +7,24 @@ policy based reinforcement learning
 
 import numpy as np
 import torch
-from torch.distributions    import Categorical
-from utils.cartpole         import BasicCartpole
-from utils.REINFORCE_model  import Network
-from utils.utils            import live_plot, show_result
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.distributions import Categorical
+from utils.cartpole      import BasicCartpole
+from utils.policy_model  import Network
+from utils.utils         import live_plot, show_result
 
 sim = BasicCartpole(None)
 device = torch.device('cpu')
 if torch.cuda.is_available():
     print("CUDA is available")
     device = torch.device('cuda')
+
+class ReinforceNetwork(Network):
+    def __init__(self, n_state:int = 4, n_action:int = 2):
+        super(ReinforceNetwork, self).__init__(n_state, n_action)
+        self.layer.add_module("linear", nn.Linear(128, n_action))
+        self.layer.add_module("softmax", nn.Softmax())
 
 ## Parameters
 # Policy Parameters
@@ -31,15 +39,10 @@ visulaize_step = 25
 MAX_STEP = 1000         # maximun available step per episode
 
 # Initialize network
-target_net = Network(N_INPUTS, N_OUTPUT).to(device)
+target_net = ReinforceNetwork(N_INPUTS, N_OUTPUT).to(device)
 
 # Optimizer
 optimizer = torch.optim.AdamW(target_net.parameters(), lr=LEARNING_RATE, amsgrad=True)
-
-def get_action(state, target_net):
-    prob = target_net(state)
-    action = Categorical(prob).sample()
-    return prob[action], action.item()
 
 def optimize_model(memory):
     
