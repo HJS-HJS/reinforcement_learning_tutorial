@@ -90,11 +90,14 @@
     python3 ~/reinforcement_learning_tutorial/policy_based_2_2_actor_critic.py
     ```
 
-### 2. A2C
+### 3. A2C
+- Reinforcement learning wth A2C (Advantage Actior Critic)
+    ```bash
+    python3 ~/reinforcement_learning_tutorial/policy_based_3_A2C.py
+    ```
+
+### 4. PPO
 - TODO
 
-### 3. PPO
-- TODO
-
-### 4. SAC
+### 5. SAC
 - TODO
