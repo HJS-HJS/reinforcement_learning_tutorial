@@ -37,34 +37,34 @@
 ### 1. Check environments
 - Check if CUDA is properly installed
     ```bash
-    python3 ~/reinforcement_learning_tutorial/tutorial1_1_check_cuda.py
+    python3 ~/reinforcement_learning_tutorial/before_start_1_1_check_cuda.py
     ```
 - Check if cartpole is running
     ```bash
-    python3 ~/reinforcement_learning_tutorial/tutorial1_2_start_gym.py
+    python3 ~/reinforcement_learning_tutorial/before_start_1_2_start_gym.py
     ```
 
 ### 2. Simple policy
 - An example of moving a cartpole with an unchanging policy.
     ```bash
-    python3 ~/reinforcement_learning_tutorial/tutorial2_start_policy.py
+    python3 ~/reinforcement_learning_tutorial/before_start_2_start_policy.py
     ```
 
 ## 3. Tutorial
 ### 1. Q-learning
 - Reinforcement learning wth Q table
     ```bash
-    python3 ~/reinforcement_learning_tutorial/value_based_1_1_q_learning.py
+    python3 ~/reinforcement_learning_tutorial/tutorial_1_1_q_learning.py
     ```
 - Reinforcement learning wth Q-learning (with epsilon greedy)
     ```bash
-    python3 ~/reinforcement_learning_tutorial/value_based_1_2_q_learning_greedy.py
+    python3 ~/reinforcement_learning_tutorial/tutorial_1_2_q_learning_greedy.py
     ```
 
 ### 2. DQN
 - Reinforcement learning wth DQN
     ```bash
-    python3 ~/reinforcement_learning_tutorial/value_based_2_dqn.py
+    python3 ~/reinforcement_learning_tutorial/tutorial_2_dqn.py
     ```
 - paper
     - [Playing Atari with Deep Reinforcement Learning (2013)](https://arxiv.org/pdf/1312.5602)
@@ -73,23 +73,23 @@
 ### 3. REINFORCE
 - Reinforcement learning wth REINFORCE
     ```bash
-    python3 ~/reinforcement_learning_tutorial/policy_based_1_REINFORCE.py
+    python3 ~/reinforcement_learning_tutorial/tutorial_3_REINFORCE.py
     ```
 
 ### 4. Actor Critic
 - Reinforcement learning wth actor critic
     ```bash
-    python3 ~/reinforcement_learning_tutorial/policy_based_2_1_actor_critic.py
+    python3 ~/reinforcement_learning_tutorial/tutorial_4_1_actor_critic.py
     ```
 - Reinforcement learning wth actor critic (Sharing network param)
     ```bash
-    python3 ~/reinforcement_learning_tutorial/policy_based_2_2_actor_critic.py
+    python3 ~/reinforcement_learning_tutorial/tutorial_4_2_actor_critic.py
     ```
 
 ### 5. A2C
 - Reinforcement learning wth A2C (Advantage Actior Critic)
     ```bash
-    python3 ~/reinforcement_learning_tutorial/policy_based_3_A2C.py
+    python3 ~/reinforcement_learning_tutorial/tutorial_5_A2C.py
     ```
 
 ### 6. PPO
