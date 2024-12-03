@@ -1,5 +1,5 @@
 '''
-policy based reinforcement learning
+value, policy based reinforcement learning
  - policy probability is parameterized as neural network
  - use Gt
  - policy model is updated for every step.

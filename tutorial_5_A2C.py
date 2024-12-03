@@ -1,5 +1,5 @@
 '''
-policy based A2C (Advantage Actor Critic)
+value, policy based A2C (Advantage Actor Critic)
  - policy probability is parameterized as neural network
  - use Vt = A - Gt to reduce variance
  - policy model is updated for every n steps.
