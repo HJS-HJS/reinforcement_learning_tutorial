@@ -54,21 +54,18 @@ critic_optimizer = torch.optim.AdamW(critic_net.parameters(), lr=LEARNING_RATE, 
 def optimize_model(s, p, a, r, s_next):
     
     actor_optimizer.zero_grad()
+    critic_optimizer.zero_grad()
 
     Qw_curr = critic_net(s)
     Qw_next = torch.zeros(1, device=device) if s_next is None else critic_net(s_next)
     Qw_expected = r + DISCOUNT_FACTOR * Qw_next
     TD_error = Qw_expected - Qw_curr
-    actor_loss = -torch.log(p) * TD_error
+    actor_loss = -torch.log(p) * TD_error.detach()
     actor_loss.backward()
 
     actor_optimizer.step()
 
-    critic_optimizer.zero_grad()
-
     criterion = torch.nn.MSELoss()
-    Qw_curr = critic_net(s)
-    Qw_next = torch.zeros(1, device=device) if s_next is None else critic_net(s_next)
     critic_loss = criterion((r + DISCOUNT_FACTOR * Qw_next).detach(), Qw_curr)
     critic_loss.backward()
 

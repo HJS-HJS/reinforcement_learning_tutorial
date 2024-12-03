@@ -67,27 +67,21 @@ def optimize_model(batch):
     reward_batch    = torch.cat(batch.reward)
     done_batch      = torch.cat(batch.done)
 
-
-    actor_optimizer.zero_grad()
-
     Vw_curr = critic_net(state_batch)
     Vw_next = critic_net(next_state_batch) * done_batch
     Vw_expected = reward_batch + DISCOUNT_FACTOR * Vw_next
     TD_error = Vw_expected - Vw_curr
-    actor_loss = (-logprob_batch * TD_error.squeeze(1)).mean()
-    actor_loss.backward()
 
+    actor_optimizer.zero_grad()
+    critic_optimizer.zero_grad()
+    
+    actor_loss = (-logprob_batch * TD_error.detach().squeeze(1)).mean()
+    actor_loss.backward()
     actor_optimizer.step()
 
-    critic_optimizer.zero_grad()
-
     criterion = torch.nn.MSELoss()
-    Vw_curr = critic_net(state_batch)
-    Vw_next = critic_net(next_state_batch) * done_batch
-    Vw_expected = (reward_batch + DISCOUNT_FACTOR * Vw_next).detach()
-    critic_loss = criterion(Vw_expected, Vw_curr)
+    critic_loss = criterion(Vw_expected.detach(), Vw_curr)
     critic_loss.backward()
-
     critic_optimizer.step()
 
 
@@ -121,15 +115,15 @@ for episode in range(1, EPISODES + 1):
             torch.tensor([not done], device=device).unsqueeze(0)
         ))
 
-        # 4. Learning
+        # 5. Learning
         if len(memory) % MEMORY_SIZE == 0:
             optimize_model(Transition(*zip(*memory)))
             memory = []
 
-        # 5. Update step of current episode
+        # 6. Update step of current episode
         step_done += 1
 
-        # 6. Update state
+        # 7. Update state
         state_curr = state_next
 
         if done:
