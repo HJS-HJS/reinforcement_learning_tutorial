@@ -1,25 +1,22 @@
 # reinforcement_learning_tutorial
-<div align="center">
-    <img alt="Python" src ="https://img.shields.io/badge/Python-3776AB.svg?&style=for-the-badge&logo=Python&logoColor=white"/>
-</div>
+<img alt="Python" src ="https://img.shields.io/badge/Python-3776AB.svg?&style=for-the-badge&logo=Python&logoColor=white"/>
 
 - A repository for studing reinforcement learning using Cartpole.
 
 # Table of Contents
 
 1. [Setup](#1-setup)
-2. [Tutorial](#2-tutorial)
+2. [Before Start](#2-before-start)
     1. [Check environments](#1-check-environments)
     2. [Simple policy](#2-simple-policy)
-3. [Value-Based](#3-value-based)
+3. [Tutorial](#3-tutorial)
     1. [Q-learning](#1-q-learning)
     2. [DQN](#2-dqn)
-4. [Policy_based](#4-policy-based)
-    1. [REINFORCE](#1-reinforce)
-    2. [Actor Critic](#2-actor-critic)
-    3. [#TODO A2C](#2-a2c)
-    4. [#TODO PPO](#3-ppo)
-    5. [#TODO SAC](#4-sac)
+    3. [REINFORCE](#3-reinforce)
+    4. [Actor Critic](#4-actor-critic)
+    5. [A2C](#5-a2c)
+    6. [#TODO PPO](#6-ppo)
+    7. [#TODO SAC](#7-sac)
 
 ## 1. Setup
 
@@ -35,7 +32,7 @@
    pip3 install -r requirements.txt
    ```
 
-## 2. Tutorial 
+## 2. Before Start
 
 ### 1. Check environments
 - Check if CUDA is properly installed
@@ -53,7 +50,7 @@
     python3 ~/reinforcement_learning_tutorial/tutorial2_start_policy.py
     ```
 
-## 3. Value-Based
+## 3. Tutorial
 ### 1. Q-learning
 - Reinforcement learning wth Q table
     ```bash
@@ -65,22 +62,21 @@
     ```
 
 ### 2. DQN
-- paper
-    - [Playing Atari with Deep Reinforcement Learning (2013)](https://arxiv.org/pdf/1312.5602)
-    - [Human-level control through deep reinforcement learning (2015)](https://www.nature.com/articles/nature14236)
 - Reinforcement learning wth DQN
     ```bash
     python3 ~/reinforcement_learning_tutorial/value_based_2_dqn.py
     ```
+- paper
+    - [Playing Atari with Deep Reinforcement Learning (2013)](https://arxiv.org/pdf/1312.5602)
+    - [Human-level control through deep reinforcement learning (2015)](https://www.nature.com/articles/nature14236)
 
-## 4. Policy-Based
-### 1. REINFORCE
+### 3. REINFORCE
 - Reinforcement learning wth REINFORCE
     ```bash
     python3 ~/reinforcement_learning_tutorial/policy_based_1_REINFORCE.py
     ```
 
-### 2. Actor Critic
+### 4. Actor Critic
 - Reinforcement learning wth actor critic
     ```bash
     python3 ~/reinforcement_learning_tutorial/policy_based_2_1_actor_critic.py
@@ -90,14 +86,14 @@
     python3 ~/reinforcement_learning_tutorial/policy_based_2_2_actor_critic.py
     ```
 
-### 3. A2C
+### 5. A2C
 - Reinforcement learning wth A2C (Advantage Actior Critic)
     ```bash
     python3 ~/reinforcement_learning_tutorial/policy_based_3_A2C.py
     ```
 
-### 4. PPO
+### 6. PPO
 - TODO
 
-### 5. SAC
+### 7. SAC
 - TODO
