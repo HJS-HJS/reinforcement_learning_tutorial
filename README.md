@@ -93,7 +93,10 @@
     ```
 
 ### 6. PPO
-- TODO
+- Reinforcement learning wth PPO
+    ```bash
+    python3 ~/reinforcement_learning_tutorial/tutorial_6_PPO.py
+    ```
 
 ### 7. SAC
 - TODO
