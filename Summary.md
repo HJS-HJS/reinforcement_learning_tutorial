@@ -49,7 +49,7 @@
     - $a_{t}^* \triangleq \underset{a_t}{\mathrm{argmax}} Q^*(s_t,a_t)$
 - maximize expected return $V(s_t)$
     - $\mathrm{argmax} V(s_t) = \mathrm{argmax} \int_{a_t} Q(s_t,a_t) P(a_t \mid s_t)da_t$\
-    $\quad\quad\quad\quad\quad\quad  = \mathrm{argmax} \int_{a_t}Q^*(s_t,a_t) P(a_t \mid s_t)da_t$
+    $\quad\quad\quad\quad\quad = \mathrm{argmax} \int_{a_t}Q^*(s_t,a_t) P(a_t \mid s_t)da_t$
 
 ## 3. Concept of Value based RL
 - Suppose policy as Dirac delta function
@@ -60,9 +60,9 @@
     - Update every episode.
     - Unbiased, higher variance.
 - Temporal Difference (TD)
-    - $Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^N(R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N)) ≜ \bar{Q}_N $\
+    - $Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^N(R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \triangleq \bar{Q}_{N}$\
     $\quad\quad\quad\ \ \ = \frac{1}{N} ((N-1)\bar{Q}_{N-1}+R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N))$\
-    $\quad\quad\quad\ \ \ = \bar{Q}_{N-1} + \frac{1}{N} (R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}) $\
+    $\quad\quad\quad\ \ \ = \bar{Q}_{N-1} + \frac{1}{N} (R_t^N+ \gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1})$\
     $\quad\therefore \bar{Q}_{N} = (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) $
     - learning rate $=\alpha$
     - TD Error $= R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}$
