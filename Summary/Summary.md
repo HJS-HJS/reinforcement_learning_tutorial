@@ -52,60 +52,76 @@
     
 
 - Action State Value Function $\quad Q(s_t,a_t) \rightarrow Q(s_{t+1},a_{t+1})$
-    $$
-    \begin{align*}
-    Q(s_t, a_t) &\triangleq \int_{s_{t+1}:a_\infty}G_t P(s_{t+1},a_{t+1},s_{t+2}\dots \mid s_t,a_t) ds_{t+1}:a_\infty \\
-    &= \int_{s_{t+1} a_{t+1}} \int_{s_{t+2}:a_\infty} \big( R_t + \gamma G_{t+1} \big) P(s_{t+2} \dots \mid s_t, a_t, s_{t+1}, a_{t+1}) ds_{t+2}:a_\infty P(s_{t+1}, a_{t+1} \mid s_t, a_t) ds_{t+1} a_{t+1} \\
-    &= \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1}, a_{t+1} \mid s_t, a_t) ds_{t+1} da_{t+1} \\
-    &= \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) P(a_{t+1} \mid s_{t+1}) ds_{t+1} a_{t+1}
-    \end{align*}
-    $$
+$$
+\begin{align*}
+Q(s_t, a_t) &\triangleq \int_{s_{t+1}:a_\infty}G_t P(s_{t+1},a_{t+1},s_{t+2}\dots \mid s_t,a_t) ds_{t+1}:a_\infty \\
+&= \int_{s_{t+1} a_{t+1}} \int_{s_{t+2}:a_\infty} \big( R_t + \gamma G_{t+1} \big) P(s_{t+2} \dots \mid s_t, a_t, s_{t+1}, a_{t+1}) ds_{t+2}:a_\infty P(s_{t+1}, a_{t+1} \mid s_t, a_t) ds_{t+1} a_{t+1} \\
+&= \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1}, a_{t+1} \mid s_t, a_t) ds_{t+1} da_{t+1} \\
+&= \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) P(a_{t+1} \mid s_{t+1}) ds_{t+1} a_{t+1}
+\end{align*}
+$$
 
 ## 2. Purpose of RL
 - optimal policy $Q^*$
     - $a_{t}^* \triangleq \underset{a_t}{\mathrm{argmax}} Q^*(s_t,a_t)$
 - maximize expected return $V(s_t)$
-    $$
-    \begin{align*}
-    \mathrm{argmax} V(s_t) &= \mathrm{argmax} \int_{a_t} Q(s_t,a_t) P(a_t \mid s_t)da_t \\
-    &= \mathrm{argmax} \int_{a_t}Q^*(s_t,a_t) P(a_t \mid s_t)da_t
-    \end{align*}
-    $$
-
+<div align="center">
+    <img src="./2_1.svg" alt="Equation" style="display: block; margin: 0 auto;">
+</div>
+<!--
+$$
+\begin{align*}
+\mathrm{argmax} V(s_t) &= \mathrm{argmax} \int_{a_t} Q(s_t,a_t) P(a_t \mid s_t)da_t \\
+&= \mathrm{argmax} \int_{a_t}Q^*(s_t,a_t) P(a_t \mid s_t)da_t
+\end{align*}
+$$
+-->
 
 ## 3. Concept of Value based RL
 - Suppose policy as Dirac delta function
     - $P^* (a_t \mid s_t) = \delta (a_t - a_t^*)$
 - Then how can we get $Q^*$?
 - Monte Carlo (MC)
-    $$
-    \begin{align*}
-    Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^NG_t^{(i)}
-    \end{align*}
-    $$
     - Update every episode.
     - Unbiased, higher variance.
-- Temporal Difference (TD)
-    $$
-    \begin{align*}
-    Q(s_t, a_t) &\approx \frac{1}{N} \sum_{i=1}^N (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \triangleq \bar{Q}_{N} \\
-    &= \frac{1}{N} ((N-1) \bar{Q}_{N-1} + R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \\
-    &= \bar{Q}_{N-1} + \frac{1}{N} (R_t^N+ \gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}) \\
-    \therefore \bar{Q}_{N} &= (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \\
-    \end{align*}
-    $$
+<div align="center">
+    <img src="./3_1.svg" alt="Equation" style="display: block; margin: 0 auto;">
+</div>
+<!--
+$$
+\begin{align*}
+Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^NG_t^{(i)}
+\end{align*}
+$$
+-->
 
+- Temporal Difference (TD)
     - learning rate $=\alpha$
     - TD Error $= R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}$
     - TD Target $= R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N)$
     - Update every step.
     - Biased, lower variance.
+<div align="center">
+    <img src="./3_2.svg" alt="Equation" style="display: block; margin: 0 auto;">
+</div>
+<!-- 
+$$
+\begin{align*}
+Q(s_t, a_t) &\approx \frac{1}{N} \sum_{i=1}^N (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \triangleq \bar{Q}_{N} \\
+&= \frac{1}{N} ((N-1) \bar{Q}_{N-1} + R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \\
+&= \bar{Q}_{N-1} + \frac{1}{N} (R_t^N+ \gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}) \\
+\therefore \bar{Q}_{N} &= (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \\
+\end{align*}
+$$
+-->
+
 
 ## 4. Q-Learning
 - Target: $P(a_{t+1} \mid s_{t+1}) = \delta(a_{t+1} - a_{t+1}^*) $
 - Behavior: $\epsilon$-greedy
 <div align="center">
-  <img src="./4.Q-Learning_1.svg" alt="Equation" style="display: block; margin: 0 auto;">
+    <img src="./4_1.svg" alt="Equation" style="display: block; margin: 0 auto;">
+</div>
 <!-- 
 $$
 \begin{align*}
@@ -117,11 +133,10 @@ Q(s_t, a_t) &= \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \bi
 \end{align*}
 $$
  -->
-</div>
 - Update
 <div align="center">
-  <img src="./4.Q-Learning_2.svg" alt="Equation" style="display: block; margin: 0 auto;">
-  <span style="display:none;">
+    <img src="./4_2.svg" alt="Equation" style="display: block; margin: 0 auto;">
+</div>
 <!-- 
 $$
 \begin{align*}
@@ -129,8 +144,6 @@ $$
 \end{align*}
 $$
 -->
-  </span>
-</div>
 
 
 ## 5. DQN
@@ -153,7 +166,6 @@ $$
 
 <div align="center">
   <img src="./?.svg" alt="Equation" style="display: block; margin: 0 auto;">
-  <span style="display:none;">
-
-  </span>
+<!-- 
+-->
 </div>
