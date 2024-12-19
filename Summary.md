@@ -60,8 +60,9 @@
     - Update every episode.
     - Unbiased, higher variance.
 - Temporal Difference (TD)
-    - $Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^NG_t^{(i)}$
-    - $Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^N(R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \triangleq \bar{Q}_{N} $\
+    - $Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^N G_t^{(i)}$\
+    $Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^N G_t^{(i)}$
+    - $Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^N (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \triangleq \bar{Q}_{N} $\
     $\quad\quad\quad\ \ \ = \frac{1}{N} ((N-1)\bar{Q}_{N-1}+R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N)) $\
     $\quad\quad\quad\ \ \ = \bar{Q}_{N-1} + \frac{1}{N} (R_t^N+ \gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}) $\
     $\quad\therefore \bar{Q}_{N} = (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) $
