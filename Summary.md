@@ -60,15 +60,14 @@
     - Update every episode.
     - Unbiased, higher variance.
 - Temporal Difference (TD)
-    - $Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^N G_t^{(i)}$\
-    $Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^N G_t^{(i)}$
     - $Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^N (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \triangleq \bar{Q}_{N} $
 
-    $\quad\quad\quad\quad\quad\ \ \ = \frac{1}{N} ((N-1)\bar{Q}_{N-1}+R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N)) $
+    $\quad \quad \quad = \frac{1}{N} ((N-1) \bar{Q}_{N-1} + R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) $
 
-    $\quad\quad\quad\quad\quad\ \ \ = \bar{Q}_{N-1} + \frac{1}{N} (R_t^N+ \gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}) $
+    $\quad \quad \quad = \bar{Q}_{N-1} + \frac{1}{N} (R_t^N+ \gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}) $
 
-    $\quad\therefore \bar{Q}_{N} = (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) $
+    $\quad \therefore \bar{Q}_{N} = (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) $
+
     - learning rate $=\alpha$
     - TD Error $= R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}$
     - TD Target $= R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N)$
@@ -78,11 +77,16 @@
 ## 4. Q-Learning
 - Target: $P(a_{t+1} \mid s_{t+1}) = \delta(a_{t+1} - a_{t+1}^*) $
 - Behavior: $\epsilon$-greedy
-- $Q(s_t, a_t) = \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) P(a_{t+1} \mid s_{t+1}) ds_{t+1} a_{t+1}$\
-$\quad\quad\quad\ \ \  = \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) \delta(a_{t+1} - a_{t+1}^*) ds_{t+1} a_{t+1}$\
-$\quad\quad\quad\ \ \ = \int_{s_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}^*) \big) P(s_{t+1} \mid s_t, a_t) ds_{t+1}$\
-$\quad\quad\quad\ \ \ = \int_{s_{t+1}} \big( R_t + \gamma \max _{a_{t+1}} Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) ds_{t+1}$\
+- $Q(s_t, a_t) = \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) P(a_{t+1} \mid s_{t+1}) ds_{t+1} a_{t+1}$
+
+$\quad\quad\quad\ \ \  = \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) \delta(a_{t+1} - a_{t+1}^*) ds_{t+1} a_{t+1}$
+
+$\quad\quad\quad\ \ \ = \int_{s_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}^*) \big) P(s_{t+1} \mid s_t, a_t) ds_{t+1}$
+
+$\quad\quad\quad\ \ \ = \int_{s_{t+1}} \big( R_t + \gamma \max _{a_{t+1}} Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) ds_{t+1}$
+
 $\quad\quad\quad\ \ \  = \frac{1}{N}\sum_{i=1}^N ( R_t^N + \gamma \max _{a_{t+1}} Q(s_{t+1}, a_{t+1}) \big)$
+
 - Update
 
 $\quad\quad \bar{Q}_{N} \leftarrow (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma \max _{a_{t+1}} Q(s_{t+1}^N, a_{t+1}^N) \big )$
