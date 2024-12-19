@@ -106,7 +106,7 @@
 - Behavior: $\epsilon$-greedy
 <div align="center">
   <img src="./4.Q-Learning_1.svg" alt="Equation" style="display: block; margin: 0 auto;">
-  <span style="display:none;">
+<!-- 
 $$
 \begin{align*}
 Q(s_t, a_t) &= \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) P(a_{t+1} \mid s_{t+1}) ds_{t+1} a_{t+1} \\
@@ -116,20 +116,19 @@ Q(s_t, a_t) &= \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \bi
 &= \frac{1}{N}\sum_{i=1}^N ( R_t^N + \gamma \max _{a_{t+1}} Q(s_{t+1}, a_{t+1}) \big)
 \end{align*}
 $$
-  </span>
+ -->
 </div>
-
-
 - Update
-
 <div align="center">
   <img src="./4.Q-Learning_2.svg" alt="Equation" style="display: block; margin: 0 auto;">
   <span style="display:none;">
-    $$
-    \begin{align*}
-    \bar{Q}_{N} \leftarrow (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma \max _{a_{t+1}} Q(s_{t+1}^N, a_{t+1}^N) \big )
-    \end{align*}
-    $$
+<!-- 
+$$
+\begin{align*}
+\bar{Q}_{N} \leftarrow (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma \max _{a_{t+1}} Q(s_{t+1}^N, a_{t+1}^N) \big )
+\end{align*}
+$$
+-->
   </span>
 </div>
 
