@@ -34,36 +34,36 @@
     $\quad\quad\ \  =\int_{a_t:s_{t+1}}(R_t+\gamma V(s_{t+1}))P(a_ts_{t+1} \mid s_t)da_t:s_{t+1} $
 
 - Action State Value Function $\quad Q \rightarrow V$
-    - $Q(s_t, a_t) \triangleq \int_{s_{t+1}:a_\infty}G_t \, P(s_{t+1},a_{t+1},s_{t+2}\dots \mid s_t,a_t) \, ds_{t+1}:a_\infty $\
-    $\quad\quad\quad\ \ \  = \int_{s_{t+1}} \int_{a_{t+1}:a_\infty} \big( R_t + \gamma G_{t+1} \big) P(a_{t+1} s_{t+2} \dots \mid s_t, a_t, s_{t+1}) \, da_{t+1}:a_\infty \, P(s_{t+1} \mid s_t, a_t) \, ds_{t+1} $\
-    $\quad\quad\quad\ \ \  = \int_{s_{t+1}} \big( R_t + V(s_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) \, ds_{t+1} $
+    - $Q(s_t, a_t) \triangleq \int_{s_{t+1}:a_\infty}G_t P(s_{t+1},a_{t+1},s_{t+2}\dots \mid s_t,a_t) ds_{t+1}:a_\infty $\
+    $\quad\quad\quad\ \ \  = \int_{s_{t+1}} \int_{a_{t+1}:a_\infty} \big( R_t + \gamma G_{t+1} \big) P(a_{t+1} s_{t+2} \dots \mid s_t, a_t, s_{t+1}) da_{t+1}:a_\infty P(s_{t+1} \mid s_t, a_t) ds_{t+1} $\
+    $\quad\quad\quad\ \ \  = \int_{s_{t+1}} \big( R_t + V(s_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) ds_{t+1} $
 
 - Action State Value Function $\quad Q(s_t,a_t) \rightarrow Q(s_{t+1},a_{t+1})$
-    - $Q(s_t, a_t) \triangleq \int_{s_{t+1}:a_\infty}G_t \, P(s_{t+1},a_{t+1},s_{t+2}\dots \mid s_t,a_t) \, ds_{t+1}:a_\infty $\
-    $\quad\quad\quad\ \ \  = \int_{s_{t+1} a_{t+1}} \int_{s_{t+2}:a_\infty} \big( R_t + \gamma G_{t+1} \big) P(s_{t+2} \dots \mid s_t, a_t, s_{t+1}, a_{t+1}) \, ds_{t+2}:a_\infty \,P(s_{t+1}, a_{t+1} \mid s_t, a_t) \, ds_{t+1} a_{t+1}$\
-    $\quad\quad\quad\ \ \  = \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1}, a_{t+1} \mid s_t, a_t) \, ds_{t+1} da_{t+1} $\
-    $\quad\quad\quad\ \ \  = \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) P(a_{t+1} \mid s_{t+1}) \, ds_{t+1} a_{t+1} $
+    - $Q(s_t, a_t) \triangleq \int_{s_{t+1}:a_\infty}G_t P(s_{t+1},a_{t+1},s_{t+2}\dots \mid s_t,a_t) ds_{t+1}:a_\infty $\
+    $\quad\quad\quad\ \ \  = \int_{s_{t+1} a_{t+1}} \int_{s_{t+2}:a_\infty} \big( R_t + \gamma G_{t+1} \big) P(s_{t+2} \dots \mid s_t, a_t, s_{t+1}, a_{t+1}) ds_{t+2}:a_\inftyP(s_{t+1}, a_{t+1} \mid s_t, a_t) ds_{t+1} a_{t+1}$\
+    $\quad\quad\quad\ \ \  = \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1}, a_{t+1} \mid s_t, a_t) ds_{t+1} da_{t+1} $\
+    $\quad\quad\quad\ \ \  = \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) P(a_{t+1} \mid s_{t+1}) ds_{t+1} a_{t+1} $
 
 ## 2. Purpose of RL
 - optimal policy $Q^*$
-    - $a_{t}^* \triangleq \underset{a_t}{\mathrm{argmax}} \, Q^*(s_t,a_t)$
+    - $a_{t}^* \triangleq \underset{a_t}{\mathrm{argmax}} Q^*(s_t,a_t)$
 - maximize expected return $V(s_t)$
-    - $\mathrm{argmax} \, V(s_t) = \mathrm{argmax} \int_{a_t} Q(s_t,a_t) \, P(a_t \mid s_t)da_t$\
-    $\quad\quad\quad\quad\quad\quad  = \mathrm{argmax} \int_{a_t}Q^*(s_t,a_t) \, P(a_t \mid s_t)da_t$
+    - $\mathrm{argmax} V(s_t) = \mathrm{argmax} \int_{a_t} Q(s_t,a_t) P(a_t \mid s_t)da_t$\
+    $\quad\quad\quad\quad\quad\quad  = \mathrm{argmax} \int_{a_t}Q^*(s_t,a_t) P(a_t \mid s_t)da_t$
 
 ## 3. Concept of Value based RL
 - Suppose policy as Dirac delta function
     - $P^*(a_t \mid s_t) = \delta (a_t - a_t^*)$
 - Then how can we get $Q^*$?
 - Monte Carlo (MC)
-    - $Q(s_t, a_t) \approx \frac{1}{N} \, \sum_{i=1}^NG_t^{(i)}$
+    - $Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^NG_t^{(i)}$
     - Update every episode.
     - Unbiased, higher variance.
 - Temporal Difference (TD)
-    - $Q(s_t, a_t) \approx \frac{1}{N} \, \sum_{i=1}^N(R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N)) ≜ \bar{Q}_N $\
-    $\quad\quad\quad\ \ \ = \frac{1}{N} \, ((N-1)\bar{Q}_{N-1}+R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N))$\
-    $\quad\quad\quad\ \ \ = \bar{Q}_{N-1} + \frac{1}{N} \, (R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}) $\
-    $\quad\therefore \, \bar{Q}_{N} = (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) $
+    - $Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^N(R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N)) ≜ \bar{Q}_N $\
+    $\quad\quad\quad\ \ \ = \frac{1}{N} ((N-1)\bar{Q}_{N-1}+R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N))$\
+    $\quad\quad\quad\ \ \ = \bar{Q}_{N-1} + \frac{1}{N} (R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}) $\
+    $\quad\therefore \bar{Q}_{N} = (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) $
     - learning rate $=\alpha$
     - TD Error $= R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}$
     - TD Target $= R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N)$
@@ -73,10 +73,10 @@
 ## 4. Q-Learning
 - Target: $P(a_{t+1} \mid s_{t+1}) = \delta(a_{t+1} - a_{t+1}^*) $
 - Behavior: $\epsilon$-greedy
-- $Q(s_t, a_t) = \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) P(a_{t+1} \mid s_{t+1}) \, ds_{t+1} a_{t+1} $\
-$\quad\quad\quad\ \ \  = \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) \delta(a_{t+1} - a_{t+1}^*) \, ds_{t+1} a_{t+1} $\
-$\quad\quad\quad\ \ \ = \int_{s_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}^*) \big) P(s_{t+1} \mid s_t, a_t) \, ds_{t+1} $\
-$\quad\quad\quad\ \ \ = \int_{s_{t+1}} \big( R_t + \gamma \max _{a_{t+1}} Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) \, ds_{t+1} $\
+- $Q(s_t, a_t) = \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) P(a_{t+1} \mid s_{t+1}) ds_{t+1} a_{t+1} $\
+$\quad\quad\quad\ \ \  = \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) \delta(a_{t+1} - a_{t+1}^*) ds_{t+1} a_{t+1} $\
+$\quad\quad\quad\ \ \ = \int_{s_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}^*) \big) P(s_{t+1} \mid s_t, a_t) ds_{t+1} $\
+$\quad\quad\quad\ \ \ = \int_{s_{t+1}} \big( R_t + \gamma \max _{a_{t+1}} Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) ds_{t+1} $\
 $\quad\quad\quad\ \ \  = \frac{1}{N}\sum_{i=1}^N ( R_t^N + \gamma \max _{a_{t+1}} Q(s_{t+1}, a_{t+1}) \big) $
 - Update\
 $\quad\quad \bar{Q}_{N} \leftarrow (1- \alpha )\bar{Q}_{N-1} + \alpha (R_t^N+\gamma \max _{a_{t+1}} Q(s_{t+1}^N, a_{t+1}^N) \big)$
