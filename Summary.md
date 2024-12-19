@@ -46,10 +46,10 @@
 
 ## 2. Purpose of RL
 - optimal policy $Q^*$
-  - $a^*_t≜\argmax_{a_t} Q^*(s_t,a_t)$
+    - $a_{t}^*≜\argmax_{a_t} Q^*(s_t,a_t)$
 - maximize expected return $V(s_t)$
-  - $\argmax_{} V(s_t) = \argmax_{} \int _{a_t}Q(s_t,a_t)P(a_t \mid s_t)da_t $\
-  $\quad\quad\quad\quad\quad\quad\  = \argmax_{} \int _{a_t}Q^*(s_t,a_t)P(a_t \mid s_t)da_t $
+    - $\argmax_{} V(s_t) = \argmax_{} \int_{a_t}Q(s_t,a_t)P(a_t \mid s_t)da_t$\
+    $\quad\quad\quad\quad\quad\quad\ = \argmax_{} \int_{a_t}Q^*(s_t,a_t)P(a_t \mid s_t)da_t$
 
 ## 3. Concept of Value based RL
 - Suppose policy as Dirac delta function
