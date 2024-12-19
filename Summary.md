@@ -14,9 +14,9 @@
 
 ## 0. Return, Value function
 - Return
-    - $ G_t=R_t+\gamma R_{t+1}+\gamma ^2R_{t+2}+\dots $
+    - $G_t=R_t+\gamma R_{t+1}+\gamma ^2R_{t+2}+\dots $
 - Expected return
-    - $ E[G_t]=\int_x G_tP(x)dx $
+    - $E[G_t]=\int_x G_tP(x)dx $
 - State Value Function
     - $V(s_t)≜\int_{a_t:a_\infty}G_tP(a_t,s_{t+1},a_{t+1},\dots \mid s_t)da_t:a_\infty $
 - Action State Value Function
@@ -24,12 +24,12 @@
 
 ## 1. Bellman equation
 - State Value Function $\quad V \rightarrow Q$
-    - $ V(s_t)≜\int_{a_t:a_\infty}G_tP(a_t,s_{t+1},a_{t+1},\dots \mid s_t)da_t:a_\infty $\
+    - $V(s_t)≜\int_{a_t:a_\infty}G_tP(a_t,s_{t+1},a_{t+1},\dots \mid s_t)da_t:a_\infty $\
     $\quad\quad\ \  =\int_{a_t}\int_{s_{t+1}:a_\infty}G_tP(s_{t+1},a_{t+1},\dots \mid s_t,a_t)ds_{t+1}:a_\infty P(a_t \mid s_t)da_t $\
     $\quad\quad\ \  =\int_{a_t}Q(s_t,a_t) P(a_t \mid s_t)da_t $
 
 - State Value Function $\quad V(s_t) \rightarrow v(s_{t+1})$
-    - $ V(s_t)≜\int_{a_t:a_\infty}G_tP(a_t,s_{t+1},a_{t+1},\dots \mid s_t)da_t:a_\infty $\
+    - $V(s_t)≜\int_{a_t:a_\infty}G_tP(a_t,s_{t+1},a_{t+1},\dots \mid s_t)da_t:a_\infty $\
     $\quad\quad\ \  =\int_{a_t:s_{t+1}}\int_{a_{t+1}:a_\infty}(R_t+\gamma G_{t+1})P(a_{t+1},\dots \mid s_t,a_t,s_{t+1})da_{t+1}:a_\infty P(a_t,s_{t+1} \mid s_t)da_t:s_{t+1} $\
     $\quad\quad\ \  =\int_{a_t:s_{t+1}}(R_t+\gamma V(s_{t+1}))P(a_ts_{t+1} \mid s_t)da_t:s_{t+1} $
 
@@ -46,15 +46,15 @@
 
 ## 2. Purpose of RL
 - optimal policy $Q^*$
-  - $ a^*_t≜\argmax_{a_t} Q^*(s_t,a_t) $
+  - $a^*_t≜\argmax_{a_t} Q^*(s_t,a_t) $
 - maximize expected return $V(s_t)$
-  - $ \argmax V(s_t) = \argmax \int _{a_t}Q(s_t,a_t)P(a_t \mid s_t)da_t $\
+  - $\argmax V(s_t) = \argmax \int _{a_t}Q(s_t,a_t)P(a_t \mid s_t)da_t $\
   $\quad\quad\quad\quad\quad\quad\  = \argmax \int _{a_t}Q^*(s_t,a_t)P(a_t \mid s_t)da_t $
 
 ## 3. Concept of Value based RL
 - Suppose policy as Dirac delta function
     - $P^*(a_t \mid s_t) = \delta(a_t - a_t^*)$
-- Then how can we get $Q^*$ ?
+- Then how can we get $Q^*$?
 - Monte Carlo (MC)
     - $Q(s_t, a_t) \approx \frac{1}N \, \sum_{i=1}^NG_t^{(i)}$
     - Update every episode.
