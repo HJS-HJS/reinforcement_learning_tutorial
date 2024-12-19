@@ -66,7 +66,7 @@ $$
     - $a_{t}^* \triangleq \underset{a_t}{\mathrm{argmax}} Q^*(s_t,a_t)$
 - maximize expected return $V(s_t)$
 <div align="center">
-    <img src="./2_1.svg" alt="Equation" style="display: block; margin: 0 auto;">
+    <img src="./2_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!--
 $$
@@ -85,7 +85,7 @@ $$
     - Update every episode.
     - Unbiased, higher variance.
 <div align="center">
-    <img src="./3_1.svg" alt="Equation" style="display: block; margin: 0 auto;">
+    <img src="./3_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!--
 $$
@@ -102,7 +102,7 @@ $$
     - Update every step.
     - Biased, lower variance.
 <div align="center">
-    <img src="./3_2.svg" alt="Equation" style="display: block; margin: 0 auto;">
+    <img src="./3_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- 
 $$
@@ -120,7 +120,7 @@ $$
 - Target: $P(a_{t+1} \mid s_{t+1}) = \delta(a_{t+1} - a_{t+1}^*) $
 - Behavior: $\epsilon$-greedy
 <div align="center">
-    <img src="./4_1.svg" alt="Equation" style="display: block; margin: 0 auto;">
+    <img src="./4_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- 
 $$
@@ -135,7 +135,7 @@ $$
  -->
 - Update
 <div align="center">
-    <img src="./4_2.svg" alt="Equation" style="display: block; margin: 0 auto;">
+    <img src="./4_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- 
 $$
@@ -165,7 +165,7 @@ $$
 
 
 <div align="center">
-  <img src="./?.svg" alt="Equation" style="display: block; margin: 0 auto;">
+  <img src="./?.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 <!-- 
 -->
 </div>
