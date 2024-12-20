@@ -83,6 +83,7 @@ $$
 
 ## 2. Purpose of RL
 - optimal policy $Q^*$
+    - $Q^*(s_t,a_t)=\underset{\pi}{\mathrm{max}}\mathbb{E}[r_t + \gamma^{} r_{t+1} + \gamma^{2} r_{t+2} + \dots \mid s_t, a_t, \pi]$
     - $a_{t}^* \triangleq \underset{a_t}{\mathrm{argmax}} Q^*(s_t,a_t)$
 - maximize expected return $V(s_t)$
 <div align="center">
@@ -173,12 +174,27 @@ $$
 - The Q value reflects more states through regression (Neural Network).
 - The number of outputs generated is the number of possible combinations of actions.
 - Features:
-    1. Using neural network (CNN to act like humans)
+    1. Using neural network (Q-Network) (CNN to act like humans)
     2. Use Experience replay.
         - Use mini batch
         - If you learn using states that are too similar, regression problems may occur. Therefore, random selection and learning are performed by combining past data.
     3. Seperate target, main network
         - During regression, prevent the target network from ossilating.
+- Action State Value $Q$ is same as Q-Learing:
+- Loss function $L_i(\theta _i)$ of Q-Network:
+<div align="center">
+  <img src="./5_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!--
+$$
+\begin{align*}
+L_i(\theta _i) &=  \mathbb{E}_{s,a \sim p(\cdot) } [y_i - Q(s , a ; \theta _i)] \\
+y_i &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q(s', a' ; \theta _{i-1}) \mid s, a] \\
+{\triangledown}_{\theta _i} L_i(\theta _i) &= \mathbb{E}_{s,a \sim p(\cdot) ; s' \sim \epsilon} [(r + \gamma \max _{a'} Q(s', a' ; \theta _{i-1})-Q(s,a;\theta_i)){\triangledown}_{\theta _i} Q(s , a ; \theta_i )] \\
+\end{align*}
+$$
+-->
+
 ## 6. Concept of Policy based RL
 ## 7. REINFORCE
 ## 8. Actor Critic
