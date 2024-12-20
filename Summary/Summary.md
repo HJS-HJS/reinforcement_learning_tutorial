@@ -199,7 +199,7 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
 &= 0 \\
 \end{align*}$$ -->
 
-- use policy gradient ${\triangledown}_{\theta} J_\theta$ to update network
+- use policy gradient $\triangledown_\theta J_\theta$ to update network
 <div align="center">
   <img src="./figures/6_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
@@ -225,7 +225,7 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
 - when $t \rightarrow \infty , {\gamma ^t G_t} \approx {G_t}$
 
 ## 7. REINFORCE
-- Policy gradient ${\triangledown}_{\theta} J_\theta$. Suppose N as 1
+- Policy gradient $\triangledown_\theta J_\theta$. Suppose N as 1
 <div align="center">
   <img src="./figures/7_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
