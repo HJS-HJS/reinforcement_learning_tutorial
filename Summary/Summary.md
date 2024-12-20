@@ -196,7 +196,133 @@ $$
 -->
 
 ## 6. Concept of Policy based RL
+- Get policy as PDF
+    - $P^* (a_t \mid s_t) = PDF$
+- Strengths in continuous action.
+- Can create stochastic policies.
+- Object function $J$ 
+    - Purpose of object function is maximize expected return G
+    - Trajectory: $\tau = {s_0, a_0, s_1, \dots}$
+<div align="center">
+  <img src="./6_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!--
+$$
+\begin{align*}
+J &\triangleq \mathbb{E}[G_0] \\
+&=\int_\tau G_0 \ P(\tau) \ d\tau \\
+J_\theta&=\int_\tau G_0 \ P_\theta(\tau) \ d\tau \\
+\end{align*}
+$$
+ -->
+
+- Possibility can devided into transision and policy
+<div align="center">
+  <img src="./6_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+
+<!--
+$$
+\begin{align*}
+{P_\theta(\tau)} &= {P_\theta(s_0, a_0, s_1, \dots)} \\
+&= P(s_0)P_\theta(a_0, s_1, \dots \mid s_0) \\
+&= P(s_0)P_\theta(a_0 \mid s_0)P_\theta(a_0, s_1, \dots \mid s_0, a_0) \\
+&= P(s_0)P_\theta(a_0 \mid s_0)P(s_1 \mid s_0,a_0) P_\theta(a_ 1\mid s_0,a_0,s_1) \dots \\
+&= P(s_0)P_\theta(a_0 \mid s_0)P(s_1 \mid s_0,a_0) P_\theta(a_ 1\mid s_0) \dots \\
+&= transision \times policy \times transision \times policy \times \dots \\
+{\triangledown}_{\theta} \ln{P_\theta(\tau)} &= \sum_{t=0}^{\infty}{{\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} }\\
+\end{align*}
+$$
+-->
+
+- When i > k,
+<div align="center">
+  <img src="./6_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+
+<!--
+$$
+\begin{align*}
+P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
+&= P_\theta(a_i \mid s_i)P(\tau_{-a_i}) \\
+\int_\tau R_k {\triangledown}_{\theta} \ln{P_\theta (a_i \mid s_i)} \ P_\theta(\tau)d\tau &= \int_\tau R_k {\triangledown}_{\theta} \ln{P_\theta (a_i \mid s_i)} \ P_\theta(a_i \mid s_i)P(\tau_{-a_i}) d\tau \\
+&= \int_{\tau_{-a_i}} R_k \int_{a_i} {\triangledown}_{\theta} \ln{P_\theta (a_i \mid s_i)} \ P_\theta(a_i \mid s_i)da_i P(\tau_{-a_i})d\tau_{-a_i} \\
+&= \int_{\tau_{-a_i}} R_k \int_{a_i} {\triangledown}_{\theta} P_\theta(a_i \mid s_i)da_i P(\tau_{-a_i})d\tau_{-a_i} \\
+&= \int_{\tau_{-a_i}} R_k {\triangledown}_{\theta} \int_{a_i} P_\theta(a_i \mid s_i)da_i P(\tau_{-a_i})d\tau_{-a_i} \\
+&= \int_{\tau_{-a_i}} R_k {\triangledown}_{\theta} P(\tau_{-a_i})d\tau_{-a_i} \\
+&= 0 \\
+\end{align*}
+$$
+-->
+
+- use policy gradient ${\triangledown}_{\theta} J_\theta$ to update network
+<div align="center">
+  <img src="./6_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+
+<!--  
+$$
+\begin{align*}
+\theta \leftarrow \theta + \alpha{\triangledown}_{\theta} J_\theta
+\end{align*}
+$$
+-->
+
+<div align="center">
+  <img src="./6_5.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+
+<!--
+$$
+\begin{align*}
+{\triangledown}_{\theta} J_\theta &\triangleq \frac{\partial J_\theta}{\partial \theta} \\
+&={\triangledown}_{\theta}\int_\tau G_0 \ P_\theta(\tau)d\tau \\
+&=\int_\tau G_0 \ {\triangledown}_{\theta} \ P_\theta(\tau)d\tau \\
+&=\int_\tau G_0 \ {\triangledown}_{\theta} \ \ln{P_\theta(\tau)} \ P_\theta(\tau)d\tau \\
+&=\int_\tau (R_0 + \gamma R_1 + \gamma^2 R_2 \dots) \ ({\triangledown}_{\theta} \ln{P_\theta (a_0 \mid s_0)} + {\triangledown}_{\theta} \ln{P_\theta (a_1 \mid s_1)}+\dots) \ P_\theta(\tau)d\tau \\
+&=\int_\tau \sum_{t=0}^{\infty} \ ({\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \times (\sum_{k=t}^{\infty}{\gamma ^k R_k}) ) \ P_\theta(\tau)d\tau \\
+&=\int_\tau \sum_{t=0}^{\infty} \ ({\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \times (\sum_{k=t}^{\infty}{\gamma ^t \gamma ^{k-t} R_k}) ) \ P_\theta(\tau)d\tau \\
+&=\int_\tau \sum_{t=0}^{\infty} \ ({\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \times ({\gamma ^t G_t}) ) \ P_\theta(\tau)d\tau \\
+&\approx \int_\tau \sum_{t=0}^{\infty} \ ({\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \times G_t ) \ P_\theta(\tau)d\tau \\
+\end{align*}
+$$
+-->
+
+- when $t \rightarrow \infty , {\gamma ^t G_t} \approx {G_t}$
+
 ## 7. REINFORCE
+- Policy gradient ${\triangledown}_{\theta} J_\theta$. Suppose N as 1
+<div align="center">
+  <img src="./7_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+
+<!--
+$$
+\begin{align*}
+{\triangledown}_{\theta} J_\theta &\approx \int_\tau \sum_{t=0}^{\infty} \ ({\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \ G_t ) \ P_\theta(\tau)d\tau \\
+&\approx \frac{1}{N}\sum_{}^{N} \sum_{t=0}^{\infty} \ ({\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \ G_t ) \\
+&\approx \sum_{t=0}^{\infty} \ ({\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \ G_t ) \\
+\end{align*}
+$$
+-->
+
+- Update
+    - You can only update once an episode is finished because you can get $G_t$ only after the episode is finished.
+
+<div align="center">
+  <img src="./7_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+
+<!--
+$$
+\begin{align*}
+\theta &\leftarrow \theta + \alpha {\triangledown}_{\theta} J_\theta\\
+&\leftarrow \theta + \alpha \sum_{t=0}^{\infty} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \ G_t \\
+\end{align*}
+$$
+-->
+- Unbiased, but high variance because all paths and possibilities have to be experienced.
+
 ## 8. Actor Critic
 ## 9. A2C
 ## 0. etc
