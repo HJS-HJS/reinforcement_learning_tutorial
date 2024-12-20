@@ -142,6 +142,7 @@ $$
 <div align="center">
     <img src="./4_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
+
 <!-- 
 $$
 \begin{align*}
@@ -149,10 +150,12 @@ Q(s_t, a_t) &= \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \bi
 &= \int_{s_{t+1} a_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) \delta(a_{t+1} - a_{t+1}^*) ds_{t+1} a_{t+1} \\
 &= \int_{s_{t+1}} \big( R_t + \gamma Q(s_{t+1}, a_{t+1}^*) \big) P(s_{t+1} \mid s_t, a_t) ds_{t+1} \\
 &= \int_{s_{t+1}} \big( R_t + \gamma \max _{a_{t+1}} Q(s_{t+1}, a_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) ds_{t+1} \\
-&= \frac{1}{N}\sum_{i=1}^N ( R_t^N + \gamma \max _{a_{t+1}} Q(s_{t+1}, a_{t+1}) \big)
+&= \frac{1}{N}\sum_{i=1}^N ( R_t^N + \gamma \max _{a_{t+1}} Q(s_{t+1}, a_{t+1}) \big) \\
+Q^*(s, a) &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q^*(s', a') \mid s, a] \qquad Q_i \rightarrow Q^*  \ when \ i \rightarrow \infty \\
 \end{align*}
 $$
  -->
+
 - Update
 <div align="center">
     <img src="./4_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
@@ -184,8 +187,8 @@ $$
 
 
 
+<!--
 <div align="center">
   <img src="./?.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
-<!-- 
--->
 </div>
+-->
