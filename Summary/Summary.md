@@ -254,7 +254,7 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
 - biased, low variance
 - Actor update policy $P_\theta (a_t \mid s_t)$
 - Critic update $Q_w$
-- Policy gradient ${\triangledown}_{\theta} J_\theta$ for update actor network
+- Policy gradient $ {\triangledown}_{\theta} J_\theta $ for update actor network
     - Use marginalize $\int_{x} P(x,y)dx = P(y)$
     <div align="center">
         <img src="./figures/8_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
