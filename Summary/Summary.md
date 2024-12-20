@@ -251,6 +251,7 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
 ## 8. Actor Critic
 - Use both value based method(Critic) and policy based method(Actor)
 - Update every step like TD in value based method
+- biased, low variance
 - Actor update policy $P_\theta (a_t \mid s_t)$
 - Critic update $Q_w$
 - Policy gradient ${\triangledown}_{\theta} J_\theta$ for update actor network
@@ -264,7 +265,7 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
 &= \sum_{t=0}^{\infty} \int_{s_0,a_0,\dots s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \int_{s_{t+1}, a_{t+1}, \dots} G_t \ P_\theta(s_{t+1}, a_{t+1}, \dots \mid s_t,a_t)ds_{t+1}, a_{t+1}, \dots P(s_0,a_0,\dots ,s_t,a_t) ds_0, a_0, \dots ,s_t,a_t\\
 &= \sum_{t=0}^{\infty} \int_{s_0,a_0,\dots s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} Q(s_t, a_t) P(s_0,a_0,\dots ,s_t,a_t) ds_0, a_0, \dots ,s_t,a_t \\
 &= \sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} Q(s_t, a_t) P(s_t,a_t) ds_t, a_t  \qquad \qquad (marginalize)\\
-&= \mathbb{E}_{P}[{\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} Q(s_t, a_t)]\\
+&\approx \mathbb{E}_{P}[{\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} Q(s_t, a_t)]\\
 \end{align*}$$ -->
 
 - Loss function $L_i(w_i)$ for critic network
