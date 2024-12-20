@@ -22,7 +22,7 @@
 - Action State Value Function
     - $Q(s_t, a_t)≜\int_{s_{t+1}:a_\infty}G_tP(s_{t+1},a_{t+1},s_{t+2}\dots \mid s_t,a_t)ds_{t+1}:a_\infty $
 
-<span style="float: right; font-size:10px;">[table of contents](#top)</span>
+<div align="right" style="font-size: 10px;"> <a href="#top" target="_blank">table of contents</a> </div>
 
 ## 1. Bellman equation
 - State Value Function $\quad V \rightarrow Q$
@@ -83,7 +83,7 @@ Q(s_t, a_t) &\triangleq \int_{s_{t+1}:a_\infty}G_t P(s_{t+1},a_{t+1},s_{t+2}\dot
 $$
 -->
 
-<span style="float: right; font-size:10px;">[table of contents](#top)</span>
+<div align="right" style="font-size: 10px;"> <a href="#top" target="_blank">table of contents</a> </div>
 
 ## 2. Purpose of RL
 - optimal policy $Q^*$
@@ -102,7 +102,7 @@ $$
 $$
 -->
 
-<span style="float: right; font-size:10px;">[table of contents](#top)</span>
+<div align="right" style="font-size: 10px;"> <a href="#top" target="_blank">table of contents</a> </div>
 
 ## 3. Concept of Value based RL
 - Suppose policy as Dirac delta function
@@ -142,7 +142,7 @@ Q(s_t, a_t) &\approx \frac{1}{N} \sum_{i=1}^N (R_t^N + \gamma Q(s_{t+1}^N, a_{t+
 $$
 -->
 
-<span style="float: right; font-size:10px;">[table of contents](#top)</span>
+<div align="right" style="font-size: 10px;"> <a href="#top" target="_blank">table of contents</a> </div>
 
 ## 4. Q-Learning
 - Target: $P(a_{t+1} \mid s_{t+1}) = \delta(a_{t+1} - a_{t+1}^*) $
@@ -176,7 +176,7 @@ $$
 $$
 -->
 
-<span style="float: right; font-size:10px;">[table of contents](#top)</span>
+<div align="right" style="font-size: 10px;"> <a href="#top" target="_blank">table of contents</a> </div>
 
 ## 5. DQN
 - The Q value reflects more states through regression (Neural Network).
@@ -203,7 +203,7 @@ y_i &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q(s', a' ; \theta _
 $$
 -->
 
-<span style="float: right; font-size:10px;">[table of contents](#top)</span>
+<div align="right" style="font-size: 10px;"> <a href="#top" target="_blank">table of contents</a> </div>
 
 ## 6. Concept of Policy based RL
 - Get policy as PDF
@@ -300,7 +300,7 @@ $$
 
 - when $t \rightarrow \infty , {\gamma ^t G_t} \approx {G_t}$
 
-<span style="float: right; font-size:10px;">[table of contents](#top)</span>
+<div align="right" style="font-size: 10px;"> <a href="#top" target="_blank">table of contents</a> </div>
 
 ## 7. REINFORCE
 - Policy gradient ${\triangledown}_{\theta} J_\theta$. Suppose N as 1
@@ -335,7 +335,7 @@ $$
 -->
 - Unbiased, but high variance because all paths and possibilities have to be experienced.
 
-<span style="float: right; font-size:10px;">[table of contents](#top)</span>
+<div align="right" style="font-size: 10px;"> <a href="#top" target="_blank">table of contents</a> </div>
 
 ## 8. Actor Critic
 ## 9. A2C
