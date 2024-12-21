@@ -230,12 +230,12 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
   <img src="./figures/7_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 
-$$\begin{align*}
+<!-- $$\begin{align*}
 {\triangledown}_{\theta} J_\theta &\approx \int_\tau \sum_{t=0}^{\infty} \ ({\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \ G_t ) \ P_\theta(\tau)d\tau \\
 &= \mathbb{E}_{\tau \sim P_\theta(\tau)} [ \sum_{t=0}^{\infty} \ ({\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \ G_t )] \\
 &\approx \frac{1}{N}\sum_{}^{N} \sum_{t=0}^{\infty} \ ({\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \ G_t ) \\
 &\approx \sum_{t=0}^{\infty} \ ({\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \ G_t ) \\
-\end{align*}$$
+\end{align*}$$ -->
 
 - Update
     - You can only update once an episode is finished because you can get $G_t$ only after the episode is finished.
