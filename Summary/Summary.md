@@ -326,7 +326,7 @@ A^{\pi \theta}(s_t, a_t) &= Q(s_t, a_t) - V(s_t)\\
 &\approx R_t + \gamma V(s_{t+1}) - V(s_t)\\
 \end{align*}$$ -->
 
-- Policy gradient ${\triangledown}_{\theta} J_\theta$ for update actor network
+- Policy gradient $\triangledown_\theta J_\theta$ for update actor network
     <div align="center">
         <img src="./figures/9_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
@@ -366,7 +366,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     - GAE (Generalize Advantage Estimation)
 1. Importance sampling
     - Enable PPO to reuse sample from past policy
-    - Policy gradient ${\triangledown}_{\theta} J_\theta$ for update actor network
+    - Policy gradient $\triangledown_\theta J_\theta$ for update actor network
     <div align="center">
         <img src="./figures/10_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
@@ -401,7 +401,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     - Convert KL divergence constraint problem to unconstraint problem.
     - Use clip to limit the importance ratio $r_t$ so that it doesn't change too much.
     - Limit the policy update range to prevent learning from becoming unstable due to large policy updates.
-    - Set Policy gradient ${\triangledown}_{\theta} J_\theta$ as following:
+    - Set Policy gradient $\triangledown_\theta J_\theta$ as following:
     <div align="center">
         <img src="./figures/10_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
