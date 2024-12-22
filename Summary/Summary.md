@@ -300,7 +300,6 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 
 - Update every N steps as batch
 
-- Even if you subtract the above equation from the policy gradient, the value is not affected. 
 - If you use Advantage $A=Q-V$, the variance is reduced. __(Need to study later)__
 
 - If we replace Q with V in policy gradient, we get:
@@ -360,6 +359,109 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 \end{align*}$$ -->
 
 ## 10. PPO
+- Update every N steps as batch and reuse them as epoch
+- Features:
+    - Importance sampling
+    - Clipping
+    - GAE (Generalize Advantage Estimation)
+1. Importance sampling
+    - Enable PPO to reuse sample from past policy
+    - Policy gradient ${\triangledown}_{\theta} J_\theta$ for update actor network
+    <div align="center">
+        <img src="./figures/10_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+    <!-- $$\begin{align*}
+    {\triangledown}_{\theta} J_\theta &\approx \sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} A \ P_\theta(s_t,a_t) \ P_\theta(s_{t+1} \mid s_t, a_t) ds_t, a_t, s_{t+1} \\
+    &= \sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} A \ \frac{P_\theta(s_t,a_t)}{P_{\theta_{old}}(s_t,a_t)} \ P_{\theta_{old}}(s_t,a_t) \ P_\theta(s_{t+1} \mid s_t, a_t) ds_t, a_t, s_{t+1} \\
+    &= \sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} A \ \frac{P_\theta(s_t) \ P_\theta(a_t \mid s_t)}{P_{\theta_{old}}(s_t) \ P_{\theta_{old}}(a_t \mid s_t)} \ P_{\theta_{old}}(s_t,a_t) \ P_\theta(s_{t+1} \mid s_t, a_t) ds_t, a_t, s_{t+1} \\
+    &\approx \sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} A \ \frac{P_\theta(a_t \mid s_t)}{P_{\theta_{old}}(a_t \mid s_t)} \ P_{\theta_{old}}(s_t,a_t) \ P_\theta(s_{t+1} \mid s_t, a_t) ds_t, a_t, s_{t+1} \\
+    &= \sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} \frac{P_\theta(a_t \mid s_t)}{P_{\theta_{old}}(a_t \mid s_t)} \ A \ P_{\theta_{old}}(s_t,a_t) \ P_\theta(s_{t+1} \mid s_t, a_t) ds_t, a_t, s_{t+1} \\
+    \end{align*}$$ -->
+
+    - By using importance sampling, you can update actor with sample data from old policy
+    <div align="center">
+        <img src="./figures/10_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+    <!-- $$\begin{align*}
+    \theta &\leftarrow \theta + \alpha {\triangledown}_{\theta} J_\theta\\
+    &\leftarrow \theta + \alpha {\triangledown}_{\theta} \sum_{i=t-N+1}^{t} \frac{P_\theta(a_t \mid s_t)}{P_{\theta_{old}}(a_t \mid s_t)} \ A
+    \end{align*}$$ -->
+
+    - As we suppose $\frac{P_\theta(s_t)}{P_{\theta_{old}}(s_t)} = 1$, this is the contraints problem
+    <div align="center">
+        <img src="./figures/10_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+    <!-- $$\begin{align*}
+    \mathrm{maximize} \qquad &\sum_{i=t-N+1}^{t} \frac{P_\theta(a_t \mid s_t)}{P_{\theta_{old}}(a_t \mid s_t)} \ A \\
+    \mathrm{constraint} \qquad  &\mathrm{KL}[P_{\theta_{old}}, P_{\theta}] \le \delta \\
+    \end{align*}$$ -->
+
+
+2. Clipping
+    - Convert KL divergence constraint problem to unconstraint problem.
+    - Use clip to limit the importance ratio $r_t$ so that it doesn't change too much.
+    - Limit the policy update range to prevent learning from becoming unstable due to large policy updates.
+    - Set Policy gradient ${\triangledown}_{\theta} J_\theta$ as following:
+    <div align="center">
+        <img src="./figures/10_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+    <!-- $$\begin{align*}
+    \theta &\leftarrow \theta + \alpha {\triangledown}_{\theta} J_\theta\\
+    \theta &\leftarrow \theta + \alpha {\triangledown}_{\theta} \sum_{i=t-N+1}^{t} J_i^{clip}\\
+    J_i^{clip} &\triangleq \min{\{ r_iA_i, clip(r_i, 1-\epsilon, 1+\epsilon) A_i \}} \quad r_i \triangleq \frac{P_\theta(a_t \mid s_t)}{P_{\theta_{old}}(a_t \mid s_t)} , \epsilon < 1\\
+    clip(r_i, 1-\epsilon, 1+\epsilon) &= 
+    \begin{cases}
+    1+\epsilon & r_i \ge 1+\epsilon \\
+    r_i        & 1-\epsilon \le r_i < 1+\epsilon \\
+    1-\epsilon & r_i < 1-\epsilon \\
+    \end{cases}
+    \end{align*}$$ -->
+
+
+3. GAE (Generalize Advantage Estimation)
+    - Unlike the calculations made so far with the 1-step TD error, the calculations are made by considering all TDs.
+    - Calculate every TD error by using exponential moving average to get $\widehat{A}_i^{GAE}$.
+    <div align="center">
+        <img src="./figures/10_5.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+    <!-- $$\begin{align*}
+    A_t^{(1)} \quad &=R_t+\gamma V(s_{t+1}) - V(s_t) \quad \triangleq \delta_t  \quad & \mathrm{1-setp \ TD \ error} \\
+    A_t^{(2)} \quad &=R_t+\gamma R_{t+1} + \gamma^2 V(s_{t+2}) - V(s_t) \quad & \mathrm{2-setp \ TD \ error} \\
+    \vdots \\
+    A_t^{(i)} \quad &= \sum_{k=t}^{t+i-1}\gamma^{k-t}\delta_k & \mathrm{i-setp \ TD \ error} \\
+    TD(\gamma) &= \sum_{n=1}^\infty (1-\lambda)\lambda^{n-1}A_t^{(n)}\\
+    &= (1-\lambda)(\delta_t + \lambda(\delta_t + \gamma\delta_{t+1}) + \lambda^2(\delta_t + \gamma\delta_{t+1} + \gamma^2\delta_{t+2})+\dots)\\
+    &= (1-\lambda)(\delta_t(1+\lambda+\lambda^2+\dots) + \gamma\delta_{t+1}(\lambda+\lambda^2+\dots)+\dots)\\
+    &= (1-\lambda)(\delta_t \frac{1}{1-\lambda} + \gamma\delta_{t+1}\frac{\lambda}{1-\lambda} + \dots )\\
+    &= \sum_{k=t}^\infty (\gamma\lambda)^{k-t}\delta_k \\
+    &=\mathrm{GAE} \\
+    &\triangleq \widehat{A}_i^{GAE} \\
+    \end{align*}$$ -->
+    
+    - However, GAE computes infinite TD, but in reality, it uses N consecutive samples, so it is used in a limited way.
+    <div align="center">
+        <img src="./figures/10_6.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+    <!-- $$\begin{align*}
+    \widehat{A}_i^{GAE} &\triangleq \sum_{k=i}^{t} (\gamma\lambda)^{k-i}\delta_k \\
+    \end{align*}$$ -->
+- Update
+    - You can update for every N steps.
+    - Use $\sum$ as batch.
+    - Reuse N samples as epoch.
+    <div align="center">
+        <img src="./figures/10_7.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+    <!-- $$\begin{align*}
+    Actor \quad
+    \theta &\leftarrow \theta + \alpha {\triangledown}_{\theta} J_\theta\\
+    &\leftarrow \theta + \alpha {\triangledown}_{\theta} \sum_{i=t-N+1}^{t} J_i^{clip} \\
+    &\leftarrow \theta + \alpha {\triangledown}_{\theta} \sum_{i=t-N+1}^{t} \min{\{ r_iA_i, clip(r_i, 1-\epsilon, 1+\epsilon) A_i \}} \\
+    Critic \quad
+    w &\leftarrow w - \beta {\triangledown}_{w} L_w\\
+    &\leftarrow w + \beta {\triangledown}_{w} \sum_{i=t-N+1}^{t} (\widehat{A}_i^{GAE})^2\\
+    &\leftarrow w + \beta {\triangledown}_{w} \sum_{i=t-N+1}^{t} (\sum_{k=i}^{t} (\gamma\lambda)^{k-i}\delta_k)^2\\
+    \end{align*}$$ -->
 
 ## 0. etc
 
