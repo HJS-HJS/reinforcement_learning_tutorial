@@ -11,6 +11,8 @@
 7. [REINFORCE](#7-reinforce)
 8. [Actor Critic](#8-actor-critic)
 9. [A2C](#9-a2c)
+10. [PPO](#10-ppo)
+11. [SAC](#11-sac)
 
 ## 0. Basic information
 - Return
@@ -479,11 +481,6 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     &\leftarrow w + \beta {\triangledown}_{w} \sum_{i=t-N+1}^{t} (\sum_{k=i}^{t} (\gamma\lambda)^{k-i}\delta_k)^2\\
     \end{align*}$$ -->
 
+## 11. SAC
+
 ## 0. etc
-
-
-<!--
-<div align="center">
-  <img src="./figures/?.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
-</div>
--->
