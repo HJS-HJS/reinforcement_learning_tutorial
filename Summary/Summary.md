@@ -291,8 +291,73 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 &\leftarrow w + \beta (R_t + \gamma Q_w(s_{t+1}, a_{t+1})-Q_w(s_t,a_t)){\triangledown}_{w_i} Q_w(s_t , a_t )\\
 \end{align*}$$ -->
 
-
 ## 9. A2C
+- Lower sample variance by using advantage $A=Q(s_t,a_t) - V(s_t)$
+- Biased, low variance
+    - Biased caused by approximation of $t \rightarrow \infty , {\gamma ^t G_t} \approx {G_t}$ in index 6
+    - Biased caused by only using N samples to learn, not the whole data $(\sum_{t=0}^{\infty})$
+    - Biased caused by the fact that $V_w$ used to get sample is different with real $V^*$
+
+- Update every N steps as batch
+
+- Even if you subtract the above equation from the policy gradient, the value is not affected. 
+- If you use Advantage $A=Q-V$, the variance is reduced. __(Need to study later)__
+
+- If we replace Q with V in policy gradient, we get:
+    <div align="center">
+        <img src="./figures/9_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+<!-- $$\begin{align*}
+\sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} V(s_t) P(s_t,a_t) ds_t, a_t &= \sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} V(s_t) P_\theta(a_t\mid s_t) \ P(s_t) ds_t, a_t \\
+&= \sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} P_\theta (a_t \mid s_t) V(s_t) \ P(s_t) ds_t, a_t \\
+&= \sum_{t=0}^{\infty} \int_{s_t} {\triangledown}_{\theta} \int_{a_t} \ P_\theta (a_t \mid s_t) da_t V(s_t) \ P(s_t) ds_t \\
+&=0 \\
+\end{align*}$$ -->
+
+- You can rewrite the advantage as follows:
+    <div align="center">
+        <img src="./figures/9_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+<!-- $$\begin{align*}
+Q(s_t, a_t) &= \int_{s_{t+1}} \big( R_t + V(s_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) ds_{t+1}  \\
+&= \mathbb{E}_{s_{t+1} \sim P(s_{t+1} \mid s_t, a_t)} [R_t + \gamma V(s_{t+1})]\\
+A^{\pi \theta}(s_t, a_t) &= Q(s_t, a_t) - V(s_t)\\
+&= \mathbb{E}_{s_{t+1} \sim P(s_{t+1} \mid s_t, a_t)} [R_t + \gamma V(s_{t+1})] - V(s_t)\\
+&= \mathbb{E}_{s_{t+1} \sim P(s_{t+1} \mid s_t, a_t)} [R_t + \gamma V(s_{t+1 - V(s_t)}) - V(s_t)]\\
+&\approx R_t + \gamma V(s_{t+1}) - V(s_t)\\
+\end{align*}$$ -->
+
+- Policy gradient ${\triangledown}_{\theta} J_\theta$ for update actor network
+    <div align="center">
+        <img src="./figures/9_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+<!-- $$\begin{align*}
+{\triangledown}_{\theta} J_\theta &\approx \sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} Q(s_t, a_t) P(s_t,a_t) ds_t, a_t\\
+&= \sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} (Q(s_t, a_t)-V(s_t)) P(s_t,a_t) ds_t, a_t \\
+&= \sum_{t=0}^{\infty} \mathbb{E}_{s_t \sim P_\theta(s_t), \ a_t \sim P_\theta(a_t \mid s_t)} [{\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} A^{\pi \theta}(s_t, a_t)] \\
+&= \sum_{t=0}^{\infty} \mathbb{E}_{s_t \sim P_\theta(s_t), \ a_t \sim P_\theta(a_t \mid s_t)} [{\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \mathbb{E}_{s_{t+1} \sim P(s_{t+1} \mid s_t, a_t)} [R_t + \gamma V(s_{t+1 - V(s_t)}) - V(s_t)]] \\
+\end{align*}$$ -->
+
+- Loss function $L_i(w_i)$ for critic network
+    - Note that $y$ is treated as a constant and is not used in learning.
+    - To prevent ossilating during learning.
+
+- Update
+    - You can update for every N steps.
+    - Use $\sum$ as batch.
+    - Cannot use the data from past parameters $(\theta_{i-1}, w_{i-1})$.
+    - When critic is updated, $R_t + \gamma V_w(s_{t+1})$ should be treated as __constant__.
+    <div align="center">
+        <img src="./figures/9_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+<!-- $$\begin{align*}
+Actor \quad
+\theta &\leftarrow \theta + \alpha {\triangledown}_{\theta} J_\theta\\
+&\leftarrow \theta + \alpha {\triangledown}_{\theta} \sum_{i=t-N+1}^{t} \ln{P_\theta (a_i \mid s_i)} (R_i + \gamma V_w(s_{i+q}) - V_w(s_i)) \\
+Critic \quad
+w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
+&\leftarrow w + \beta \sum_{i=t-N+1}^{t} (R_i + \gamma V_w(s_{i+1})-V_w(s_i)){\triangledown}_{w} V_w(s_t)\\
+\end{align*}$$ -->
 
 ## 10. PPO
 
