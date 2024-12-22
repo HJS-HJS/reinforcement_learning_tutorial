@@ -1,7 +1,7 @@
 # Reinforcement Learning Summary
 
 # Table of Contents
-0. [Return, Value function](#0-return-value-function)
+0. [Basic information](#0-basic-information)
 1. [Bellman equation](#1-bellman-equation)
 2. [Purpose of RL](#2-purpose-of-rl)
 3. [Concept of Value based RL](#3-concept-of-value-based-rl)
@@ -12,7 +12,7 @@
 8. [Actor Critic](#8-actor-critic)
 9. [A2C](#9-a2c)
 
-## 0. Return, Value function
+## 0. Basic information
 - Return
     - $G_t=R_t+\gamma R_{t+1}+\gamma ^2R_{t+2}+\dots $
 - Expected return
@@ -21,6 +21,22 @@
     - $V(s_t)≜\int_{a_t:a_\infty}G_tP(a_t,s_{t+1},a_{t+1},\dots \mid s_t)da_t:a_\infty $
 - Action State Value Function
     - $Q(s_t, a_t)≜\int_{s_{t+1}:a_\infty}G_tP(s_{t+1},a_{t+1},s_{t+2}\dots \mid s_t,a_t)ds_{t+1}:a_\infty $
+- On Policy: Behavior Policy $=$ Target Policy
+- Off Policy: Behavior Policy $\neq$ Target Policy
+- On Line
+    - Agents interact with their environment in real time, collecting data and using this data to update policies.
+- Off Line
+    - Learns only from a fixed dataset collected in advance, and does not interact with the environment during learning.
+
+
+<div align="center">
+
+|         | On Policy       | Off Policy     |
+|---------|-----------------|----------------|
+| On-Line | Q-Learning<br>REINFORCE<br>Actor-Critic<br>A2C<br>PPO | DQN<br>SAC |
+| Off-Line| - | - |
+
+</div>
 
 ## 1. Bellman equation
 - State Value Function $\quad V \rightarrow Q$
