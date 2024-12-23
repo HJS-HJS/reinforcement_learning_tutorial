@@ -383,6 +383,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     - Importance sampling
     - Clipping
     - GAE (Generalize Advantage Estimation)
+- In the PPO paper, an entropy bonus was added to address the issues of exploration enhancement and learning stability. It is discussed in 11.SAC.
 1. Importance sampling
     - Enable PPO to reuse sample from past policy
     - Policy gradient $\triangledown_\theta J_\theta$ for update actor network
@@ -472,7 +473,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
         <img src="./figures/10_7.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
 
-    $$\begin{align*}
+    <!-- $$\begin{align*}
     Actor \quad
     \theta &\leftarrow \theta + \alpha {\triangledown}_{\theta} J_\theta\\
     &\leftarrow \theta + \alpha {\triangledown}_{\theta} \sum_{i=t-N+1}^{t} J_i^{clip} \\
@@ -480,7 +481,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     Critic \quad
     w &\leftarrow w - \beta {\triangledown}_{w} L_w\\
     &\leftarrow w + \beta {\triangledown}_{w} \sum_{i=t-N+1}^{t} (R_i + \gamma V_w(s_{i+1})-V_w(s_i))^2\\
-    \end{align*}$$
+    \end{align*}$$ -->
 
 ## 11. SAC
 
