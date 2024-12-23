@@ -97,6 +97,9 @@
     ```bash
     python3 ~/reinforcement_learning_tutorial/tutorial_6_PPO.py
     ```
+- paper
+    - [Proximal Policy Optimization Algorithms (2017)](https://arxiv.org/pdf/1707.06347)
+
 
 ### 7. SAC
 - TODO
