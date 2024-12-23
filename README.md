@@ -87,7 +87,7 @@
     ```bash
     python3 ~/reinforcement_learning_tutorial/tutorial_4_1_actor_critic.py
     ```
-- Reinforcement learning wth actor critic (Sharing network param)
+- Reinforcement learning wth actor critic (Actor and critic share network)
     ```bash
     python3 ~/reinforcement_learning_tutorial/tutorial_4_2_actor_critic.py
     ```
@@ -101,7 +101,11 @@
 ### 6. PPO
 - Reinforcement learning wth PPO
     ```bash
-    python3 ~/reinforcement_learning_tutorial/tutorial_6_PPO.py
+    python3 ~/reinforcement_learning_tutorial/tutorial_6_1_PPO.py
+    ```
+- Reinforcement learning wth PPO (Actor and critic share network)
+    ```bash
+    python3 ~/reinforcement_learning_tutorial/tutorial_6_1_PPO_share.py
     ```
 - paper
     - [Proximal Policy Optimization Algorithms (2017)](https://arxiv.org/pdf/1707.06347)
