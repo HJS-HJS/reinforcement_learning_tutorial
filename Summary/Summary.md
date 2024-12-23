@@ -471,16 +471,16 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     <div align="center">
         <img src="./figures/10_7.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
-    <!-- $$\begin{align*}
+
+    $$\begin{align*}
     Actor \quad
     \theta &\leftarrow \theta + \alpha {\triangledown}_{\theta} J_\theta\\
     &\leftarrow \theta + \alpha {\triangledown}_{\theta} \sum_{i=t-N+1}^{t} J_i^{clip} \\
-    &\leftarrow \theta + \alpha {\triangledown}_{\theta} \sum_{i=t-N+1}^{t} \min{\{ r_iA_i, clip(r_i, 1-\epsilon, 1+\epsilon) A_i \}} \\
+    &\leftarrow \theta + \alpha {\triangledown}_{\theta} \sum_{i=t-N+1}^{t} \min{\{ r_i \widehat{A}_i^{GAE}, clip(r_i, 1-\epsilon, 1+\epsilon) \widehat{A}_i^{GAE} \}} \\
     Critic \quad
     w &\leftarrow w - \beta {\triangledown}_{w} L_w\\
-    &\leftarrow w + \beta {\triangledown}_{w} \sum_{i=t-N+1}^{t} (\widehat{A}_i^{GAE})^2\\
-    &\leftarrow w + \beta {\triangledown}_{w} \sum_{i=t-N+1}^{t} (\sum_{k=i}^{t} (\gamma\lambda)^{k-i}\delta_k)^2\\
-    \end{align*}$$ -->
+    &\leftarrow w + \beta {\triangledown}_{w} \sum_{i=t-N+1}^{t} (R_i + \gamma V_w(s_{i+1})-V_w(s_i))^2\\
+    \end{align*}$$
 
 ## 11. SAC
 
