@@ -23,16 +23,24 @@ if torch.cuda.is_available():
 Transition = namedtuple('Transition',
                         ('state', 'action', 'prob', 'next_state', 'reward', 'done'))
 
-class ActorNetwork(Network):
+class ACNetwork(Network):
     def __init__(self, n_state:int = 4, n_action:int = 2):
-        super(ActorNetwork, self).__init__(n_state, n_action)
-        self.layer.add_module("linear", nn.Linear(128, n_action))
-        self.layer.add_module("softmax", nn.Softmax(dim=-1))
+        super(ACNetwork, self).__init__(n_state, n_action)
+        self.actor_layer = nn.Sequential(
+            nn.Linear(128, n_action),
+            nn.Softmax(dim=-1),
+        )
+        self.critic_layer = nn.Sequential(
+            nn.Linear(128, 1),
+        )
 
-class CriticNetwork(Network):
-    def __init__(self, n_state:int = 4, n_action:int = 2):
-        super(CriticNetwork, self).__init__(n_state, n_action)
-        self.layer.add_module("linear", nn.Linear(128, 1))
+    def Actor(self, x: torch.tensor):
+        x1 = self.layer(x)
+        return self.actor_layer(x1)
+
+    def Critic(self, x: torch.tensor):
+        x1 = self.layer(x)
+        return self.critic_layer(x1)
 
 ## Parameters
 # Policy Parameters
@@ -55,12 +63,10 @@ MAX_STEP = 1000         # maximun available step per episode
 memory = []
 
 # Initialize network
-actor_net = ActorNetwork(N_INPUTS, N_OUTPUT).to(device)
-critic_net = CriticNetwork(N_INPUTS, N_OUTPUT).to(device)
+actor_critic_net = ACNetwork(N_INPUTS, N_OUTPUT).to(device)
 
 # Optimizer
-actor_optimizer = torch.optim.AdamW(actor_net.parameters(), lr=LEARNING_RATE, amsgrad=True)
-critic_optimizer = torch.optim.AdamW(critic_net.parameters(), lr=LEARNING_RATE, amsgrad=True)
+optimizer = torch.optim.AdamW(actor_critic_net.parameters(), lr=LEARNING_RATE, amsgrad=True)
 
 def optimize_model(batch):
 
@@ -74,15 +80,15 @@ def optimize_model(batch):
     for _ in range(EPOCH_SIZE):
 
         # Calculate the current probability
-        prob = actor_net(state_batch)
+        prob = actor_critic_net.Actor(state_batch)
         prob_batch = prob[torch.arange(prob.size(0)),action_batch]
         # Calculate the importance ratio
         imp_ratio = prob_batch / prob_old_batch.detach()
 
         ## Calculate A from V
         # Calculate delta_t
-        value_curr_set = critic_net(state_batch)
-        value_next_set = critic_net(next_state_batch) * done_batch
+        value_curr_set = actor_critic_net.Critic(state_batch)
+        value_next_set = actor_critic_net.Critic(next_state_batch) * done_batch
         td_target = reward_batch + DISCOUNT_FACTOR * value_next_set
         delta_set = (td_target - value_curr_set).detach()
         # Calculate Advantage_set
@@ -95,20 +101,14 @@ def optimize_model(batch):
         clip_advantage = torch.min(imp_ratio * advantage_set, torch.clamp(imp_ratio, 1 - CLIP_EPSILON, 1 + CLIP_EPSILON) * advantage_set)
 
         # Learning
-        actor_optimizer.zero_grad()
-        critic_optimizer.zero_grad()
+        optimizer.zero_grad()
 
-        # Policy Gradient 
-        actor_loss = -clip_advantage.sum()
-
-        actor_loss.backward()
-        actor_optimizer.step()
-
+        # Gradient 
         criterion = torch.nn.MSELoss()
-        critic_loss = criterion(td_target.detach(), value_curr_set)
-        critic_loss.backward()
-        critic_optimizer.step()
+        loss = -clip_advantage.sum() + criterion(td_target.detach(), value_curr_set)
 
+        loss.backward()
+        optimizer.step()
 
 total_steps = []
 step_done_set = []
@@ -122,7 +122,7 @@ for episode in range(1, EPISODES + 1):
     # Running one episode
     for step in range(MAX_STEP):
         # 1. Get action from policy network
-        prob = actor_net(state_curr)
+        prob = actor_critic_net.Actor(state_curr)
         action = Categorical(prob).sample()
 
         # 2. Run simulation 1 step (Execute action and observe reward)
