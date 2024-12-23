@@ -377,6 +377,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 \end{align*}$$ -->
 
 ## 10. PPO
+- Proximal Policy Optimization.
 - Update every N steps as batch and reuse them as epoch
 - Features:
     - Importance sampling
