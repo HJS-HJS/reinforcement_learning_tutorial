@@ -1,7 +1,9 @@
 # reinforcement_learning_tutorial
 <img alt="Python" src ="https://img.shields.io/badge/Python-3776AB.svg?&style=for-the-badge&logo=Python&logoColor=white"/>
 
-- A repository for studing reinforcement learning using Cartpole.
+- A repository for studing reinforcement learning.
+- Discontinous output tutorial: [Cartpole Tutorial](#3-cartpole-tutorial)
+- Continous output tutorial: [Atari Tutorial](#4-atari-tutorial)
 
 # Table of Contents
 
@@ -9,14 +11,18 @@
 2. [Before Start](#2-before-start)
     1. [Check environments](#1-check-environments)
     2. [Simple policy](#2-simple-policy)
-3. [Tutorial](#3-tutorial)
+3. [Cartpole Tutorial](#3-cartpole-tutorial)
     1. [Q-learning](#1-q-learning)
     2. [DQN](#2-dqn)
     3. [REINFORCE](#3-reinforce)
     4. [Actor Critic](#4-actor-critic)
     5. [A2C](#5-a2c)
-    6. [#TODO PPO](#6-ppo)
+    6. [PPO](#6-ppo)
     7. [#TODO SAC](#7-sac)
+4. [TODO Atari Tutorial](#4-atari-tutorial)
+    1. [DQN](#1-dqn)
+    2. [PPO](#2-ppo)
+    3. [SAC](#3-sac)
 
 ## 1. Setup
 
@@ -33,7 +39,6 @@
    ```
 
 ## 2. Before Start
-
 ### 1. Check environments
 - Check if CUDA is properly installed
     ```bash
@@ -50,7 +55,8 @@
     python3 ~/reinforcement_learning_tutorial/before_start_2_start_policy.py
     ```
 
-## 3. Tutorial
+## 3. Cartpole Tutorial
+- The output of the reinforcement learning model is two discrete values, left and right.
 ### 1. Q-learning
 - Reinforcement learning wth Q table
     ```bash
@@ -100,6 +106,17 @@
 - paper
     - [Proximal Policy Optimization Algorithms (2017)](https://arxiv.org/pdf/1707.06347)
 
-
 ### 7. SAC
+- TODO
+
+
+## 4. Atari Tutorial
+- The output of the reinforcement learning model is continous values.
+### 1. DQN
+- TODO
+
+### 2. PPO
+- TODO
+
+### 3. SAC
 - TODO
