@@ -1,9 +1,11 @@
+Box2D
+gym
+ipython
+matplotlib
 numpy == 1.23.1
 tensorflow
-matplotlib
-ipython
 torch
-gym
 pillow
-pyglet
 pygame
+pyglet
+pynput
