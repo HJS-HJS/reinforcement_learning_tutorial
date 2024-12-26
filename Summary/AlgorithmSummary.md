@@ -271,7 +271,7 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
 &\leftarrow \theta + \alpha \sum_{t=0}^{\infty} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} \ G_t \\
 \end{align*}$$ -->
 
-- Unbiased, but high variance because all paths and possibilities have to be experienced.
+- Unbiased, but very high variance because all paths and possibilities have to be experienced.
 - The policy gradient implies:
     - Aim for good samples and avoid bad samples. 
     - Trial and error is formalized as policy gradient.
