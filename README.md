@@ -99,7 +99,7 @@
     ```
 
 ### 6. PPO
-- Reinforcement learning wth PPO
+- Reinforcement learning wth PPO (Proximal Policy Optimization)
     ```bash
     python3 ~/reinforcement_learning_tutorial/tutorial_6_1_PPO.py
     ```

@@ -1,8 +1,6 @@
 '''
-value, policy based A2C (Advantage Actor Critic)
- - policy probability is parameterized as neural network
- - use A = Gt - Vt = r + gamma * Vt+1 - Vt to reduce variance
- - policy model is updated for every n steps.
+PPO (Proximal Policy Optimization)
+ - actor and critic share network parameters.
 '''
 
 import numpy as np
