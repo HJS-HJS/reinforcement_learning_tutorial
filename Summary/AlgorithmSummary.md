@@ -20,9 +20,14 @@
 - Expected return
     - $E[G_t]=\int_x G_tP(x)dx $
 - State Value Function
+    - Total reward from $s_t$.
     - $V(s_t)≜\int_{a_t:a_\infty}G_tP(a_t,s_{t+1},a_{t+1},\dots \mid s_t)da_t:a_\infty $
+    - $V(s_t)=\mathbb{E}_{a_t \sim p(a_t \mid s_t)}[Q(s_t,a_t)]$
 - Action State Value Function
+    - Total reward from taking $a_t$ in $s_t$.
     - $Q(s_t, a_t)≜\int_{s_{t+1}:a_\infty}G_tP(s_{t+1},a_{t+1},s_{t+2}\dots \mid s_t,a_t)ds_{t+1}:a_\infty $
+    - $Q(s_t, a_t)=\mathbb{E}_{s_t, a_t \sim p(s_t, a_t)}[G_t \mid s_t,a_t]$
+
 - On Policy: Behavior Policy $=$ Target Policy
 - Off Policy: Behavior Policy $\neq$ Target Policy
 - On Line
