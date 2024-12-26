@@ -1,4 +1,4 @@
-# Reinforcement Learning Summary
+# Reinforcement Learning Algorithm Summary
 
 # Table of Contents
 0. [Basic information](#0-basic-information)
@@ -43,7 +43,7 @@
 ## 1. Bellman equation
 - State Value Function $\quad V \rightarrow Q$
 <div align="center">
-    <img src="./figures/1_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    <img src="./algorithm_figures/1_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 V(s_t) &\triangleq \int_{a_t:a_\infty}G_tP(a_t,s_{t+1},a_{t+1},\dots \mid s_t)da_t:a_\infty \\
@@ -53,7 +53,7 @@ V(s_t) &\triangleq \int_{a_t:a_\infty}G_tP(a_t,s_{t+1},a_{t+1},\dots \mid s_t)da
 
 - State Value Function $\quad V(s_t) \rightarrow v(s_{t+1})$
 <div align="center">
-    <img src="./figures/1_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    <img src="./algorithm_figures/1_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 V(s_t) &\triangleq \int_{a_t:a_\infty}G_tP(a_t,s_{t+1},a_{t+1},\dots \mid s_t)da_t:a_\infty \\
@@ -63,7 +63,7 @@ V(s_t) &\triangleq \int_{a_t:a_\infty}G_tP(a_t,s_{t+1},a_{t+1},\dots \mid s_t)da
 
 - Action State Value Function $\quad Q \rightarrow V$
 <div align="center">
-    <img src="./figures/1_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    <img src="./algorithm_figures/1_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 Q(s_t, a_t) &\triangleq \int_{s_{t+1}:a_\infty}G_t P(s_{t+1},a_{t+1},s_{t+2}\dots \mid s_t,a_t) ds_{t+1}:a_\infty \\
@@ -74,7 +74,7 @@ Q(s_t, a_t) &\triangleq \int_{s_{t+1}:a_\infty}G_t P(s_{t+1},a_{t+1},s_{t+2}\dot
 
 - Action State Value Function $\quad Q(s_t,a_t) \rightarrow Q(s_{t+1},a_{t+1})$
 <div align="center">
-    <img src="./figures/1_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    <img src="./algorithm_figures/1_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 Q(s_t, a_t) &\triangleq \int_{s_{t+1}:a_\infty}G_t P(s_{t+1},a_{t+1},s_{t+2}\dots \mid s_t,a_t) ds_{t+1}:a_\infty \\
@@ -89,7 +89,7 @@ Q(s_t, a_t) &\triangleq \int_{s_{t+1}:a_\infty}G_t P(s_{t+1},a_{t+1},s_{t+2}\dot
     - $a_{t}^* \triangleq \underset{a_t}{\mathrm{argmax}} Q^*(s_t,a_t)$
 - maximize expected return $V(s_t)$
 <div align="center">
-    <img src="./figures/2_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    <img src="./algorithm_figures/2_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 \mathrm{argmax} V(s_t) &= \mathrm{argmax} \int_{a_t} Q(s_t,a_t) P(a_t \mid s_t)da_t \\
@@ -104,7 +104,7 @@ Q(s_t, a_t) &\triangleq \int_{s_{t+1}:a_\infty}G_t P(s_{t+1},a_{t+1},s_{t+2}\dot
     - Update every episode.
     - Unbiased, higher variance.
 <div align="center">
-    <img src="./figures/3_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    <img src="./algorithm_figures/3_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^NG_t^{(i)}
@@ -117,7 +117,7 @@ Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^NG_t^{(i)}
     - Update every step.
     - Biased, lower variance.
 <div align="center">
-    <img src="./figures/3_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    <img src="./algorithm_figures/3_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 Q(s_t, a_t) &\approx \frac{1}{N} \sum_{i=1}^N (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \triangleq \bar{Q}_{N} \\
@@ -130,7 +130,7 @@ Q(s_t, a_t) &\approx \frac{1}{N} \sum_{i=1}^N (R_t^N + \gamma Q(s_{t+1}^N, a_{t+
 - Target: $P(a_{t+1} \mid s_{t+1}) = \delta(a_{t+1} - a_{t+1}^*) $
 - Behavior: $\epsilon$-greedy
 <div align="center">
-    <img src="./figures/4_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    <img src="./algorithm_figures/4_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 
 <!-- $$\begin{align*}
@@ -144,7 +144,7 @@ Q^*(s, a) &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q^*(s', a') \
 
 - Update
 <div align="center">
-    <img src="./figures/4_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    <img src="./algorithm_figures/4_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 \bar{Q}_{N} \leftarrow (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma \max _{a_{t+1}} Q(s_{t+1}^N, a_{t+1}^N) \big )
@@ -163,7 +163,7 @@ Q^*(s, a) &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q^*(s', a') \
 - Action State Value $Q$ is same as Q-Learing:
 - Loss function $L_i(\theta _i)$ of Q-Network:
 <div align="center">
-  <img src="./figures/5_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+  <img src="./algorithm_figures/5_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 L_i(\theta _i) &=  \mathbb{E}_{s,a \sim p(\cdot) } [y_i - Q(s , a ; \theta _i)] \\
@@ -180,7 +180,7 @@ y_i &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q(s', a' ; \theta _
     - Purpose of object function is maximize expected return G
     - Trajectory: $\tau = {s_0, a_0, s_1, \dots}$
 <div align="center">
-  <img src="./figures/6_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+  <img src="./algorithm_figures/6_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 J &\triangleq \mathbb{E}[G_0] \\
@@ -190,7 +190,7 @@ J_\theta&=\int_\tau G_0 \ P_\theta(\tau) \ d\tau \\
 
 - Possibility can devided into transision and policy
 <div align="center">
-  <img src="./figures/6_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+  <img src="./algorithm_figures/6_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 {P_\theta(\tau)} &= {P_\theta(s_0, a_0, s_1, \dots)} \\
@@ -204,7 +204,7 @@ J_\theta&=\int_\tau G_0 \ P_\theta(\tau) \ d\tau \\
 
 - When i > k,
 <div align="center">
-  <img src="./figures/6_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+  <img src="./algorithm_figures/6_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
@@ -219,14 +219,14 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
 
 - use policy gradient $\triangledown_\theta J_\theta$ to update network
 <div align="center">
-  <img src="./figures/6_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+  <img src="./algorithm_figures/6_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 \theta \leftarrow \theta + \alpha{\triangledown}_{\theta} J_\theta
 \end{align*}$$ -->
 
 <div align="center">
-  <img src="./figures/6_5.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+  <img src="./algorithm_figures/6_5.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 {\triangledown}_{\theta} J_\theta &\triangleq \frac{\partial J_\theta}{\partial \theta} \\
@@ -246,7 +246,7 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
 ## 7. REINFORCE
 - Policy gradient $\triangledown_\theta J_\theta$. Suppose N as 1
 <div align="center">
-  <img src="./figures/7_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+  <img src="./algorithm_figures/7_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 
 <!-- $$\begin{align*}
@@ -259,7 +259,7 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
 - Update
     - You can only update once an episode is finished because you can get $G_t$ only after the episode is finished.
 <div align="center">
-  <img src="./figures/7_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+  <img src="./algorithm_figures/7_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 \theta &\leftarrow \theta + \alpha {\triangledown}_{\theta} J_\theta\\
@@ -279,7 +279,7 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
 - Policy gradient $\triangledown_\theta J_\theta$ for update actor network
     - Use marginalize $\int_{x} P(x,y)dx = P(y)$
     <div align="center">
-        <img src="./figures/8_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        <img src="./algorithm_figures/8_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
 <!-- $$\begin{align*}
 {\triangledown}_{\theta} J_\theta &\approx \int_\tau \sum_{t=0}^{\infty} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} G_t \ P_\theta(\tau)d\tau \\
@@ -298,7 +298,7 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
     - You can update for every step.
     - When critic is updated, $R_t + \gamma Q_w(s_{t+1}, a_{t+1})$ should be treated as __constant__
     <div align="center">
-        <img src="./figures/8_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        <img src="./algorithm_figures/8_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
 <!-- $$\begin{align*}
 Actor \quad
@@ -322,7 +322,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 
 - If we replace Q with V in policy gradient, we get:
     <div align="center">
-        <img src="./figures/9_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        <img src="./algorithm_figures/9_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
 <!-- $$\begin{align*}
 \sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} V(s_t) P(s_t,a_t) ds_t, a_t &= \sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} V(s_t) P_\theta(a_t\mid s_t) \ P(s_t) ds_t, a_t \\
@@ -333,7 +333,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 
 - You can rewrite the advantage as follows:
     <div align="center">
-        <img src="./figures/9_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        <img src="./algorithm_figures/9_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
 <!-- $$\begin{align*}
 Q(s_t, a_t) &= \int_{s_{t+1}} \big( R_t + V(s_{t+1}) \big) P(s_{t+1} \mid s_t, a_t) ds_{t+1}  \\
@@ -346,7 +346,7 @@ A^{\pi \theta}(s_t, a_t) &= Q(s_t, a_t) - V(s_t)\\
 
 - Policy gradient $\triangledown_\theta J_\theta$ for update actor network
     <div align="center">
-        <img src="./figures/9_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        <img src="./algorithm_figures/9_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
 <!-- $$\begin{align*}
 {\triangledown}_{\theta} J_\theta &\approx \sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} Q(s_t, a_t) P(s_t,a_t) ds_t, a_t\\
@@ -365,7 +365,7 @@ A^{\pi \theta}(s_t, a_t) &= Q(s_t, a_t) - V(s_t)\\
     - Cannot use the data from past parameters $(\theta_{i-1}, w_{i-1})$.
     - When critic is updated, $R_t + \gamma V_w(s_{t+1})$ should be treated as __constant__.
     <div align="center">
-        <img src="./figures/9_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        <img src="./algorithm_figures/9_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
 <!-- $$\begin{align*}
 Actor \quad
@@ -388,7 +388,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     - Enable PPO to reuse sample from past policy
     - Policy gradient $\triangledown_\theta J_\theta$ for update actor network
     <div align="center">
-        <img src="./figures/10_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        <img src="./algorithm_figures/10_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
     <!-- $$\begin{align*}
     {\triangledown}_{\theta} J_\theta &\approx \sum_{t=0}^{\infty} \int_{s_t,a_t} \ {\triangledown}_{\theta} \ln{P_\theta (a_t \mid s_t)} A \ P_\theta(s_t,a_t) \ P_\theta(s_{t+1} \mid s_t, a_t) ds_t, a_t, s_{t+1} \\
@@ -400,7 +400,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 
     - By using importance sampling, you can update actor with sample data from old policy
     <div align="center">
-        <img src="./figures/10_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        <img src="./algorithm_figures/10_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
     <!-- $$\begin{align*}
     \theta &\leftarrow \theta + \alpha {\triangledown}_{\theta} J_\theta\\
@@ -409,7 +409,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 
     - As we suppose $\frac{P_\theta(s_t)}{P_{\theta_{old}}(s_t)} = 1$, this is the contraints problem
     <div align="center">
-        <img src="./figures/10_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        <img src="./algorithm_figures/10_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
     <!-- $$\begin{align*}
     \mathrm{maximize} \qquad &\sum_{i=t-N+1}^{t} \frac{P_\theta(a_t \mid s_t)}{P_{\theta_{old}}(a_t \mid s_t)} \ A \\
@@ -423,7 +423,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     - Limit the policy update range to prevent learning from becoming unstable due to large policy updates.
     - Set Policy gradient $\triangledown_\theta J_\theta$ as following:
     <div align="center">
-        <img src="./figures/10_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        <img src="./algorithm_figures/10_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
     <!-- $$\begin{align*}
     \theta &\leftarrow \theta + \alpha {\triangledown}_{\theta} J_\theta\\
@@ -442,7 +442,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     - Unlike the calculations made so far with the 1-step TD error, the calculations are made by considering all TDs.
     - Calculate every TD error by using exponential moving average to get $\widehat{A}_i^{GAE}$.
     <div align="center">
-        <img src="./figures/10_5.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        <img src="./algorithm_figures/10_5.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
     <!-- $$\begin{align*}
     A_t^{(1)} \quad &=R_t+\gamma V(s_{t+1}) - V(s_t) \quad \triangleq \delta_t  \quad & \mathrm{1-setp \ TD \ error} \\
@@ -460,7 +460,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     
     - However, GAE computes infinite TD, but in reality, it uses N consecutive samples, so it is used in a limited way.
     <div align="center">
-        <img src="./figures/10_6.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        <img src="./algorithm_figures/10_6.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
     <!-- $$\begin{align*}
     \widehat{A}_i^{GAE} &\triangleq \sum_{k=i}^{t} (\gamma\lambda)^{k-i}\delta_k \\
@@ -470,7 +470,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     - Use $\sum$ as batch.
     - Reuse N samples as epoch.
     <div align="center">
-        <img src="./figures/10_7.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        <img src="./algorithm_figures/10_7.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
 
     <!-- $$\begin{align*}
