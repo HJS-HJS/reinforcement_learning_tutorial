@@ -272,6 +272,11 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
 \end{align*}$$ -->
 
 - Unbiased, but high variance because all paths and possibilities have to be experienced.
+- The policy gradient implies:
+    - Aim for good samples and avoid bad samples. 
+    - Trial and error is formalized as policy gradient.
+- Markov property is not used.
+    - Can be used for partially observed MDP without modification.
 
 ## 8. Actor Critic
 - Use both value based method(Critic) and policy based method(Actor)
