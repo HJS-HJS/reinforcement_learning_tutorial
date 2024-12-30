@@ -19,10 +19,9 @@
     5. [A2C](#5-a2c)
     6. [PPO](#6-ppo)
     7. [#TODO SAC](#7-sac)
-4. [TODO Atari Tutorial](#4-atari-tutorial)
-    1. [DQN](#1-dqn)
-    2. [PPO](#2-ppo)
-    3. [SAC](#3-sac)
+4. [Continous Action Tutorial](#4-continous-action-tutorial)
+    1. [PPO](#1-ppo)
+    2. [#TODO SAC](#2-sac)
 
 ## 1. Setup
 
@@ -114,13 +113,20 @@
 - TODO
 
 
-## 4. Atari Tutorial
+## 4. Continous Action Tutorial
 - The output of the reinforcement learning model is continous values.
-### 1. DQN
-- TODO
 
-### 2. PPO
-- TODO
+### 1. PPO
+- Reinforcement learning wth MUJOCO half cheetah.
+- Continous action, fully connected linear neural network.
+    ```bash
+    python3 ~/reinforcement_learning_tutorial/tutorial_continuos_1_1_PPO.py
+    ```
+- Reinforcement learning wth gym car racing.
+- Continous action, fully connected cnn.
+    ```bash
+    python3 ~/reinforcement_learning_tutorial/tutorial_continuos_1_2_PPO.py
+    ```
 
-### 3. SAC
+### 2. SAC
 - TODO
