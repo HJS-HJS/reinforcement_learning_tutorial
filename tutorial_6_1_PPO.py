@@ -62,7 +62,7 @@ critic_optimizer = torch.optim.AdamW(critic_net.parameters(), lr=LEARNING_RATE, 
 def optimize_model(batch):
 
     state_batch     = torch.cat(batch.state)
-    action_batch  = torch.cat(batch.action)
+    action_batch    = torch.cat(batch.action)
     prob_old_batch  = torch.cat(batch.prob)
     next_state_batch= torch.cat(batch.next_state)
     reward_batch    = torch.cat(batch.reward)
