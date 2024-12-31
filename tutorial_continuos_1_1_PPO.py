@@ -3,6 +3,7 @@ PPO (Proximal Policy Optimization)
 - continous action
 '''
 
+import os
 import numpy as np
 import torch
 import torch.nn as nn
@@ -25,7 +26,9 @@ CLIP_EPSILON = 0.05
 # Other
 visulaize_step = 25
 MAX_STEP = 1024           # maximun available step per episode
-SAVE_DIR = "/your/path/reinforcement_learning_tutorial/model/tutorial_continuos_1_1_PPO"
+current_file_path = os.path.abspath(__file__)
+current_directory = os.path.dirname(current_file_path)
+SAVE_DIR = current_directory + "/model/tutorial_continuos_1_1_PPO"
 
 sim = HalfCheetah(None)
 device = torch.device('cpu')
