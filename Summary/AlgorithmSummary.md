@@ -4,15 +4,16 @@
 0. [Basic information](#0-basic-information)
 1. [Bellman equation](#1-bellman-equation)
 2. [Purpose of RL](#2-purpose-of-rl)
-3. [Concept of Value based RL](#3-concept-of-value-based-rl)
+3. [Value Iteration](#3-value-iteration)
 4. [Q-Learning](#4-q-learning)
-5. [DQN](#5-dqn)
-6. [Concept of Policy based RL](#6-concept-of-policy-based-rl)
-7. [REINFORCE](#7-reinforce)
-8. [Actor Critic](#8-actor-critic)
-9. [A2C](#9-a2c)
-10. [PPO](#10-ppo)
-11. [SAC](#11-sac)
+5. [Fitted Value Iteration](#5-fitted-value-iteration)
+6. [DQN](#6-dqn)
+7. [Policy Iteration](#7-policy-iteration)
+8. [REINFORCE](#8-reinforce)
+9. [Actor Critic](#9-actor-critic)
+10. [A2C](#10-a2c)
+11. [PPO](#11-ppo)
+12. [SAC](#12-sac)
 
 ## 0. Basic information
 - Return
@@ -101,35 +102,48 @@ Q(s_t, a_t) &\triangleq \int_{s_{t+1}:a_\infty}G_t P(s_{t+1},a_{t+1},s_{t+2}\dot
 &= \mathrm{argmax} \int_{a_t}Q^*(s_t,a_t) P(a_t \mid s_t)da_t
 \end{align*}$$ -->
 
-## 3. Concept of Value based RL
+## 3. Value Iteration
+- Value Iterarion:
+    - Method to solve MDP as dynamic programming.
+    - The following equation is repeated to find the optimal function.
+        1. Calulate $ Q(s,a) \leftarrow r(s,a)+\gamma \mathbb{E}[V(s')] $
+        2. Update $ V(s) \leftarrow \max_a Q(s,a) $
+- Proof convergence of value iteration:
+    - Use Bellman operatior $BV=\max_a [r_a + \gamma \mathcal{T}_a V]$
+    - Bellman operatior $B$ is contraction w.r.t $\infty$-norm (max norm)
+        - which mean $\lVert BV - B\bar{V} \rVert _{\infty} \le \gamma \lVert V - \bar{V} \rVert _{\infty}$
+    - If $\hat{V} = V^*$, then $\lVert BV - V^* \rVert _{\infty} \le \gamma \lVert V - V^* \rVert _{\infty}$
+    - $V$ converge to $V^*$
+
 - Suppose policy as Dirac delta function
+    - The policy is not used directly, but is included in the value function, etc.
     - $P^* (a_t \mid s_t) = \delta (a_t - a_t^*)$
 - Then how can we get $Q^*$?
-- Monte Carlo (MC)
-    - Update every episode.
-    - Unbiased, higher variance.
-<div align="center">
+    1. Monte Carlo (MC)
+        - Update every episode.
+        - Unbiased, higher variance.
+    <div align="center">
     <img src="./algorithm_figures/3_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
-</div>
-<!-- $$\begin{align*}
-Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^NG_t^{(i)}
-\end{align*}$$ -->
+    </div>
+    <!-- $$\begin{align*}
+    Q(s_t, a_t) \approx \frac{1}{N} \sum_{i=1}^NG_t^{(i)}
+    \end{align*}$$ -->
 
-- Temporal Difference (TD)
-    - learning rate $=\alpha$
-    - TD Error $= R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}$
-    - TD Target $= R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N)$
-    - Update every step.
-    - Biased, lower variance.
-<div align="center">
+    2. Temporal Difference (TD)
+        - learning rate $=\alpha$
+        - TD Error $= R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}$
+        - TD Target $= R_t^N+\gamma Q(s_{t+1}^N, a_{t+1}^N)$
+        - Update every step.
+        - Biased, lower variance.
+    <div align="center">
     <img src="./algorithm_figures/3_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
-</div>
-<!-- $$\begin{align*}
-Q(s_t, a_t) &\approx \frac{1}{N} \sum_{i=1}^N (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \triangleq \bar{Q}_{N} \\
-&= \frac{1}{N} ((N-1) \bar{Q}_{N-1} + R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \\
-&= \bar{Q}_{N-1} + \frac{1}{N} (R_t^N+ \gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}) \\
-\therefore \bar{Q}_{N} &= (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \\
-\end{align*}$$ -->
+    </div>
+    <!-- $$\begin{align*}
+    Q(s_t, a_t) &\approx \frac{1}{N} \sum_{i=1}^N (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \triangleq \bar{Q}_{N} \\
+    &= \frac{1}{N} ((N-1) \bar{Q}_{N-1} + R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \\
+    &= \bar{Q}_{N-1} + \frac{1}{N} (R_t^N+ \gamma Q(s_{t+1}^N, a_{t+1}^N) - \bar{Q}_{N-1}) \\
+    \therefore \bar{Q}_{N} &= (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma Q(s_{t+1}^N, a_{t+1}^N)) \\
+    \end{align*}$$ -->
 
 ## 4. Q-Learning
 - Target: $P(a_{t+1} \mid s_{t+1}) = \delta(a_{t+1} - a_{t+1}^*) $
@@ -156,16 +170,51 @@ Q^*(s, a) &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q^*(s', a') \
 \bar{Q}_{N} \leftarrow (1- \alpha ) \bar{Q}_{N-1} + \alpha (R_t^N + \gamma \max _{a_{t+1}} Q(s_{t+1}^N, a_{t+1}^N) \big )
 \end{align*}$$ -->
 
-## 5. DQN
+## 5. Fitted Value Iteration
+- Learn value function by using neural network
+- The following equation is repeated to find the optimal function.
+    1. Calulate $ y_i \leftarrow \max_{a_i} (r(s_i,a_i)+\gamma \mathbb{E}[V_\theta(s_i')]) $
+    2. Update $ \theta \leftarrow \argmin_\theta \frac{1}{2}\sum_i \lVert V_\theta (s_i) - y_i \rVert ^2$
+- Proof convergence of value iteration:
+    - $y_i = V'(s_i) = (BV)(s_i)$
+    - $ V' \leftarrow \argmin_{V' \in \Omega} \frac{1}{2} \lVert V' (s) - y_i \rVert ^2 = \argmin_{V' \in \Omega} \frac{1}{2} \lVert V' (s) - (BV)(s_i) \rVert ^2$
+    - $\Omega$ means the value function space of neaural network. And can be expressed as follows.
+        - $\Pi V = \argmin_{V' \in \Omega} \frac{1}{2} \lVert V' (s) - V \rVert ^2 $
+    - $V \leftarrow \Pi B V$
+    - Operatior $\Pi$ is contraction w.r.t 2-norm (Euclidian norm)
+        - which mean $\lVert \Pi V - \Pi \bar{V} \rVert ^2 \le \lVert V - \bar{V} \rVert ^2$
+    - $\Pi$ and $ B$ are both contraction.
+    - However, $\Pi B$ is Not contraction.
+    - This means that fitted value iteration may not converge.
+
+
+## 6. DQN
 - The Q value reflects more states through regression (Neural Network).
 - The number of outputs generated is the number of possible combinations of actions.
 - Features:
     1. Using neural network (Q-Network) (CNN to act like humans)
     2. Use Experience replay.
-        - Use mini batch
-        - If you learn using states that are too similar, regression problems may occur. Therefore, random selection and learning are performed by combining past data.
+        - Problem:
+            - The states obtained during learning are sequential and highly correlated.
+            - Therefore, similar information cannot be obtained continuously.
+            - This violates the iid(Identically Distributed) assumption and interferes with learning.
+        - Solution:
+            - Save the state at replay buffer
+            - Randomly select the state at buffer and learning as mini batch
+        - Effect:
+            - Solve correlated sample problem
+            - Thanks to batch, can get low variance gradient while learning 
     3. Seperate target, main network
-        - During regression, prevent the target network from ossilating.
+        - Problem:
+            - Although the y value changes as learning progresses, learning is done with the goal of finding a Q value(target network) that fits y.
+            - This causes a __convergence, stability problem__ because it tries to converge on the continuously changing y value.
+            - So we need to prevent the target network from ossilating, during regression.
+        - Solution:
+            - Fix the target network parameters used for the target value for a certain learning period.
+- Additional technic not in classic DQN:
+    - After n steps, the updated $\theta'$ may have lagging(differences) from the previous $\theta$.
+    - To solve this, Polyak averaging, etc. can be used (normally $\tau$=0.99).
+    - $\theta' \leftarrow \tau \theta' + (1 - \tau)\theta$
 - Action State Value $Q$ is same as Q-Learing:
 - Loss function $L_i(\theta _i)$ of Q-Network:
 <div align="center">
@@ -177,7 +226,9 @@ y_i &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q(s', a' ; \theta _
 {\triangledown}_{\theta _i} L_i(\theta _i) &= \mathbb{E}_{s,a \sim p(\cdot) ; s' \sim \epsilon} [(r + \gamma \max _{a'} Q(s', a' ; \theta _{i-1})-Q(s,a;\theta_i)){\triangledown}_{\theta _i} Q(s , a ; \theta_i )] \\
 \end{align*}$$ -->
 
-## 6. Concept of Policy based RL
+## 7. Policy Iteration
+-Policy Iteration
+    - Method to solve MDP as dynamic programming.
 - Get policy as PDF
     - $P^* (a_t \mid s_t) = PDF$
 - Strengths in continuous action.
@@ -249,7 +300,7 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
 - when $t \rightarrow \infty , {\gamma ^t G_t} \approx {G_t}$
     - __Biased__ cause by this approximation
 
-## 7. REINFORCE
+## 8. REINFORCE
 - Policy gradient $\triangledown_\theta J_\theta$. Suppose N as 1
 <div align="center">
   <img src="./algorithm_figures/7_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
@@ -279,7 +330,7 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
 - Markov property is not used.
     - Can be used for partially observed MDP without modification.
 
-## 8. Actor Critic
+## 9. Actor Critic
 - Use both value based method(Critic) and policy based method(Actor)
 - Update every step like TD in value based method
 - Biased, low variance
@@ -320,7 +371,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 &\leftarrow w + \beta (R_t + \gamma Q_w(s_{t+1}, a_{t+1})-Q_w(s_t,a_t)){\triangledown}_{w_i} Q_w(s_t , a_t )\\
 \end{align*}$$ -->
 
-## 9. A2C
+## 10. A2C
 - Lower sample variance by using advantage $A=Q(s_t,a_t) - V(s_t)$
 - Biased, low variance
     - Biased caused by approximation of $t \rightarrow \infty , {\gamma ^t G_t} \approx {G_t}$ in index 6
@@ -387,7 +438,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 &\leftarrow w + \beta \sum_{i=t-N+1}^{t} (R_i + \gamma V_w(s_{i+1})-V_w(s_i)){\triangledown}_{w} V_w(s_t)\\
 \end{align*}$$ -->
 
-## 10. PPO
+## 11. PPO
 - Proximal Policy Optimization.
 - Update every N steps as batch and reuse them as epoch
 - Features:
@@ -494,6 +545,6 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     &\leftarrow w + \beta {\triangledown}_{w} \sum_{i=t-N+1}^{t} (R_i + \gamma V_w(s_{i+1})-V_w(s_i))^2\\
     \end{align*}$$ -->
 
-## 11. SAC
+## 12. SAC
 
 ## 0. etc
