@@ -134,6 +134,7 @@ Q(s_t, a_t) &\approx \frac{1}{N} \sum_{i=1}^N (R_t^N + \gamma Q(s_{t+1}^N, a_{t+
 ## 4. Q-Learning
 - Target: $P(a_{t+1} \mid s_{t+1}) = \delta(a_{t+1} - a_{t+1}^*) $
 - Behavior: $\epsilon$-greedy
+    - You can also use Bolzmann exploration
 <div align="center">
     <img src="./algorithm_figures/4_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
