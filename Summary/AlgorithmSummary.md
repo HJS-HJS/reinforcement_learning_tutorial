@@ -240,6 +240,7 @@ y_i &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q(s', a' ; \theta _
 
 ## 7. Policy Gradient
 - Policy Gradient:
+    - __Soft__ update the policy via gradient (Soft version of policy iteration)
     - The following equation is repeated to find the optimal function.
         <div align="center">
         <img src="./algorithm_figures/7_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
@@ -568,6 +569,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 
 ## 12. Policy Iteration
 - Policy Iteration
+    - __Hard__ update the policy via argmax (Hard version of policy gradient)
     - A method of skip policy gradient and learning only the value function.
     - The following equation is repeated to find the optimal function.
     - Use argmax policy of A
