@@ -174,12 +174,12 @@ Q^*(s, a) &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q^*(s', a') \
 - Learn value function by using neural network
 - The following equation is repeated to find the optimal function.
     1. Calulate $y_i \leftarrow \max_{a_i} (r(s_i,a_i)+\gamma \mathbb{E}[V_\theta(s_i')])$
-    2. Update $\theta \leftarrow {\mathrm{argmax}}_{\theta} \frac{1}{2} \sum _i \lVert V_\theta (s_i) - y_i \rVert ^2$
+    2. Update $\theta \leftarrow {\mathrm{argmin}}_{\theta} \frac{1}{2} \sum _i \lVert V_{\theta} (s_i) - y_i \rVert ^2$
 - Proof convergence of value iteration:
     - $y_i = V'(s_i) = (BV)(s_i)$
-    - $V' \leftarrow \mathrm{argmax} _{V' \in \Omega} \frac{1}{2} \lVert V' (s) - y_i \rVert ^2 = \mathrm{argmax} _{V' \in \Omega} \frac{1}{2} \lVert V'(s) - (BV)(s_i) \rVert ^2$
+    - $V' \leftarrow \mathrm{argmin} _{V' \in \Omega} \frac{1}{2} \lVert V' (s) - y_i \rVert ^2 = \mathrm{argmin} _{V' \in \Omega} \frac{1}{2} \lVert V'(s) - (BV)(s_i) \rVert ^2$
     - $\Omega$ means the value function space of neaural network. And can be expressed as follows.
-        - $\Pi V = {\mathrm{argmax}}_{V' \in \Omega} \frac{1}{2} \lVert V' (s) - V \rVert ^2$
+        - $\Pi V = {\mathrm{argmin}}_{V' \in \Omega} \frac{1}{2} \lVert V' (s) - V \rVert ^2$
     - $V \leftarrow \Pi B V$
     - Operatior $\Pi$ is contraction w.r.t 2-norm (Euclidian norm)
         - which mean $\lVert \Pi V - \Pi \bar{V} \rVert ^2 \le \lVert V - \bar{V} \rVert ^2$
