@@ -566,9 +566,26 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     &\leftarrow w + \beta {\triangledown}_{w} \sum_{i=t-N+1}^{t} (R_i + \gamma V_w(s_{i+1})-V_w(s_i))^2\\
     \end{align*}$$ -->
 
-## 12. Policy Iteratiob
--Policy Iteration
-    - Method to solve MDP as dynamic programming.
+## 12. Policy Iteration
+- Policy Iteration
+    - A method of skip policy gradient and learning only the value function.
+    - The following equation is repeated to find the optimal function.
+    - Use argmax policy of A
+<div align="center">
+<img src="./algorithm_figures/12_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!-- $$\begin{align*}
+&\pi'(a_t \mid s_t) &= 
+\begin{cases}
+1 & if \ a_t=\mathrm{argmax}_{a_t}A^\pi(s_t,a_t) \\
+1 & otherwise
+\end{cases}
+\\
+\\
+&\mathrm{1. \ Evaluate} &A(s_i,a_i)\\
+&\mathrm{2. \ Set} &\pi \leftarrow \pi'
+\end{align*}$$ -->
+
 ## 13. SAC
 
 ## 0. etc
