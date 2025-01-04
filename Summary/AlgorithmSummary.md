@@ -111,8 +111,8 @@ Q(s_t, a_t) &\triangleq \int_{s_{t+1}:a_\infty}G_t P(s_{t+1},a_{t+1},s_{t+2}\dot
         <img src="./algorithm_figures/3_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
         </div>
         <!-- $$\begin{align*}
-        \mathrm{1. \ Calulate} \quad Q(s,a) &\leftarrow r(s,a) + \gamma \mathbb{E} [V(s')] \\
-        \mathrm{2. \ Update} \quad V(s) &\leftarrow \max_a Q(s,a)
+        &\mathrm{1. \ Calulate} \quad &Q(s,a) &\leftarrow r(s,a) + \gamma \mathbb{E} [V(s')] \\
+        &\mathrm{2. \ Update} \quad &V(s) &\leftarrow \max_a Q(s,a)
         \end{align*}$$ -->
 - Proof convergence of value iteration:
     - Use Bellman operatior $BV=\max_a [r_a + \gamma \mathcal{T}_a V]$
@@ -183,8 +183,8 @@ Q^*(s, a) &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q^*(s', a') \
     <img src="./algorithm_figures/5_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
     <!-- $$\begin{align*}
-    \mathrm{1. \ Calulate} \quad y_i \leftarrow \max_{a_i} (r(s_i,a_i)+\gamma \mathbb{E}[V_\theta(s_i')]) \\
-    \mathrm{2. \ Update} \quad \theta \leftarrow {\mathrm{argmin}}_{\theta} \frac{1}{2} \sum _i \lVert V_{\theta} (s_i) - y_i \rVert ^2 \\
+    &\mathrm{1. \ Calulate} \quad &y_i &\leftarrow \max_{a_i} (r(s_i,a_i)+\gamma \mathbb{E}[V_\theta(s_i')]) \\
+    &\mathrm{2. \ Update} \quad &\theta &\leftarrow {\mathrm{argmin}}_{\theta} \frac{1}{2} \sum _i \lVert V_{\theta} (s_i) - y_i \rVert ^2 \\
     \end{align*}$$ -->
 
 - Proof convergence of value iteration:
@@ -239,6 +239,17 @@ y_i &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q(s', a' ; \theta _
 \end{align*}$$ -->
 
 ## 7. Policy Gradient
+- Policy Gradient:
+    - The following equation is repeated to find the optimal function.
+        <div align="center">
+        <img src="./algorithm_figures/7_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+        <!-- $$\begin{align*}
+        &\mathrm{0. \ Evaluate \ (exmaple)} \quad &A(s_i,a_i) &= r(s_i, a_i) + V(s'_i) - V(s_i)\\
+        &\mathrm{1. \ Calulate \ Objective} &{\triangledown}_{\theta}J &\approx \sum_i {\triangledown}_{\theta} \log{P_\theta(a_i \mid s_i)} Q(s_i, a_i) \\
+        &\mathrm{2. \ Update} \quad &\theta &\leftarrow \theta + \alpha {\triangledown}_{\theta}J(\theta)
+        \end{align*}$$ -->
+
 - Get policy as PDF
     - $P^* (a_t \mid s_t) = PDF$
 - Strengths in continuous action.
@@ -247,7 +258,7 @@ y_i &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q(s', a' ; \theta _
     - Purpose of object function is maximize expected return G
     - Trajectory: $\tau = {s_0, a_0, s_1, \dots}$
 <div align="center">
-  <img src="./algorithm_figures/7_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+  <img src="./algorithm_figures/7_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 J &\triangleq \mathbb{E}[G_0] \\
@@ -257,7 +268,7 @@ J_\theta&=\int_\tau G_0 \ P_\theta(\tau) \ d\tau \\
 
 - Possibility can devided into transision and policy
 <div align="center">
-  <img src="./algorithm_figures/7_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+  <img src="./algorithm_figures/7_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 {P_\theta(\tau)} &= {P_\theta(s_0, a_0, s_1, \dots)} \\
@@ -271,7 +282,7 @@ J_\theta&=\int_\tau G_0 \ P_\theta(\tau) \ d\tau \\
 
 - When i > k,
 <div align="center">
-  <img src="./algorithm_figures/7_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+  <img src="./algorithm_figures/7_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
@@ -286,14 +297,14 @@ P_\theta(\tau) &= P_\theta(a_i \mid \tau_{-a_i})P(\tau_{-a_i}) \\
 
 - use policy gradient $\triangledown_\theta J_\theta$ to update network
 <div align="center">
-  <img src="./algorithm_figures/7_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+  <img src="./algorithm_figures/7_5.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 \theta \leftarrow \theta + \alpha{\triangledown}_{\theta} J_\theta
 \end{align*}$$ -->
 
 <div align="center">
-  <img src="./algorithm_figures/7_5.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+  <img src="./algorithm_figures/7_6.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
 <!-- $$\begin{align*}
 {\triangledown}_{\theta} J_\theta &\triangleq \frac{\partial J_\theta}{\partial \theta} \\
