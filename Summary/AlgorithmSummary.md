@@ -112,7 +112,7 @@ Q(s_t, a_t) &\triangleq \int_{s_{t+1}:a_\infty}G_t P(s_{t+1},a_{t+1},s_{t+2}\dot
     - Use Bellman operatior $BV=\max_a [r_a + \gamma \mathcal{T}_a V]$
     - Bellman operatior $B$ is contraction w.r.t $\infty$-norm (max norm)
         - which mean $\lVert BV - B\bar{V} \rVert _{\infty} \le \gamma \lVert V - \bar{V} \rVert _{\infty}$
-    - If $\hat{V} = V^{*}$, then $\lVert BV - V^{*} \rVert _{\infty} \le \gamma \lVert V - V^{*} \rVert _{\infty}$
+    - If $\hat{V} = V^{\ast}$, then $\lVert BV - V^{\ast} \rVert _{\infty} \le \gamma \lVert V - V^{\ast} \rVert _{\infty}$
     - $V$ converge to $V^*$
 
 - Suppose policy as Dirac delta function
