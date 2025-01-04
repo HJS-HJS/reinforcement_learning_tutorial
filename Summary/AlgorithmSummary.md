@@ -106,13 +106,13 @@ Q(s_t, a_t) &\triangleq \int_{s_{t+1}:a_\infty}G_t P(s_{t+1},a_{t+1},s_{t+2}\dot
 - Value Iterarion:
     - Method to solve MDP as dynamic programming.
     - The following equation is repeated to find the optimal function.
-        1. Calulate $ Q(s,a) \leftarrow r(s,a)+\gamma \mathbb{E}[V(s')] $
-        2. Update $ V(s) \leftarrow \max_a Q(s,a) $
+        1. Calulate $Q(s,a) \leftarrow r(s,a) + \gamma \mathbb{E} [V(s')]$
+        2. Update $V(s) \leftarrow \max_a Q(s,a)$
 - Proof convergence of value iteration:
     - Use Bellman operatior $BV=\max_a [r_a + \gamma \mathcal{T}_a V]$
     - Bellman operatior $B$ is contraction w.r.t $\infty$-norm (max norm)
         - which mean $\lVert BV - B\bar{V} \rVert _{\infty} \le \gamma \lVert V - \bar{V} \rVert _{\infty}$
-    - If $\hat{V} = V^*$, then $\lVert BV - V^* \rVert _{\infty} \le \gamma \lVert V - V^* \rVert _{\infty}$
+    - If $\hat{V} = V^{*}$, then $\lVert BV - V^{*} \rVert _{\infty} \le \gamma \lVert V - V^{*} \rVert _{\infty}$
     - $V$ converge to $V^*$
 
 - Suppose policy as Dirac delta function
@@ -173,8 +173,8 @@ Q^*(s, a) &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q^*(s', a') \
 ## 5. Fitted Value Iteration
 - Learn value function by using neural network
 - The following equation is repeated to find the optimal function.
-    1. Calulate $ y_i \leftarrow \max_{a_i} (r(s_i,a_i)+\gamma \mathbb{E}[V_\theta(s_i')]) $
-    2. Update $ \theta \leftarrow \argmin_\theta \frac{1}{2}\sum_i \lVert V_\theta (s_i) - y_i \rVert ^2$
+    1. Calulate $y_i \leftarrow \max_{a_i} (r(s_i,a_i)+\gamma \mathbb{E}[V_\theta(s_i')])$
+    2. Update $\theta \leftarrow \argmin_\theta \frac{1}{2}\sum_i \lVert V_\theta (s_i) - y_i \rVert ^2$
 - Proof convergence of value iteration:
     - $y_i = V'(s_i) = (BV)(s_i)$
     - $ V' \leftarrow \argmin_{V' \in \Omega} \frac{1}{2} \lVert V' (s) - y_i \rVert ^2 = \argmin_{V' \in \Omega} \frac{1}{2} \lVert V' (s) - (BV)(s_i) \rVert ^2$
