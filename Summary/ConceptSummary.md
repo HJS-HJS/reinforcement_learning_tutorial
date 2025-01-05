@@ -10,6 +10,7 @@
 7. [Importance Sampling](#7-importance-sampling)
 8. [Policy Gradient and Policy Iteration](#8-policy-gradient-and-policy-iteration)
 9. [Entropy](#9-entropy)
+10. [Maximum Entropy](#10-maximum-entropy)
 
 ## 1. Reason Why Failed the Export
 - Causal confusion
@@ -202,4 +203,54 @@ H(P(\tau)) &= - \sum_{x \in \tau}P(x) \log{P(x)} \quad &\mathrm{Discrete \ Proba
 &= - \int_{-\infty}^{\infty} P(x) \log{P(x)}dx \quad &\mathrm{Continous \ Probability \ Distribution} \\
 &= - \mathbb{E}_{\tau \sim P(\tau)}[\log{P(\tau)}] \\
 \frac{dH(P(\tau))}{dP(\tau)} &= -\log{P(\tau)} -1
+\end{align*}$$ -->
+
+## 10. Maximum Entropy
+- Encourage the agent to try a variety of actions, increasing the chances of discovering a better strategy.
+- Why use it?
+    1. Encourage exploration
+    2. Diversity in the early stages of learning
+    3. Avoid local optimum
+    4. Balanced learning, create stable policy.
+
+- Maximizing the entropy of the policy probability distribution distributes probabilities evenly across different actions.
+- When probability distributions are evenly distributed, by trying different actions in different states, the agent gains richer information about the environment, allowing it to make better decisions.
+- Therefore, the objective function is created in a way that maximizes entropy.
+- Original objective function:
+<div align="center">
+<img src="./concept_figures/10_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!-- $$\begin{align*}
+J(\pi) &= \mathbb{E}_{r \sim \pi} [\sum_{t = 0}^{\infty}\gamma^t r(s_t, a_t)] \\
+\end{align*}$$ -->
+- With maximum entropy:
+<div align="center">
+<img src="./concept_figures/10_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!-- $$\begin{align*}
+% maximize \ &\mathbb{E}_{r \sim \pi} [\sum_{t = 0}^{\infty}\gamma^t r(s_t, a_t)]  \\
+% maximize \ &H(P(\tau))  \\
+% constraint \ & \int P(\tau) d\tau = 1 \\
+% J(\pi) &= \mathbb{E}_{r \sim \pi} [\sum_{t = 0}^{\infty}\gamma^t r(s_t, a_t)] + \alpha H(P(\tau))\\
+% &= \mathbb{E}_{r \sim \pi} [R(\tau)] + \alpha H(P(\tau))\\
+% &= \int P(\tau)R(\tau)d\tau - \alpha \int P(\tau) \log{P(\tau)} d\tau\\
+% &= \int P(\tau)(R(\tau) - \alpha \log{P(\tau)}) d\tau\\
+% &= \mathbb{E}_{r \sim \pi} [R(\tau) - \alpha \log{P(\tau)}]\\
+% &= \mathbb{E}_{r \sim \pi} [R(\tau) - \alpha \mathbb{E}_{r \sim \pi}[\log{P(\tau)}]]\\
+% &= \mathbb{E}_{r \sim \pi} [R(\tau) + \alpha H(P(\tau))]\\
+% \end{align*}$$ -->
+
+- Control the search by adjusting the $\alpha$ value.
+
+- Addition:
+<div align="center">
+<img src="./concept_figures/10_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!-- $$\begin{align*}
+J(\pi) &= \mathbb{E}_{r \sim \pi} [R(\tau)] + \alpha H(P(\tau))\\
+L(\pi) &= J(\pi) + \lambda (\int P(\tau) d\tau - 1) \\
+\frac{dL(\pi)}{d\pi} &= \frac{d\mathbb{E}_{r \sim \pi} [R(\tau)]}{d\pi} -\alpha(\log{P(\tau)} - 1) + \lambda = 0 \\
+\log{(P(\tau))} &= \frac{1}{\alpha} \frac{d\mathbb{E}_{r \sim \pi} [R(\tau)]}{d\pi} - \frac{\lambda + \alpha}{\alpha} \\
+P(\tau) &\propto \exp{(\frac{1}{\alpha} \frac{d\mathbb{E}_{r \sim \pi} [R(\tau)]}{d\pi})} \\
+&= \exp{(\frac{1}{\alpha} \sum_{t = 0}^{\infty}\gamma^t r(s_t, a_t))} \\
 \end{align*}$$ -->
