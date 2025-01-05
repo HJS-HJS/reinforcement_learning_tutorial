@@ -1,9 +1,12 @@
 # reinforcement_learning_tutorial
 <img alt="Python" src ="https://img.shields.io/badge/Python-3776AB.svg?&style=for-the-badge&logo=Python&logoColor=white"/>
+<img alt="Gymnasium" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium/main/gymnasium-text.png" width="100px" />
 
 - A repository for studing reinforcement learning.
-- Discontinous output tutorial: [Cartpole Tutorial](#3-cartpole-tutorial)
-- Continous output tutorial: [Atari Tutorial](#4-atari-tutorial)
+- All algorithm descriptions are available at the following [link](./Summary/AlgorithmSummary.md).
+- All concept descriptions are available at the following [link](./Summary/ConceptSummary.md).
+- Discontinous output tutorial: [Cartpole Tutorial](#3-cartpole-tutorial).
+- Continous output tutorial: [Atari Tutorial](#4-atari-tutorial).
 
 # Table of Contents
 
