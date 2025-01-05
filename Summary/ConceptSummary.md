@@ -8,6 +8,8 @@
 5. [Things to consider when choosing an algorithm](#5-things-to-consider-when-choosing-an-algorithm)
 6. [Baselines in policy gradient](#6-baselines-in-policy-gradient)
 7. [Importance Sampling](#7-importance-sampling)
+8. [Policy Gradient and Policy Iteration](#8-policy-gradient-and-policy-iteration)
+9. [Entropy](#9-entropy)
 
 ## 1. Reason Why Failed the Export
 - Causal confusion
@@ -126,3 +128,65 @@ b&=\frac{\mathbb{E}_{\tau \sim p_\theta(\tau)}[g(\tau)^2G_0]}{\mathbb{E}_{\tau \
 &\approx \frac{1}{N}\sum_{i=1}^N\sum_{t=1}^T \frac{ P_\theta(a_t \mid s_t)}{ \bar{P}(a_t \mid s_t)} \ G_0 \ {\triangledown}_{\theta} \ \ln{P_\theta(a_{i,t} \mid s_{i,t})}
 \end{align*}$$ -->
 
+## 8. Policy Gradient and Policy Iteration
+- Policy gradient is __Soft__ version of policy iteration. 
+    - Soft = The policy is stochastic rather than deterministic.
+    - If advantage estimator is nor perfect, soft policy  change is reasonable.
+<div align="center">
+<img src="./algorithm_figures/7_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!-- $$\begin{align*}
+&\mathrm{0. \ Evaluate \ (exmaple)} \quad &A(s_i,a_i) &= r(s_i, a_i) + V(s'_i) - V(s_i)\\
+&\mathrm{1. \ Calulate \ Objective} &{\triangledown}_{\theta}J &\approx \sum_i {\triangledown}_{\theta} \log{P_\theta(a_i \mid s_i)} Q(s_i, a_i) \\
+&\mathrm{2. \ Update} \quad &\theta &\leftarrow \theta + \alpha {\triangledown}_{\theta}J(\theta)
+\end{align*}$$ -->
+
+- Policy iteration is __Hard__ version of policy gradient.
+    - Hard = The policy is deterministic rather than stochastic.
+    - Calculate the advantage from previous policy and update policy
+<div align="center">
+<img src="./algorithm_figures/12_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!-- $$\begin{align*}
+&\pi'(a_t \mid s_t) &= 
+\begin{cases}
+1 & if \ a_t=\mathrm{argmax}_{a_t}A^\pi(s_t,a_t) \\
+1 & otherwise
+\end{cases}
+\\
+\\
+&\mathrm{1. \ Evaluate} &A(s_i,a_i)\\
+&\mathrm{2. \ Set} &\pi \leftarrow \pi'
+\end{align*}$$ -->
+
+- If we express policy gradient as policy iteration, it is as follows.
+<div align="center">
+<img src="./concept_figures/8_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!-- $$\begin{align*}
+J(\theta') - J(\theta)  &= J(\theta') - \mathbb{E}_{s_0 \sim p(s_0)}[V^{\pi_\theta}(s_0)]\\
+&= J(\theta') - \mathbb{E}_{\tau \sim p_{\theta'}(\tau)}[V^{\pi_\theta}(s_0)]\\
+&= J(\theta') - \mathbb{E}_{\tau \sim p_{\theta'}(\tau)}\biggl[ \sum_{t=0}^{\infty} \gamma^t V^{\pi_\theta}(s_t) - \sum_{t=1}^{\infty} \gamma^t V^{\pi_\theta}(s_t) \biggr]\\
+&= J(\theta') + \mathbb{E}_{\tau \sim p_{\theta'}(\tau)}\biggl[ \sum_{t=0}^{\infty} \gamma^t (\gamma V^{\pi_\theta}(s_{t+1}) - V^{\pi_\theta}(s_t)) \biggr]\\
+&= \mathbb{E}_{\tau \sim p_{\theta'}(\tau)}\biggl[ \sum_{t=0}^{\infty} \gamma^t r(s_t, a_t) \biggr] + \mathbb{E}_{\tau \sim p_{\theta'}(\tau)}\biggl[ \sum_{t=0}^{\infty} \gamma^t (\gamma V^{\pi_\theta}(s_{t+1}) - V^{\pi_\theta}(s_t)) \biggr]\\
+&= \mathbb{E}_{\tau \sim p_{\theta'}(\tau)}\biggl[ \sum_{t=0}^{\infty} \gamma^t (r(s_t, a_t) + \gamma V^{\pi_\theta}(s_{t+1}) - V^{\pi_\theta}(s_t)) \biggr]\\
+&= \mathbb{E}_{\tau \sim p_{\theta'}(\tau)}\biggl[ \sum_t \gamma^t A^{\pi_\theta}(s_t, a_t) \biggr] \\
+J(\theta') - J(\theta)  &= \mathbb{E}_{\tau \sim p_{\theta'}(\tau)}\biggl[ \sum_t \gamma^t A^{\pi_\theta}(s_t, a_t) \biggr] \\
+\end{align*}$$ -->
+
+- This means that the improvement of $J(\theta') - J(\theta)$ is same as the advantage from previous policy under trajectory distribution from new policy.
+- Use importance sampling to delete $\theta'$ for maximize $J(\theta')$
+<div align="center">
+<img src="./concept_figures/8_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!-- $$\begin{align*}
+\mathbb{E}_{\tau \sim p_{\theta'}(\tau)}\biggl[ \sum_t \gamma^t A^{\pi_\theta}(s_t, a_t) \biggr]
+&= \sum_t \mathbb{E}_{s_t \sim p_{\theta'}(s_t)}\biggl[ \mathbb{E}_{a_t \sim p_{\theta'}(a_t \mid s_t)} [ \gamma^t A^{\pi_\theta}(s_t, a_t)]\biggr] \\
+&= \sum_t \mathbb{E}_{s_t \sim p_{\theta'}(s_t)}\biggl[ \mathbb{E}_{a_t \sim p_{\theta'}(a_t \mid s_t)} [ \frac{p_{\theta'}(a_t \mid s_t)}{p_{\theta}(a_t \mid s_t)} \gamma^t A^{\pi_\theta}(s_t, a_t)]\biggr] \\
+&\approx \sum_t \mathbb{E}_{s_t \sim p_{\theta}(s_t)}\biggl[ \mathbb{E}_{a_t \sim p_{\theta'}(a_t \mid s_t)} [ \frac{p_{\theta'}(a_t \mid s_t)}{p_{\theta}(a_t \mid s_t)} \gamma^t A^{\pi_\theta}(s_t, a_t)]\biggr]
+\end{align*}$$ -->
+
+- To satisfy the assumption, $p_{\theta}(s_t), p_{\theta'}(s_t)$ should similar.
+    - Use TV Divergence, KL Divergence, Clipping, ...
+
+## 9. Entropy
