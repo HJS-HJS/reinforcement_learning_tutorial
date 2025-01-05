@@ -190,3 +190,16 @@ J(\theta') - J(\theta)  &= \mathbb{E}_{\tau \sim p_{\theta'}(\tau)}\biggl[ \sum_
     - Use TV Divergence, KL Divergence, Clipping, ...
 
 ## 9. Entropy
+- A quantification of the uncertainty of an event that can occur within a certain probability distribution.
+- The higher the entropy, the more unpredictable the distribution is; the lower it is, the easier it is to predict.
+- Uncertainty is greatest when the likelihood of an event occurring is __evenly distributed__.
+- Entropy H is defined as follows for the probability p(x) of occurrence of each event x in a probability distribution P
+<div align="center">
+<img src="./concept_figures/9_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!-- $$\begin{align*}
+H(P(\tau)) &= - \sum_{x \in \tau}P(x) \log{P(x)} \quad &\mathrm{Discrete \ Probability \ Distribution}\\
+&= - \int_{-\infty}^{\infty} P(x) \log{P(x)}dx \quad &\mathrm{Continous \ Probability \ Distribution} \\
+&= - \mathbb{E}_{\tau \sim P(\tau)}[\log{P(\tau)}] \\
+\frac{dH(P(\tau))}{dP(\tau)} &= -\log{P(\tau)} -1
+\end{align*}$$ -->
