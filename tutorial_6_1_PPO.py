@@ -2,13 +2,14 @@
 PPO (Proximal Policy Optimization)
 '''
 
+import os
 import numpy as np
 import torch
 import torch.nn as nn
 from torch.distributions import Categorical
 from utils.cartpole      import BasicCartpole
 from utils.policy_model  import Network
-from utils.utils         import live_plot, show_result
+from utils.utils         import live_plot, show_result, save_model, load_model
 from collections import namedtuple
 
 sim = BasicCartpole(None)
@@ -32,6 +33,7 @@ class CriticNetwork(Network):
         self.layer.add_module("linear", nn.Linear(128, 1))
 
 ## Parameters
+TRAIN       = True
 # Policy Parameters
 N_INPUTS    = sim.env.observation_space.shape[0] # 4
 N_OUTPUT    = sim.env.action_space.n             # 2
@@ -47,6 +49,9 @@ CLIP_EPSILON = 0.05
 # Other
 visulaize_step = 25
 MAX_STEP = 1000         # maximun available step per episode
+current_file_path = os.path.abspath(__file__)
+current_directory = os.path.dirname(current_file_path)
+SAVE_DIR = current_directory + "/model/tutorial_6_1_PPO"
 
 # Memory
 memory = []
@@ -109,14 +114,73 @@ def optimize_model(batch):
 
 total_steps = []
 step_done_set = []
-for episode in range(1, EPISODES + 1):
+if TRAIN:
+    for episode in range(1, EPISODES + 1):
+
+        # 0. Reset environment
+        step_done = 0
+        state_curr, _ = sim.env.reset()
+        state_curr = torch.tensor(state_curr, dtype=torch.float32, device=device)
+
+        # Running one episode
+        for step in range(MAX_STEP):
+            # 1. Get action from policy network
+            prob = actor_net(state_curr)
+            action = Categorical(prob).sample()
+
+            # 2. Run simulation 1 step (Execute action and observe reward)
+            state_next, reward, done, _, _ = sim.env.step(action.item())
+
+            # 3. Update state
+            state_next = torch.tensor(state_next, dtype=torch.float32, device=device)
+            # print(prob)
+            # 4. Save data
+            memory.append(Transition(
+                state_curr.unsqueeze(0),
+                action.unsqueeze(0),
+                prob[action].unsqueeze(0),
+                state_next.unsqueeze(0),
+                torch.tensor([reward], device=device).unsqueeze(0),
+                torch.tensor([not done], device=device).unsqueeze(0)
+            ))
+
+            # 5. Learning
+            if (len(memory) % BATCH_SIZE == 0) or (done is True):
+                optimize_model(Transition(*zip(*memory)))
+                memory = []
+
+            # 6. Update step of current episode
+            step_done += 1
+
+            # 7. Update state
+            state_curr = state_next
+
+            if done:
+                break
+        ## Episode is finished
+        
+        # Save episode reward
+        step_done_set.append(step_done)
+        # Visualize
+        if episode % visulaize_step == 0:
+            if (len(total_steps) != 0) and (np.mean(step_done_set) >= max(total_steps)):
+                save_model(actor_net, SAVE_DIR, "actor", episode)
+                save_model(critic_net, SAVE_DIR, "critic", episode)
+            total_steps.append(np.mean(step_done_set))
+            print("#{}: ".format(episode), np.mean(step_done_set).astype(int))
+            live_plot(total_steps, visulaize_step)
+            step_done_set = []
+
+else:
+    sim = BasicCartpole()
+    actor_net = load_model(actor_net, SAVE_DIR, "550_actor")
 
     # 0. Reset environment
-    step_done = 0
     state_curr, _ = sim.env.reset()
     state_curr = torch.tensor(state_curr, dtype=torch.float32, device=device)
 
     # Running one episode
+    total_reward = 0.0
     for step in range(MAX_STEP):
         # 1. Get action from policy network
         prob = actor_net(state_curr)
@@ -124,43 +188,7 @@ for episode in range(1, EPISODES + 1):
 
         # 2. Run simulation 1 step (Execute action and observe reward)
         state_next, reward, done, _, _ = sim.env.step(action.item())
-
-        # 3. Update state
-        state_next = torch.tensor(state_next, dtype=torch.float32, device=device)
-        # print(prob)
-        # 4. Save data
-        memory.append(Transition(
-            state_curr.unsqueeze(0),
-            action.unsqueeze(0),
-            prob[action].unsqueeze(0),
-            state_next.unsqueeze(0),
-            torch.tensor([reward], device=device).unsqueeze(0),
-            torch.tensor([not done], device=device).unsqueeze(0)
-        ))
-
-        # 5. Learning
-        if (len(memory) % BATCH_SIZE == 0) or (done is True):
-            optimize_model(Transition(*zip(*memory)))
-            memory = []
-
-        # 6. Update step of current episode
-        step_done += 1
-
-        # 7. Update state
-        state_curr = state_next
-
-        if done:
-            break
-    ## Episode is finished
-    
-    # Save episode reward
-    step_done_set.append(step_done)
-    # Visualize
-    if episode % visulaize_step == 0:
-        total_steps.append(np.mean(step_done_set))
-        print("#{}: ".format(episode), np.mean(step_done_set).astype(int))
-        live_plot(total_steps, visulaize_step)
-        step_done_set = []
+        state_curr = torch.tensor(state_next, dtype=torch.float32, device=device)
 
 # Turn the sim off
 sim.env.close()
