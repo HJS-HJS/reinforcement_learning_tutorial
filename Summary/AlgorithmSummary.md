@@ -610,6 +610,6 @@ Q^\pi(s,a) &= \mathbb{E}_{r \sim \pi} \biggl[ \sum_{t=0}^{\infty} \gamma^t R(s_t
 \end{align*}$$ -->
 
 - Soft Policy Evaluation
-    - if $Q^0 : \mathcal{S} * \mathcal{A} \rightarrow \mathbb{R}$ with $|A| < \infty$, them sequence $Q^k$will converge to the soft Q value of $\pi$ as $k\rightarrow\infty$
+    - if $Q^0 : \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$ with $|A| < \infty$, them sequence $Q^k$ will converge to the soft Q value of $\pi$ as $k\rightarrow\infty$
 
 ## 0. etc
