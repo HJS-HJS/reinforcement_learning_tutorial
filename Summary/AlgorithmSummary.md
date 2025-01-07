@@ -589,5 +589,27 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 \end{align*}$$ -->
 
 ## 13. SAC
+- Soft Bellman equation from [maximum entropy](ConceptSummary.md#10-maximum-entropy)
+<div align="center">
+<img src="./algorithm_figures/13_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!-- $$\begin{align*}
+V^\pi(s) &= \mathbb{E}_{r \sim \pi} \biggl[ \sum_{t=0}^{\infty} \gamma^t (R(s_t,a_t,s_{t+1}) + \alpha H(\pi (\cdot \mid s_t))) \mid s_0 = s \biggr]\\
+&= \mathbb{E}_{a \sim \pi} \biggl[ Q^\pi (s,a) - \alpha \log(\pi(\cdot\mid s_t)) \biggr]\\
+Q^\pi(s,a) &= \mathbb{E}_{r \sim \pi} \biggl[ \sum_{t=0}^{\infty} \gamma^t R(s_t,a_t,s_{t+1}) + \alpha \sum_{t=1}^{\infty} \gamma^t H(\pi (\cdot \mid s_t)) \mid s_0 = s, a_0 = a\biggr]\\
+&= \mathbb{E}_{s' \sim P} \biggl[R(s,a,s') + \gamma V^\pi(s') \biggr]\\
+\end{align*}$$ -->
+
+- Soft bellman backup operator $\mathcal{T}^\pi$
+<div align="center">
+<img src="./algorithm_figures/13_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!-- $$\begin{align*}
+\mathcal{T}^\pi Q(s,a) &\triangleq r(s_t,a_t) + \gamma \mathbb{E}_{s_{t+1} \sim P} \biggl[V^\pi(s_{t+1}) \biggr]\\
+\mathcal{T}^\pi Q^{k}(s,a) &= Q^{k+1}(s,a)
+\end{align*}$$ -->
+
+- Soft Policy Evaluation
+    - if $Q^0 : \mathcal{S} * \mathcal{A} \rightarrow \mathbb{R}$ with $|A| < \infty$, them sequence $Q^k$will converge to the soft Q value of $\pi$ as $k\rightarrow\infty$
 
 ## 0. etc
