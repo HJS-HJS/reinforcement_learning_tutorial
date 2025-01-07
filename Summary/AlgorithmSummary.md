@@ -572,7 +572,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     - __Hard__ update the policy via argmax (Hard version of policy gradient)
     - A method of skip policy gradient and learning only the value function.
     - The following equation is repeated to find the optimal function.
-    - Use argmax policy of A
+    - Policy itertation modify the policy to take the action with __the highest action value function__.
 <div align="center">
 <img src="./algorithm_figures/12_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
 </div>
@@ -584,32 +584,94 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 \end{cases}
 \\
 \\
-&\mathrm{1. \ Evaluate} &A(s_i,a_i)\\
-&\mathrm{2. \ Set} &\pi \leftarrow \pi'
+&\mathrm{1. \ Policy \ Evaluate} &A(s_i,a_i)\\
+&\mathrm{2. \ Policy \ Improvement} &\pi \leftarrow \pi'
 \end{align*}$$ -->
 
 ## 13. SAC
-- Soft Bellman equation from [maximum entropy](ConceptSummary.md#10-maximum-entropy)
-<div align="center">
-<img src="./algorithm_figures/13_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
-</div>
-<!-- $$\begin{align*}
-V^\pi(s) &= \mathbb{E}_{r \sim \pi} \biggl[ \sum_{t=0}^{\infty} \gamma^t (R(s_t,a_t,s_{t+1}) + \alpha H(\pi (\cdot \mid s_t))) \mid s_0 = s \biggr]\\
-&= \mathbb{E}_{a \sim \pi} \biggl[ Q^\pi (s,a) - \alpha \log(\pi(\cdot\mid s_t)) \biggr]\\
-Q^\pi(s,a) &= \mathbb{E}_{r \sim \pi} \biggl[ \sum_{t=0}^{\infty} \gamma^t R(s_t,a_t,s_{t+1}) + \alpha \sum_{t=1}^{\infty} \gamma^t H(\pi (\cdot \mid s_t)) \mid s_0 = s, a_0 = a\biggr]\\
-&= \mathbb{E}_{s' \sim P} \biggl[R(s,a,s') + \gamma V^\pi(s') \biggr]\\
-\end{align*}$$ -->
+### 1. Soft Actor Critic 2018
+- Use Soft Policy Iteration
+    - Repeat soft policy evaluation and soft policy improvement.
+    - Soft Bellman equation from [maximum entropy](ConceptSummary.md#10-maximum-entropy).
+    <div align="center">
+    <img src="./algorithm_figures/13_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+    <!-- $$\begin{align*}
+    V^\pi(s) &= \mathbb{E}_{r \sim \pi} \biggl[ \sum_{t=0}^{\infty} \gamma^t (R(s_t,a_t,s_{t+1}) + \alpha H(\pi (\cdot \mid s_t))) \mid s_0 = s \biggr]\\
+    &= \mathbb{E}_{a \sim \pi} \biggl[ Q^\pi (s,a) - \alpha \log(\pi(\cdot\mid s_t)) \biggr]\\
+    Q^\pi(s,a) &= \mathbb{E}_{r \sim \pi} \biggl[ \sum_{t=0}^{\infty} \gamma^t R(s_t,a_t,s_{t+1}) + \alpha \sum_{t=1}^{\infty} \gamma^t H(\pi (\cdot \mid s_t)) \mid s_0 = s, a_0 = a\biggr]\\
+    &= \mathbb{E}_{s' \sim P} \biggl[R(s,a,s') + \gamma V^\pi(s') \biggr]\\
+    \end{align*}$$ -->
 
-- Soft bellman backup operator $\mathcal{T}^\pi$
-<div align="center">
-<img src="./algorithm_figures/13_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
-</div>
-<!-- $$\begin{align*}
-\mathcal{T}^\pi Q(s,a) &\triangleq r(s_t,a_t) + \gamma \mathbb{E}_{s_{t+1} \sim P} \biggl[V^\pi(s_{t+1}) \biggr]\\
-\mathcal{T}^\pi Q^{k}(s,a) &= Q^{k+1}(s,a)
-\end{align*}$$ -->
+    - Soft Policy Evaluation
+        - Get soft value
+        - Soft bellman backup operator $\mathcal{T}^\pi$
+        <div align="center">
+        <img src="./algorithm_figures/13_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+        <!-- $$\begin{align*}
+        \mathcal{T}^\pi Q(s,a) &\triangleq r(s_t,a_t) + \gamma \mathbb{E}_{s_{t+1} \sim P} \biggl[V^\pi(s_{t+1}) \biggr]\\
+        \mathcal{T}^\pi Q^{k}(s,a) &= Q^{k+1}(s,a)
+        \end{align*}$$ -->
 
-- Soft Policy Evaluation
-    - if $Q^0 : \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$ with $|A| < \infty$, them sequence $Q^k$ will converge to the soft Q value of $\pi$ as $k\rightarrow\infty$
+        - Lemma 1
+            - if $Q^0 : \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$ with $|A| < \infty$, them sequence $Q^k$ will converge to the soft Q value of $\pi$ as $k\rightarrow\infty$ 
+
+    - Soft Policy Improvement
+        - Modify the policy to give increasingly higher probabilities as the action value function gets higher.
+        <div align="center">
+        <img src="./algorithm_figures/13_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+        <!-- $$\begin{align*}
+        \pi_{new} &= \mathrm{argmin}_{\pi' \in \Pi}D_{KL}\biggr( \pi'(\cdot \mid s_t) \parallel \frac{\exp{(Q^{\pi_{old}}(s_t,\cdot))}}{Z^{\pi_{old}}(s_t)} \biggl) \\
+        \end{align*}$$ -->
+
+        - Lemma 2
+            - New, projected policy has a higher value than the old policy.
+            - $Q^{\pi_{new}}(s_t, a_t) \ge Q^{\pi_{old}}(s_t, a_t)$ for all $(s_t, a_t) \in \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$ with $|A| < \infty$.
+    - Theorem 1 (Soft Policy Iteration)
+        - Repeated application of __soft policy evaluation__ and __soft policy improvement__ from any $π∈Π$ converges to a policy $π^∗$ such that $Q^{\pi^*}(s_t,a_t)\ge Q^{\pi}(s_t,a_t)$ for all $\pi \in \Pi$ and $(s_t,a_t)\in \mathcal{S} \times \mathcal{A}$ assuming $|A| < \infty$.
+
+- Use 5 function approximators for both the Q-function and the policy.
+    1. Policy $\pi_\phi(a_t \mid s_t)$
+    2. State value function $V_\psi(s_t)$
+    3. Traget state value function $V_{\bar{\psi}}(s_t)$
+    4. Soft Q-function $Q_{\theta_1}(s_t, a_t)$
+    5. Soft Q-function $Q_{\theta_2}(s_t, a_t)$
+
+- Reparameterization trick in policy
+    - Common sampling method: $a \sim \mathcal{N}(\mu(s),\sigma(s))$
+    - We can't directly apply gradient descent during this sampling process.
+    - Use reparameterization trick to change sampling method. It enable us to use gradient descent.
+    - Get random sample $\epsilon$ from gaussian distribution $\epsilon \sim \mathcal{N}(0,I)$
+        <div align="center">
+        <img src="./algorithm_figures/13_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+        <!-- $$\begin{align*}
+        a_t &= f_{\phi}(\epsilon;s_t), \ where\ \epsilon_t \sim \mathcal{N}(0,I) \\
+        &=\mu(s_t) + \sigma(s_t) \cdot \epsilon
+        \end{align*}$$ -->
+
+- Objective function
+    - Use temporal difference learning for soft Q-function.
+    - Use stochastic gradient descent.
+    - $D$ is replay buffer.
+        <div align="center">
+        <img src="./algorithm_figures/13_5.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+        <!-- $$\begin{align*}
+        J_V(\psi) &= \mathbb{E}_{s_t \sim D} \biggl[\frac{1}{2} \biggl( V_\psi(s_t) - \mathbb{E}_{a_t \sim \pi} \biggl[ Q_\theta(s_t,a_t) - \alpha \log(\pi_\phi(a_t\mid s_t)) \biggr] \biggr)^2 \biggr]\\
+        \hat{\triangledown}_{\psi} J_V(\psi) &= {\triangledown}_{\psi}V_{\psi}(s_t) \biggl( V_\psi(s_t) - Q_\theta(s_t,a_t) + \alpha \log(\pi_\phi(a_t\mid s_t)) \biggr)\\
+        J_Q(\theta) &= \mathbb{E}_{(s_t,a_t) \sim D} \biggl[\frac{1}{2} \biggl(Q_\theta(s_t,a_t) - \hat{Q}(s_t,a_t) \biggr)^2 \biggr]\\
+        &= \mathbb{E}_{(s_t,a_t) \sim D} \biggl[\frac{1}{2} \biggl(Q_\theta(s_t,a_t) - r(s_t,a_t) - \gamma \mathbb{E}_{s_{t+1} \sim P} \biggl[V_{\bar{\psi}}(s_{t+1}) \biggr] \biggr)^2 \biggr]\\
+        \hat{\triangledown}_{\psi} J_Q(\theta) &= {\triangledown}_{\theta}Q_{\theta}(s_t, a_t) \biggl( Q_\theta(s_t,a_t) - r(s_t,a_t) - \gamma V_{\bar{\psi}}(s_{t+1}) \biggr)\\
+        J_{\pi}(\phi) &= \mathbb{E}_{s_t \sim D} \biggl[D_{KL}\biggr( \pi_\phi(\cdot \mid s_t) \parallel \frac{\exp{(Q_\theta(s_t,\cdot))}}{Z_\theta(s_t)} \biggl) \biggr]\\
+        &= \mathbb{E}_{s_t \sim D} \biggl[D_{KL}\biggr( \pi_\phi(\cdot \mid s_t) \parallel \exp{(Q_\theta(s_t,\cdot)) - \log{Z_\theta(s_t)}} \biggl) \biggr]\\
+        &= \mathbb{E}_{s_t \sim D} \biggl[\mathbb{E}_{a_t \sim \mathcal{N},\pi_\phi} \biggl[\log \bigr( \pi_\phi(a_t \mid s_t)\bigr) - \exp{(Q_\theta(s_t,a_t)) - \log{Z_\theta(s_t)}} \biggr] \biggr]\\
+        \hat{\triangledown}_{\phi} J_{\pi}(\phi) &= {\triangledown}_{\theta}\log{\pi_\phi}(a_t \mid s_t) + \bigl({\triangledown}_{a_t} \log{\pi_\phi}(a_t \mid s_t) - {\triangledown}_{a_t} Q(a_t \mid s_t) \bigr){\triangledown}_{\phi}a_t\\
+        &= {\triangledown}_{\theta}\log{\pi_\phi}(a_t \mid s_t) + \bigl({\triangledown}_{a_t} \log{\pi_\phi}(a_t \mid s_t) - {\triangledown}_{a_t} Q(a_t \mid s_t) \bigr){\triangledown}_{\phi}f_\phi(\epsilon_t;s_t)\\
+        \end{align*}$$ -->
+
+### 2. Soft Actor Critic 2019
 
 ## 0. etc
