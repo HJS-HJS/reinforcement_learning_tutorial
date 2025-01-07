@@ -20,15 +20,15 @@ DISCOUNT_FACTOR = 0.99     # gamma
 ADVANTAGE_LAMBDA= 0.95
 EPISODES        = 20000    # total episode
 # Memory
-BATCH_SIZE = 64
+BATCH_SIZE = 128
 EPOCH_SIZE = 3
-CLIP_EPSILON = 0.05
+CLIP_EPSILON = 0.1
 # Other
 visulaize_step = 25
 MAX_STEP = 1024           # maximun available step per episode
 current_file_path = os.path.abspath(__file__)
 current_directory = os.path.dirname(current_file_path)
-SAVE_DIR = current_directory + "/model/tutorial_continuos_1_1_PPO"
+SAVE_DIR = current_directory + "/model/tutorial_continuos_1_1_PPO_share"
 
 sim = HalfCheetah(None)
 device = torch.device('cpu')
@@ -47,31 +47,28 @@ Transition = namedtuple('Transition',
 memory = []
 
 # Network model
-class ActorNetwork(Network):
+class ActorCriticNetwork(Network):
     def __init__(self, n_state = N_INPUTS, n_action:int = N_OUTPUT):
-        super(ActorNetwork, self).__init__(n_state, n_action)
+        super(ActorCriticNetwork, self).__init__(n_state, n_action)
         self.mu = nn.Linear(128,n_action)
-        self.std  = nn.Linear(128,n_action)
+        self.std = nn.Linear(128,n_action)
+        self.critic = nn.Linear(128,1)
 
-    def forward(self, state):
+    def Actor(self, state):
         x = self.layer(state)
         mu = 2 * torch.tanh(self.mu(x))
         std = nn.functional.softplus(self.std(x))
         dist = torch.distributions.MultivariateNormal(mu, torch.diag_embed(std, 0))
         return dist
-
-class CriticNetwork(Network):
-    def __init__(self, n_state = N_INPUTS, n_action:int = N_OUTPUT):
-        super(CriticNetwork, self).__init__(n_state, n_action)
-        self.layer.add_module("linear", nn.Linear(128, 1))
+    def Critic(self, state):
+        x = self.layer(state)
+        return self.critic(x)
 
 # Initialize network
-actor_net = ActorNetwork(N_INPUTS, N_OUTPUT).to(device)
-critic_net = CriticNetwork(N_INPUTS, N_OUTPUT).to(device)
+actor_critic_net = ActorCriticNetwork(N_INPUTS, N_OUTPUT).to(device)
 
 # Optimizer
-actor_optimizer = torch.optim.AdamW(actor_net.parameters(), lr=LEARNING_RATE, amsgrad=True)
-critic_optimizer = torch.optim.AdamW(critic_net.parameters(), lr=LEARNING_RATE, amsgrad=True)
+optimizer = torch.optim.AdamW(actor_critic_net.parameters(), lr=LEARNING_RATE, amsgrad=True)
 
 def optimize_model(batch):
 
@@ -83,7 +80,7 @@ def optimize_model(batch):
 
     for i in range(EPOCH_SIZE):
         # Calculate the current probability
-        distribution = actor_net(state_batch)
+        distribution = actor_critic_net.Actor(state_batch)
         prob_batch = distribution.log_prob(action_batch)
 
         # Calculate the importance ratio
@@ -91,8 +88,8 @@ def optimize_model(batch):
 
         ## Calculate A from V
         # Calculate delta_t
-        value_curr_set = critic_net(state_batch)
-        value_next_set = critic_net(next_state_batch)
+        value_curr_set = actor_critic_net.Critic(state_batch)
+        value_next_set = actor_critic_net.Critic(next_state_batch)
         td_target = reward_batch + DISCOUNT_FACTOR * value_next_set
         delta_set = (td_target - value_curr_set).detach()
         # Calculate Advantage_set
@@ -105,19 +102,19 @@ def optimize_model(batch):
         clip_advantage = torch.min(imp_ratio * advantage_set, torch.clamp(imp_ratio, 1 - CLIP_EPSILON, 1 + CLIP_EPSILON) * advantage_set)
 
         # Learning
-        actor_optimizer.zero_grad()
-        critic_optimizer.zero_grad()
+        optimizer.zero_grad()
 
         # Policy Gradient 
         actor_loss = -clip_advantage.sum()
 
-        actor_loss.backward()
-        actor_optimizer.step()
-
         criterion = torch.nn.MSELoss()
         critic_loss = criterion(td_target.detach(), value_curr_set).to(torch.float32)
-        critic_loss.backward()
-        critic_optimizer.step()
+
+        loss = actor_loss + critic_loss
+
+        loss.backward()
+
+        optimizer.step()
 
 total_steps = []
 step_done_set = []
@@ -132,7 +129,7 @@ if TRAIN:
         total_reward = 0.0
         for step in range(MAX_STEP):
             # 1. Get action from policy network
-            distribution = actor_net(state_curr.unsqueeze(0))
+            distribution = actor_critic_net.Actor(state_curr.unsqueeze(0))
             action = distribution.sample()
 
             # 2. Run simulation 1 step (Execute action and observe reward)
@@ -166,8 +163,7 @@ if TRAIN:
         # Visualize
         if episode % visulaize_step == 0:
             if (len(total_steps) != 0) and (np.mean(step_done_set) >= max(total_steps)):
-                save_model(actor_net, SAVE_DIR, "actor", episode)
-                save_model(critic_net, SAVE_DIR, "critic", episode)
+                save_model(actor_critic_net, SAVE_DIR, "actor_critic", episode)
             total_steps.append(np.mean(step_done_set))
             print("#{}: ".format(episode), np.mean(step_done_set).astype(int))
             live_plot(total_steps, visulaize_step)
@@ -178,7 +174,7 @@ if TRAIN:
 
 else:
     sim = HalfCheetah()
-    actor_net = load_model(actor_net, SAVE_DIR, "9325_actor")
+    actor_critic_net = load_model(actor_critic_net, SAVE_DIR, "19925_actor_critic")
 
     # 0. Reset environment
     state_curr, _ = sim.env.reset()
@@ -187,7 +183,7 @@ else:
     # Running one episode
     for step in range(MAX_STEP):
         # 1. Get action from policy network
-        distribution = actor_net(state_curr.unsqueeze(0))
+        distribution = actor_critic_net.Actor(state_curr.unsqueeze(0))
         most_likely_action = distribution.mean
 
         # 2. Run simulation 1 step (Execute action and observe reward)
