@@ -129,11 +129,19 @@
     ```bash
     python3 ~/reinforcement_learning_tutorial/tutorial_continuos_1_1_PPO.py
     ```
-- Reinforcement learning wth gym car racing.
-- Continous action, fully connected cnn.
+    <div align="center">
+        <img src="./model/tutorial_continuos_1_1_PPO/results.png" alt="Description" width="700" height="300">
+    </div>
+- Reinforcement learning wth MUJOCO half cheetah.
+- Continous action, fully connected linear neural network.
+- Actor and Critic share layers.
+- Not learned well.
     ```bash
-    python3 ~/reinforcement_learning_tutorial/tutorial_continuos_1_2_PPO.py
+    python3 ~/reinforcement_learning_tutorial/tutorial_continuos_1_1_PPO_share.py
     ```
+    <div align="center">
+        <img src="./model/tutorial_continuos_1_1_PPO_share/results.png" alt="Description" width="700" height="300">
+    </div>
 
 ### 2. SAC
 - TODO
