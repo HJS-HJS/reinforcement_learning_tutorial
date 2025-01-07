@@ -671,12 +671,56 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
         &= \mathbb{E}_{(s_t,a_t) \sim D} \biggl[\frac{1}{2} \biggl(Q_\theta(s_t,a_t) - r(s_t,a_t) - \gamma \mathbb{E}_{s_{t+1} \sim P} \biggl[V_{\bar{\psi}}(s_{t+1}) \biggr] \biggr)^2 \biggr]\\
         \hat{\triangledown}_{\psi} J_Q(\theta) &= {\triangledown}_{\theta}Q_{\theta}(s_t, a_t) \biggl( Q_\theta(s_t,a_t) - r(s_t,a_t) - \gamma V_{\bar{\psi}}(s_{t+1}) \biggr)\\
         J_{\pi}(\phi) &= \mathbb{E}_{s_t \sim D} \biggl[D_{KL}\biggr( \pi_\phi(\cdot \mid s_t) \parallel \frac{\exp{(Q_\theta(s_t,\cdot))}}{Z_\theta(s_t)} \biggl) \biggr]\\
-        &= \mathbb{E}_{s_t \sim D} \biggl[D_{KL}\biggr( \pi_\phi(\cdot \mid s_t) \parallel \exp{(Q_\theta(s_t,\cdot)) - \log{Z_\theta(s_t)}} \biggl) \biggr]\\
-        &= \mathbb{E}_{s_t \sim D} \biggl[\mathbb{E}_{a_t \sim \mathcal{N},\pi_\phi} \biggl[\log \bigr( \pi_\phi(a_t \mid s_t)\bigr) - \exp{(Q_\theta(s_t,a_t)) - \log{Z_\theta(s_t)}} \biggr] \biggr]\\
-        \hat{\triangledown}_{\phi} J_{\pi}(\phi) &= {\triangledown}_{\theta}\log{\pi_\phi}(a_t \mid s_t) + \bigl({\triangledown}_{a_t} \log{\pi_\phi}(a_t \mid s_t) - {\triangledown}_{a_t} Q(a_t \mid s_t) \bigr){\triangledown}_{\phi}a_t\\
-        &= {\triangledown}_{\theta}\log{\pi_\phi}(a_t \mid s_t) + \bigl({\triangledown}_{a_t} \log{\pi_\phi}(a_t \mid s_t) - {\triangledown}_{a_t} Q(a_t \mid s_t) \bigr){\triangledown}_{\phi}f_\phi(\epsilon_t;s_t)\\
+        &= \mathbb{E}_{s_t \sim D} \biggl[D_{KL}\biggr( \pi_\phi(\cdot \mid s_t) \parallel \exp{(Q_\theta(s_t,\cdot) - \log{Z_\theta(s_t)})} \biggl) \biggr]\\
+        &= \mathbb{E}_{s_t \sim D} \biggl[\mathbb{E}_{a_t \sim \mathcal{N},\pi_\phi} \biggl[\log \bigr( \pi_\phi(a_t \mid s_t)\bigr) - Q_\theta(s_t,a_t) - \log{Z_\theta(s_t)} \biggr] \biggr]\\
+        \hat{\triangledown}_{\phi} J_{\pi}(\phi) &= {\triangledown}_{\phi}\log({\pi_\phi}(a_t \mid s_t)) + \bigl({\triangledown}_{a_t} \log({\pi_\phi}(a_t \mid s_t)) - {\triangledown}_{a_t} Q(a_t, s_t) \bigr){\triangledown}_{\phi}a_t\\
+        &= {\triangledown}_{\phi}\log({\pi_\phi}(a_t \mid s_t)) + \bigl({\triangledown}_{a_t} \log({\pi_\phi}(a_t \mid s_t)) - {\triangledown}_{a_t} Q(a_t, s_t) \bigr){\triangledown}_{\phi}f_\phi(\epsilon_t;s_t)\\
         \end{align*}$$ -->
 
 ### 2. Soft Actor Critic 2019
+- The temperature parameter $\alpha$ of maximum entropy is not fixed, calculated.
+- Not using soft value function.
+- Modify the policy to give increasingly higher probabilities as the action value function gets higher.
+    - Use same $\alpha$ in maximum entropy temperature parameter
+    - As $α$ gets smaller, $\frac{1}{α}$ gets larger, emphasizing the differences in Q-values ​​more, making the policy more deterministic. 
+    - As $α$ gets larger, $\frac{1}{α}$ gets smaller, emphasizing the differences in Q-values ​​less, making the policy more random and exploratory.
+    <div align="center">
+    <img src="./algorithm_figures/13_6.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+    <!-- $$\begin{align*}
+    \pi_{new} &= \mathrm{argmin}_{\pi' \in \Pi}D_{KL}\biggr( \pi'(\cdot \mid s_t) \parallel \frac{\exp{(\frac{1}{\alpha}Q^{\pi_{old}}(s_t,\cdot))}}{Z^{\pi_{old}}(s_t)} \biggl) \\
+    \end{align*}$$ -->
+
+- Automating entropy adjustment
+    - Automatically adjusting $α$ during learning allows the agent to maintain appropriate exploration and convergence depending on the state.
+    - To do this, we add a constraint that keeps the entropy at a certain level.
+        - minumim desired entropy $\mathcal{H}$
+    $$\begin{align*}
+    \max_{\pi_{0:T}}\mathbb{E}_{\rho_\pi} \biggl[ \sum_{t=0}^{T} r(s_t,a_t) \biggr] \quad s.t \quad \mathbb{E}_{(s_t,a_t) \sim \rho_\pi} \bigl[ -\log{(\pi_t(a_t \mid s_t))}\bigr] \ge \mathcal{H} \quad \forall t
+    \end{align*}$$
+
+- Use 5 function approximators for both the Q-function and the policy.
+    1. Policy $\pi_\phi(a_t \mid s_t)$
+    2. Soft Q-function $Q_{\theta_1}(s_t, a_t)$
+    3. Soft Q-function $Q_{\theta_2}(s_t, a_t)$
+    2. Target Soft Q-function $Q_{\bar{\theta}_1}(s_t, a_t)$
+    3. Target Soft Q-function $Q_{\bar{\theta}_2}(s_t, a_t)$
+
+    <div align="center">
+    <img src="./algorithm_figures/13_7.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+    <!-- $$\begin{align*}
+    J_Q(\theta) &= \mathbb{E}_{(s_t,a_t) \sim D} \biggl[\frac{1}{2} \biggl(Q_\theta(s_t,a_t) - \hat{Q}(s_t,a_t) \biggr)^2 \biggr]\\
+    &= \mathbb{E}_{(s_t,a_t) \sim D} \biggl[\frac{1}{2} \biggl(Q_\theta(s_t,a_t) - r(s_t,a_t) - \gamma \mathbb{E}_{s_{t+1} \sim P} \biggl[V_{\bar{\theta}}(s_{t+1}) \biggr] \biggr)^2 \biggr]\\
+    &= \mathbb{E}_{(s_t,a_t) \sim D} \biggl[\frac{1}{2} \biggl(Q_\theta(s_t,a_t) - r(s_t,a_t) - \gamma (Q_{\bar{\theta}}(s_{t+1},a_{t+1}) - \alpha \log{(\pi_\phi(a_{t+1}\mid s_{t+1}))}) \biggr)^2 \biggr]\\
+    \hat{\triangledown}_{\psi} J_Q(\theta) &= {\triangledown}_{\theta}Q_{\theta}(s_t, a_t) \biggl(Q_\theta(s_t,a_t) - r(s_t,a_t) - \gamma (Q_{\bar{\theta}}(s_{t+1},a_{t+1}) - \alpha \log{(\pi_\phi(a_{t+1}\mid s_{t+1}))}) \biggr)\\
+    J_{\pi}(\phi) &= \alpha \mathbb{E}_{s_t \sim D} \biggl[D_{KL}\biggr( \pi_\phi(\cdot \mid s_t) \parallel \frac{\exp{(\frac{1}{\alpha}Q_\theta(s_t,\cdot))}}{Z_\theta(s_t)} \biggl) \biggr]\\
+    &= \alpha \mathbb{E}_{s_t \sim D} \biggl[D_{KL}\biggr( \pi_\phi(\cdot \mid s_t) \parallel \exp{(\frac{1}{\alpha}Q_\theta(s_t,\cdot) - \log{Z_\theta(s_t)})} \biggl) \biggr]\\
+    &= \alpha \mathbb{E}_{s_t \sim D} \biggl[\mathbb{E}_{a_t \sim \mathcal{N},\pi_\phi} \biggl[\log \bigr( \pi_\phi(a_t \mid s_t)\bigr) - \frac{1}{\alpha}Q_\theta(s_t,a_t) - \log{Z_\theta(s_t)} \biggr] \biggr] \\
+    &= \alpha \mathbb{E}_{s_t \sim D} \biggl[\mathbb{E}_{a_t \sim \mathcal{N},\pi_\phi} \biggl[\log \bigr( \pi_\phi(a_t \mid s_t)\bigr) - \frac{1}{\alpha}Q_\theta(s_t,a_t) - \log{Z_\theta(s_t)} \biggr] \biggr]\\
+    &= \mathbb{E}_{s_t \sim D} \biggl[\mathbb{E}_{a_t \sim \mathcal{N},\pi_\phi} \biggl[\alpha \log \bigr( \pi_\phi(a_t \mid s_t)\bigr) - Q_\theta(s_t,a_t) - \alpha \log{Z_\theta(s_t)} \biggr] \biggr]\\
+    \hat{\triangledown}_{\phi} J_{\pi}(\phi) &= {\triangledown}_{\theta} \alpha \log{\pi_\phi}(a_t \mid s_t) + \bigl({\triangledown}_{a_t} \alpha \log{\pi_\phi}(a_t \mid s_t) - {\triangledown}_{a_t} Q(a_t , s_t) \bigr){\triangledown}_{\phi}a_t\\
+    &= {\triangledown}_{\theta} \alpha \log{\pi_\phi}(a_t \mid s_t) + \bigl({\triangledown}_{a_t} \alpha \log{\pi_\phi}(a_t \mid s_t) - {\triangledown}_{a_t} Q(a_t, s_t) \bigr){\triangledown}_{\phi}f_\phi(\epsilon_t;s_t)\\
+    \end{align*}$$ -->
 
 ## 0. etc
