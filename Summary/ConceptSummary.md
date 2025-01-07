@@ -243,7 +243,7 @@ J(\pi) &= \mathbb{E}_{r \sim \pi} [\sum_{t = 0}^{\infty}\gamma^t r(s_t, a_t)] \\
 % &= \mathbb{E}_{r \sim \pi} [R(\tau) + \alpha H(P(\tau))]\\
 % \end{align*}$$ -->
 
-- Control the search by adjusting the trade-off coefficient $\alpha$ value.
+- Control the search by adjusting the trade-off coefficient $\alpha$ value(temperature parameter).
 
 - Addition:
 <div align="center">
