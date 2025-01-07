@@ -115,6 +115,10 @@
 ### 7. SAC
 - TODO
 
+- paper
+    - [Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor (2018)](https://arxiv.org/abs/1801.01290)
+    - [Soft Actor-Critic Algorithms and Applications (2019)](https://arxiv.org/abs/1812.05905)
+
 
 ## 4. Continous Action Tutorial
 - The output of the reinforcement learning model is continous values.
