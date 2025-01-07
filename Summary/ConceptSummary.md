@@ -292,7 +292,8 @@ H(p, q) &= \sum_{i}p_i \log_2{\frac{1}{q_i}}\\
 </div>
 <!-- $$\begin{align*}
 D_{KL}(p\parallel q) &= H(p,q) - H(p) \\
-&= \begin{cases}
+&= \mathbb{E}_{X \sim p(x)}\bigl[\log{\frac{p(X)}{q(X)}}\bigr] \\
+&= \begin{cases} 
 \sum_{i}p_i \log{\frac{p_i}{q_i}}\\
 \int p(x) \log{\frac{p(x)}{q(x)}}dx\\
 \end{cases}
