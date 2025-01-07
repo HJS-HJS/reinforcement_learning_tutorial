@@ -11,6 +11,8 @@
 8. [Policy Gradient and Policy Iteration](#8-policy-gradient-and-policy-iteration)
 9. [Entropy](#9-entropy)
 10. [Maximum Entropy](#10-maximum-entropy)
+11. [Cross Entropy](#11-cross-entropy)
+12. [KL divergence](#12-kl-divergence)
 
 ## 1. Reason Why Failed the Export
 - Causal confusion
@@ -273,3 +275,28 @@ Q^\pi(s,a) &= \mathbb{E}_{r \sim \pi} \biggl[ \sum_{t=0}^{\infty} \gamma^t R(s_t
 &= \mathbb{E}_{s' \sim P,a' \sim \pi} \biggl[R(s,a,s') + \gamma \biggr( Q^\pi(s',a') + \alpha H(\pi((\cdot \mid s')))\biggl) \biggr]\\
 &= \mathbb{E}_{s' \sim P} \biggl[R(s,a,s') + \gamma V^\pi(s') \biggr]\\
 \end{align*}$$ -->
+
+## 11. Cross Entropy
+<div align="center">
+<img src="./concept_figures/11_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!-- $$\begin{align*}
+H(p, q) &= \sum_{i}p_i \log_2{\frac{1}{q_i}}\\
+\end{align*}$$ -->
+
+## 12. KL Divergence
+- Kullback-Leibler divergence
+- Calculate the entropy difference detween two probability distribution.
+<div align="center">
+<img src="./concept_figures/12_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!-- $$\begin{align*}
+D_{KL}(p\parallel q) &= H(p,q) - H(p) \\
+&= \begin{cases}
+\sum_{i}p_i \log{\frac{p_i}{q_i}}\\
+\int p(x) \log{\frac{p(x)}{q(x)}}dx\\
+\end{cases}
+\end{align*}$$ -->
+
+- $D_{KL}\ge 0$
+- $D_{KL}(p,q)\ne D_{KL}(q,p)$
