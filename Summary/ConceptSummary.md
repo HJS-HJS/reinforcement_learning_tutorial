@@ -223,6 +223,7 @@ H(P(\tau)) &= - \sum_{x \in \tau}P(x) \log{P(x)} \quad &\mathrm{Discrete \ Proba
 <!-- $$\begin{align*}
 J(\pi) &= \mathbb{E}_{r \sim \pi} [\sum_{t = 0}^{\infty}\gamma^t r(s_t, a_t)] \\
 \end{align*}$$ -->
+
 - With maximum entropy:
 <div align="center">
 <img src="./concept_figures/10_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
@@ -240,7 +241,7 @@ J(\pi) &= \mathbb{E}_{r \sim \pi} [\sum_{t = 0}^{\infty}\gamma^t r(s_t, a_t)] \\
 % &= \mathbb{E}_{r \sim \pi} [R(\tau) + \alpha H(P(\tau))]\\
 % \end{align*}$$ -->
 
-- Control the search by adjusting the $\alpha$ value.
+- Control the search by adjusting the trade-off coefficient $\alpha$ value.
 
 - Addition:
 <div align="center">
@@ -253,4 +254,22 @@ L(\pi) &= J(\pi) + \lambda (\int P(\tau) d\tau - 1) \\
 \log{(P(\tau))} &= \frac{1}{\alpha} \frac{d\mathbb{E}_{r \sim \pi} [R(\tau)]}{d\pi} - \frac{\lambda + \alpha}{\alpha} \\
 P(\tau) &\propto \exp{(\frac{1}{\alpha} \frac{d\mathbb{E}_{r \sim \pi} [R(\tau)]}{d\pi})} \\
 &= \exp{(\frac{1}{\alpha} \sum_{t = 0}^{\infty}\gamma^t r(s_t, a_t))} \\
+\end{align*}$$ -->
+
+- Bellman equation
+<div align="center">
+<img src="./concept_figures/10_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+</div>
+<!-- $$\begin{align*}
+V^\pi(s) &= \mathbb{E}_{r \sim \pi} \biggl[ \sum_{t=0}^{\infty} \gamma^t (R(s_t,a_t,s_{t+1}) + \alpha H(\pi (\cdot \mid s_t))) \mid s_0 = s \biggr]\\
+&= \mathbb{E}_{r \sim \pi} \biggl[ \sum_{t=0}^{\infty} \gamma^t R(s_t,a_t,s_{t+1}) + \alpha \sum_{t=1}^{\infty} \gamma^t H(\pi (\cdot \mid s_t)) \mid s_0 = s\biggr] + \alpha H(\pi(\cdot\mid s_t))\\
+&= \mathbb{E}_{a \sim \pi} \biggl[ \mathbb{E}_{r \sim \pi} \biggl[ \sum_{t=0}^{\infty} \gamma^t R(s_t,a_t,s_{t+1}) + \alpha \sum_{t=1}^{\infty} \gamma^t H(\pi (\cdot \mid s_t)) \mid s_0 = s, a_0 = a\biggr]\biggr] + \alpha H(\pi(\cdot\mid s_t))\\
+&= \mathbb{E}_{a \sim \pi} \biggl[ Q^\pi (s,a) \biggr] + \alpha H(\pi(\cdot\mid s_t))\\
+&= \mathbb{E}_{a \sim \pi} \biggl[ Q^\pi (s,a) + \alpha H(\pi(\cdot\mid s_t)) \biggr]\\
+&= \mathbb{E}_{a \sim \pi} \biggl[ Q^\pi (s,a) - \alpha \log(\pi(\cdot\mid s_t)) \biggr]\\
+Q^\pi(s,a) &= \mathbb{E}_{r \sim \pi} \biggl[ \sum_{t=0}^{\infty} \gamma^t R(s_t,a_t,s_{t+1}) + \alpha \sum_{t=1}^{\infty} \gamma^t H(\pi (\cdot \mid s_t)) \mid s_0 = s, a_0 = a\biggr]\\
+&= \mathbb{E}_{r \sim \pi} \biggl[R(s,a,s') + \alpha \gamma H(\pi((\cdot \mid s))) + \sum_{t=1}^{\infty} \gamma^t R(s_t,a_t,s_{t+1}) + \alpha \sum_{t=2}^{\infty} \gamma^t H(\pi (\cdot \mid s_t)) \mid s_0 = s, a_0 = a\biggr]\\
+&= \mathbb{E}_{s' \sim P,a' \sim \pi} \biggl[R(s,a,s') + \alpha \gamma H(\pi((\cdot \mid s'))) + \gamma Q^\pi(s',a') \biggr]\\
+&= \mathbb{E}_{s' \sim P,a' \sim \pi} \biggl[R(s,a,s') + \gamma \biggr( Q^\pi(s',a') + \alpha H(\pi((\cdot \mid s')))\biggl) \biggr]\\
+&= \mathbb{E}_{s' \sim P} \biggl[R(s,a,s') + \gamma V^\pi(s') \biggr]\\
 \end{align*}$$ -->
