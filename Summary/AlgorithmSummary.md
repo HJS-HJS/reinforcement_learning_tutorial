@@ -652,6 +652,11 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
         &=\mu(s_t) + \sigma(s_t) \cdot \epsilon
         \end{align*}$$ -->
 
+- Two Q-function to avoid overestimation bias
+    - The problem of overestimation, where the estimate of a function is higher than its actual value, often occurs especially in offline rl.
+    - During the maximization process, the Q-function may overestimate suboptimal actions.
+    - Avoid overestimation by choosing the smaller value of the two Q-functions.
+
 - Objective function
     - Use temporal difference learning for soft Q-function.
     - Use stochastic gradient descent.
