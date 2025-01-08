@@ -693,11 +693,75 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 
 - Automating entropy adjustment
     - Automatically adjusting $α$ during learning allows the agent to maintain appropriate exploration and convergence depending on the state.
-    - To do this, we add a constraint that keeps the entropy at a certain level.
-        - minumim desired entropy $\mathcal{H}$
-    $$\begin{align*}
-    \max_{\pi_{0:T}}\mathbb{E}_{\rho_\pi} \biggl[ \sum_{t=0}^{T} r(s_t,a_t) \biggr] \quad s.t \quad \mathbb{E}_{(s_t,a_t) \sim \rho_\pi} \bigl[ -\log{(\pi_t(a_t \mid s_t))}\bigr] \ge \mathcal{H} \quad \forall t
-    \end{align*}$$
+    1. To do this, we add a constraint that keeps the entropy at a certain level.
+        - Minumim desired entropy $\mathcal{H}$.
+        - Employ (approximate) dynamic programming and rewrite objective as iterated maximization.
+        <div align="center">
+        <img src="./algorithm_figures/13_7.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+        <!-- $$\begin{align*}
+        \max_{\pi_{0:T}}\mathbb{E}_{\rho_\pi} \biggl[ \sum_{t=0}^{T} r(s_t,a_t) \biggr] \quad &s.t \quad \mathbb{E}_{(s_t,a_t) \sim \rho_\pi} \bigl[ -\log{(\pi_t(a_t \mid s_t))}\bigr] \ge \mathcal{H} \quad \forall t \\
+        \max_{\pi_{0}} \biggl( \mathbb{E} [r(s_0,a_0)] + \max_{\pi_{1}}\biggl(\mathbb{E} [\dots] + \max_{\pi_{T}}\mathbb{E} [r(s_T,a_T)] \biggr)\biggr) \quad &s.t \quad \mathbb{E}_{(s_t,a_t) \sim \rho_\pi} \bigl[ -\log{(\pi_t(a_t \mid s_t))}\bigr] - \mathcal{H}\ge 0 \quad \forall t
+        \end{align*}$$ -->
+
+    2. Convert it to [duality problem](./ConceptSummary.md#13-duality) with dual variable $\alpha_T$. Start from last time step.
+        - Objective function(linear) and constraint(entropy) is both convex -> Satisfy slater’s condition -> Strong duality
+        <div align="center">
+        <img src="./algorithm_figures/13_8.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+        <!-- $$\begin{align*}
+        \max_{\pi_{T}}\mathbb{E} \biggl[ r(s_T,a_T) \biggr] \quad &s.t \quad \mathbb{E}_{(s_T,a_T) \sim \rho_\pi} \bigl[ -\log{(\pi_t(a_T \mid s_T))}\bigr] - \mathcal{H} \ge 0 \quad \forall t \\
+        \max_{\pi_{T}}\mathbb{E}_{(s_t,a_t) \sim \rho_\pi} \biggl[r(s_T,a_T) \biggr] &=\min_{\alpha_T \ge 0} \max_{\pi_T} \mathbb{E} \bigl[ r(s_T,a_T)\bigr] + \alpha_T \biggl(\mathbb{E}_{(s_T,a_T) \sim \rho_\pi} \bigl[ -\log{(\pi_t(a_T \mid s_T))}\bigr] - \mathcal{H} \biggr) \\
+        &=\min_{\alpha_T \ge 0} \max_{\pi_T} \mathbb{E} \bigl[ r(s_T,a_T)- \alpha_T \log{(\pi_T(a_T \mid s_T))}\bigr] - \alpha_T \mathcal{H} \\
+        \end{align*}$$ -->
+
+        - Dual objective is closely related to the maximum entropy objective with respect to the policy.
+        - optimal policy is the maximum entropy policy corresponding to temperature $\alpha$.
+        <div align="center">
+        <img src="./algorithm_figures/13_9.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+        <!-- $$\begin{align*}
+        \alpha^*_T &= \mathrm{arg} \min_{\alpha_T}\max_{\pi_T} \mathbb{E} \bigl[ r(s_T,a_T)- \alpha_T \log{(\pi_T(a_T \mid s_T))}\bigr]  - \alpha_T \mathcal{H} \\
+        &= \mathrm{arg} \min_{\alpha_T}\mathbb{E}_{a_T \sim \pi_T^*}\bigl[ -\alpha_T \log{\pi_T^*(a_T \mid s_T;\alpha_T)} \bigr]  - \alpha_T \mathcal{H} \\
+        &= \mathrm{arg} \min_{\alpha_T}\mathbb{E}_{a_T \sim \pi_T^*}\bigl[ -\alpha_T \log{\pi_T^*(a_T \mid s_T;\alpha_T)} - \alpha_T \mathcal{H} \bigr] \\
+        \end{align*}$$ -->
+
+    3. Soft Q-function with $\alpha$
+        <div align="center">
+        <img src="./algorithm_figures/13_10.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+        <!-- $$\begin{align*}
+        Q^*_t(s_t,a_t;\pi_{t+1:T}^*,\alpha_{t+1:T}^*)&=\mathbb{E}\bigl[r(s_t,a_t)\bigr]+\mathbb{E}_{\rho_\pi}\bigl[ Q_{t+1}^*(s_{t+1}, a_{t+1})-\alpha_{t+1}^*\log{\pi_{t+1}^*(a_{t+1}\mid s_{t+1})} \bigr] \\
+        Q^*_T(s_T,a_T)&=\mathbb{E}\bigl[r(s_T,a_T)\bigr] \\
+        \end{align*}$$ -->
+
+    4. Convert it to duality problem with dual variable $\alpha_{T-1}$.
+        <div align="center">
+        <img src="./algorithm_figures/13_11.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+        <!-- $$\begin{align*}
+        \max_{\pi_{T-1}} \biggl( \mathbb{E} \bigl[r(s_{T-1},a_{T-1}) \bigr] + \max_{\pi_{T}}\mathbb{E} \bigl[r(s_T,a_T) \bigr] \bigg)
+        &= \max_{\pi_{T-1}} \biggl( Q_{T-1}^*(s_{T-1}, a_{T-1}) - \mathbb{E}\bigl[ Q_{T}^*(s_{T}, a_{T})-\alpha_{T}log{\pi_{T}(a_{T}\mid s_{T})} \bigr] + \mathbb{E} \bigl[r(s_T,a_T) -\alpha_T \log{\pi_T(a_T \mid s_T)} - \alpha_T \mathcal{H} \bigr] \bigg)\\
+        &= \max_{\pi_{T-1}} \biggl( Q_{T-1}^*(s_{T-1}, a_{T-1}) - \mathbb{E}\bigl[ \mathbb{E}\bigl[r(s_T,a_T)\bigr]-\alpha_{T}log{\pi_{T}(a_{T}\mid s_{T})} \bigr] + \mathbb{E} \bigl[r(s_T,a_T) -\alpha_T \log{\pi_T(a_T \mid s_T)} - \alpha_T \mathcal{H} \bigr] \bigg)\\
+        &= \max_{\pi_{T-1}} \biggl( Q_{T-1}^*(s_{T-1}, a_{T-1}) - \mathbb{E}\bigl[ r(s_T,a_T)-\alpha_{T}log{\pi_{T}(a_{T}\mid s_{T})} \bigr] + \mathbb{E} \bigl[r(s_T,a_T) -\alpha_T \log{\pi_T(a_T \mid s_T)} - \alpha_T \mathcal{H} \bigr] \bigg)\\
+        &= \max_{\pi_{T-1}} \biggl( Q_{T-1}^*(s_{T-1}, a_{T-1})-\alpha_{T}\mathcal{H} \bigg) \\
+        \max_{\pi_{T-1}} \biggl( Q_{T-1}^*(s_{T-1}, a_{T-1})-\alpha_{T}\mathcal{H} \bigg) \quad
+        &s.t \quad \mathbb{E}_{(s_{T-1},a_{T-1}) \sim \rho_\pi} \bigl[ -\log{(\pi_{T-1}(a_{T-1} \mid s_{T-1}))}\bigr] \ge \mathcal{H} \quad \forall t \\
+        \max_{\pi_{T-1}} \biggl( Q_{T-1}^*(s_{T-1}, a_{T-1})-\alpha_{T}\mathcal{H} \bigg) 
+        &= \min_{\alpha_{T-1} \ge 0} \max_{\pi_{T-1}}\biggl( Q_{T-1}^*(s_{T-1}, a_{T-1})-\alpha_{T}^*\mathcal{H} \bigg) + \alpha_{T-1} \biggl( \mathbb{E} \bigl[ -\log{(\pi_{T-1}(a_{T-1} \mid s_{T-1}))}\bigr] - \mathcal{H} \biggl) \\
+        &= \min_{\alpha_{T-1} \ge 0} \max_{\pi_{T-1}}\biggl( Q_{T-1}^*(s_{T-1}, a_{T-1}) - \mathbb{E} \bigl[ \alpha_{T-1} \log{(\pi_{T-1}(a_{T-1} \mid s_{T-1}))}\bigr] - \alpha_{T-1} \mathcal{H} \biggl) -\alpha_{T}^*\mathcal{H}\\
+        &= \min_{\alpha_{T-1} \ge 0} \max_{\pi_{T-1}}\biggl( \mathbb{E}[Q_{T-1}^*(s_{T-1}, a_{T-1})] - \mathbb{E} \bigl[ \alpha_{T-1} \log{(\pi_{T-1}(a_{T-1} \mid s_{T-1}))}\bigr] - \alpha_{T-1} \mathcal{H} \biggl) -\alpha_{T}^*\mathcal{H} \\ \\
+        \alpha^*_{T-1} &= \mathrm{arg} \min_{\alpha_{T-1}}\mathbb{E}_{a_{T-1} \sim \pi_{T-1}^*}\bigl[ -\alpha_{T-1} \log{\pi_{T-1}^*(a_{T-1} \mid s_{T-1};\alpha_{T-1})} - \alpha_{T-1} \mathcal{H} \bigr] \\
+        \end{align*}$$ -->
+
+    5. Optimal dual variable
+        <div align="center">
+        <img src="./algorithm_figures/13_12.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+        <!-- $$\begin{align*}
+        \alpha^*_t &= \mathrm{arg} \min_{\alpha_t}\mathbb{E}_{a_t \sim \pi_t^*}\bigl[ -\alpha_t \log{\pi_t^*(a_t \mid s_t;\alpha_t)} - \alpha_t \mathcal{\bar{H}} \bigr] \\
+        \end{align*}$$ -->
+        
 
 - Use 5 function approximators for both the Q-function and the policy.
     1. Policy $\pi_\phi(a_t \mid s_t)$
@@ -707,7 +771,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     3. Target Soft Q-function $Q_{\bar{\theta}_2}(s_t, a_t)$
 
     <div align="center">
-    <img src="./algorithm_figures/13_7.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    <img src="./algorithm_figures/13_13.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
     </div>
     <!-- $$\begin{align*}
     J_Q(\theta) &= \mathbb{E}_{(s_t,a_t) \sim D} \biggl[\frac{1}{2} \biggl(Q_\theta(s_t,a_t) - \hat{Q}(s_t,a_t) \biggr)^2 \biggr]\\
@@ -722,5 +786,17 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     \hat{\triangledown}_{\phi} J_{\pi}(\phi) &= {\triangledown}_{\theta} \alpha \log{\pi_\phi}(a_t \mid s_t) + \bigl({\triangledown}_{a_t} \alpha \log{\pi_\phi}(a_t \mid s_t) - {\triangledown}_{a_t} Q(a_t , s_t) \bigr){\triangledown}_{\phi}a_t\\
     &= {\triangledown}_{\theta} \alpha \log{\pi_\phi}(a_t \mid s_t) + \bigl({\triangledown}_{a_t} \alpha \log{\pi_\phi}(a_t \mid s_t) - {\triangledown}_{a_t} Q(a_t, s_t) \bigr){\triangledown}_{\phi}f_\phi(\epsilon_t;s_t)\\
     \end{align*}$$ -->
+
+- Enforcing Action Bounds
+    - Bound actions to finite interval ($u \rightarrow a$).
+    - if $a = \tanh{(u)}$, 
+        <div align="center">
+        <img src="./algorithm_figures/13_14.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+        <!-- $$\begin{align*}
+        \pi(a \mid s) &= \mu(u \mid s)|\det{(\frac{da}{du})}|^{-1} \\
+        jacobian \ \frac{da}{du} &= \mathrm{diag}(1-\tanh^2{(u)}) \\
+        \log{\pi(a \mid s)} &= \log{\mu(u \mid s)} - \sum_{i=1}^{D}\log{(1-\tanh^2{(u_i)})} \\
+        \end{align*}$$ -->
 
 ## 0. etc
