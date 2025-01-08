@@ -13,6 +13,7 @@
 10. [Maximum Entropy](#10-maximum-entropy)
 11. [Cross Entropy](#11-cross-entropy)
 12. [KL divergence](#12-kl-divergence)
+13. [Duality](#13-duality)
 
 ## 1. Reason Why Failed the Export
 - Causal confusion
@@ -301,3 +302,72 @@ D_{KL}(p\parallel q) &= H(p,q) - H(p) \\
 
 - $D_{KL}\ge 0$
 - $D_{KL}(p,q)\ne D_{KL}(q,p)$
+
+## 13. Duality
+- The primal problem
+    - A problem that we start with
+    <div align="center">
+    <img src="./concept_figures/13_1.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+    </div>
+    <!-- $$\begin{align*}
+    &\min_x &{f(x)} \\
+    &subject \ to &h_i(x) \le 0, \ i=1,\dots,m \\
+    & &l_i(x) = 0, \ j=1,\dots,r
+    \end{align*}$$ -->
+
+- The duel problem
+    - Lagrange multiplier method
+        <div align="center">
+        <img src="./concept_figures/13_2.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+        <!-- $$\begin{align*}
+        \mathcal{L}(s, \lambda, \nu) &= f(x) + \sum_{i=1}^{m}\lambda_i h_i(x) + \sum_{i=1}^{r} \nu_i l_i(x) \le f(x) \\
+        f^* &\ge \min_{x \in \mathcal{X}} \mathcal{L}(s, \lambda, \nu) \ge \min_{x} \mathcal{L}(s, \lambda, \nu) =  g(\lambda, \nu)\\
+        \end{align*}$$ -->
+
+        - $f^*$ Optimal value to find.
+        - $\mathcal{X}$ The set of x that satisfies the constraints of the primal problem.
+        - Value without constraints will be smaller than in one with constraints.
+    
+    - Lagrange dual function $g(\lambda, \nu)$
+        - Finding the minimum of the primal problem is equivalent to maximizing $g(\lambda, \nu)$.
+        <div align="center">
+        <img src="./concept_figures/13_3.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+
+        <!-- $$\begin{align*}
+        g(\lambda, \nu) &:= \min_{x \in \mathcal{X}} \mathcal{L}(s, \lambda, \nu) \\
+        &= \min_{x \in \mathcal{X}} f(x) + \sum_{i=1}^{m}\lambda_i h_i(x) + \sum_{i=1}^{r} \nu_i l_i(x)
+        \end{align*}$$ -->
+
+    - The duel problem (Two ways to express it)
+        <div align="center">
+        <img src="./concept_figures/13_4.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+
+        <!-- $$\begin{align*}
+        \max_{\lambda, \nu} g(\lambda, \nu) &: \lambda \ge 0 \\
+        \max_{\lambda, \nu}\min_{x \in \mathcal{X}} f(x) + \sum_{i=1}^{m}\lambda_i h_i(x) + \sum_{i=1}^{r} \nu_i l_i(x) &: \lambda \ge 0 \\
+        \end{align*}$$ -->
+
+- Duality gap
+    - Relationship between optimal solutions of primal problem and dual problem
+        <div align="center">
+        <img src="./concept_figures/13_5.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
+        </div>
+        <!-- $$\begin{align*}
+        (Primal) \quad p^* &:= \min_x {f(x)}:h_i(x) \le 0, \ i=1,\dots,m, l_i(x) = 0, \ j=1,\dots,r \\
+        (Dual) \quad d^* &:= \max_{\lambda, \nu}\min_{x \in \mathcal{X}} f(x) + \sum_{i=1}^{m}\lambda_i h_i(x) + \sum_{i=1}^{r} \nu_i l_i(x) : \lambda \ge 0 \\
+        \end{align*}$$ -->
+    - Week duality
+        - $p^*\ge d^*$
+    - Strong duality
+        - $p^*= d^*$
+        - The optimal solution of the primal problem and the dual problem are identical.
+
+- Constraint Qualification
+    - Conditions for ensuring strong duality in convex problems
+    - Slater’s condition
+        - If the objective function and constraints of a primal problem satisfy certain conditions, it always has strong duality.
+        1. The objective function f(x) and the inequality constraints h(x) must all be convex functions.
+        2. There exist at least one strictly feasible x
