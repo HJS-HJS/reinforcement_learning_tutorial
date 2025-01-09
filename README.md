@@ -112,14 +112,6 @@
 - paper
     - [Proximal Policy Optimization Algorithms (2017)](https://arxiv.org/pdf/1707.06347)
 
-### 7. SAC
-- TODO
-
-- paper
-    - [Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor (2018)](https://arxiv.org/abs/1801.01290)
-    - [Soft Actor-Critic Algorithms and Applications (2019)](https://arxiv.org/abs/1812.05905)
-
-
 ## 4. Continous Action Tutorial
 - The output of the reinforcement learning model is continous values.
 
@@ -143,5 +135,15 @@
         <img src="./model/tutorial_continuos_1_1_PPO_share/results.png" alt="Description" width="700" height="300">
     </div>
 
-### 2. SAC
-- TODO
+### 2. SAC 2019
+- Reinforcement learning wth SAC 2019 (Soft Actor Critic)
+- MUJOCO half cheetah.
+    ```bash
+    python3 ~/reinforcement_learning_tutorial/tutorial_continuos_2_1_SAC.py
+    ```
+    <div align="center">
+        <img src="./model/tutorial_continuos_2_1_SAC/results.png" alt="Description" width="700" height="300">
+    </div>
+- paper
+    - [Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor (2018)](https://arxiv.org/abs/1801.01290)
+    - [Soft Actor-Critic Algorithms and Applications (2019)](https://arxiv.org/abs/1812.05905)
