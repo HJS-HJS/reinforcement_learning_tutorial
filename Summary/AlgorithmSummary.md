@@ -695,6 +695,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
     - Automatically adjusting $α$ during learning allows the agent to maintain appropriate exploration and convergence depending on the state.
     1. To do this, we add a constraint that keeps the entropy at a certain level.
         - Minumim desired entropy $\mathcal{H}$.
+            - Recommended values ​​are - number of actions $\mathcal{H} = -dim(A)$.
         - Employ (approximate) dynamic programming and rewrite objective as iterated maximization.
         <div align="center">
         <img src="./algorithm_figures/13_7.svg" alt="Equation" style="display: block; margin: 0 auto; background-color: white;">
