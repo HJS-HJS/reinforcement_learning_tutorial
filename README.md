@@ -129,10 +129,10 @@
 - Actor and Critic share layers.
 - Not learned well.
     ```bash
-    python3 ~/reinforcement_learning_tutorial/tutorial_continuos_1_1_PPO_share.py
+    python3 ~/reinforcement_learning_tutorial/tutorial_continuos_1_2_PPO.py
     ```
     <div align="center">
-        <img src="./model/tutorial_continuos_1_1_PPO_share/results.png" alt="Description" width="700" height="300">
+        <img src="./model/tutorial_continuos_1_2_PPO/results.png" alt="Description" width="700" height="300">
     </div>
 
 ### 2. SAC 2019

@@ -28,7 +28,7 @@ visulaize_step = 25
 MAX_STEP = 1024           # maximun available step per episode
 current_file_path = os.path.abspath(__file__)
 current_directory = os.path.dirname(current_file_path)
-SAVE_DIR = current_directory + "/model/tutorial_continuos_1_1_PPO_share"
+SAVE_DIR = current_directory + "/model/tutorial_continuos_1_2_PPO"
 
 sim = HalfCheetah(None)
 device = torch.device('cpu')
