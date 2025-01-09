@@ -29,6 +29,7 @@ MAX_STEP = 1024           # maximun available step per episode
 current_file_path = os.path.abspath(__file__)
 current_directory = os.path.dirname(current_file_path)
 SAVE_DIR = current_directory + "/model/tutorial_continuos_1_1_PPO"
+FILE_NAME = "9325_actor"
 
 sim = HalfCheetah(None)
 device = torch.device('cpu')
@@ -55,7 +56,7 @@ class ActorNetwork(Network):
 
     def forward(self, state):
         x = self.layer(state)
-        mu = 2 * torch.tanh(self.mu(x))
+        mu = torch.tanh(self.mu(x))
         std = nn.functional.softplus(self.std(x))
         dist = torch.distributions.MultivariateNormal(mu, torch.diag_embed(std, 0))
         return dist
@@ -178,7 +179,7 @@ if TRAIN:
 
 else:
     sim = HalfCheetah()
-    actor_net = load_model(actor_net, SAVE_DIR, "9325_actor")
+    actor_net = load_model(actor_net, SAVE_DIR, FILE_NAME)
 
     # 0. Reset environment
     state_curr, _ = sim.env.reset()
