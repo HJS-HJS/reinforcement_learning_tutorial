@@ -28,10 +28,10 @@ class SACDataset(Dataset):
         samples = random.sample(self.data_list, batch_size)
         batch = Transition(*zip(*samples))
 
-        return torch.cat(batch.state).detach(), \
+        return torch.cat(batch.state).detach().to(device=device), \
                torch.cat(batch.action).detach(), \
                torch.cat(batch.reward).detach(), \
-               torch.cat(batch.next_state).detach()
+               torch.cat(batch.next_state).detach().to(device=device)
 
     def __len__(self):
         return len(self.data_list)
