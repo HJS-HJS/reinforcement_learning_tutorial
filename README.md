@@ -144,6 +144,15 @@
     <div align="center">
         <img src="./model/tutorial_continuos_2_1_SAC/results.png" alt="Description" width="700" height="300">
     </div>
+- car racing.
+    - Use CNN
+    ```bash
+    python3 ~/reinforcement_learning_tutorial/tutorial_continuos_2_2_SAC.py
+    ```
+    <div align="center">
+        <img src="./model/tutorial_continuos_2_2_SAC/results.png" alt="Description" width="700" height="300">
+    </div>
+
 - paper
     - [Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor (2018)](https://arxiv.org/abs/1801.01290)
     - [Soft Actor-Critic Algorithms and Applications (2019)](https://arxiv.org/abs/1812.05905)
