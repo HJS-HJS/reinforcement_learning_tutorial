@@ -202,6 +202,8 @@ Q^*(s, a) &= \mathbb{E}_{s' \sim \epsilon } [r + \gamma \max _{a'} Q^*(s', a') \
 
 ## 6. DQN
 - The Q value reflects more states through regression (Neural Network).
+    - [Playing Atari with Deep Reinforcement Learning (2013)](https://arxiv.org/pdf/1312.5602)
+    - [Human-level control through deep reinforcement learning (2015)](https://www.nature.com/articles/nature14236)
 - The number of outputs generated is the number of possible combinations of actions.
 - Features:
     1. Using neural network (Q-Network) (CNN to act like humans)
@@ -462,6 +464,7 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 
 ## 11. PPO
 - Proximal Policy Optimization.
+    - [Proximal Policy Optimization Algorithms (2017)](https://arxiv.org/pdf/1707.06347)
 - Update every N steps as batch and reuse them as epoch
 - Features:
     - Importance sampling
@@ -591,6 +594,8 @@ w &\leftarrow w + \beta {\triangledown}_{w} L_w\\
 ## 13. SAC
 ### 1. Soft Actor Critic 2018
 - Use Soft Policy Iteration
+    - [Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor (2018)](https://arxiv.org/abs/1801.01290)
+    - [Soft Actor-Critic Algorithms and Applications (2019)](https://arxiv.org/abs/1812.05905)
     - Repeat soft policy evaluation and soft policy improvement.
     - Soft Bellman equation from [maximum entropy](ConceptSummary.md#10-maximum-entropy).
     <div align="center">
