@@ -1,10 +1,15 @@
 Box2D
 gym
+gymnasium[mujoco]
+gymnasium[mujoco-py]
+gymnasium-robotics[mujoco-py]
 imageio
 ipython
 matplotlib
 mujoco
+mujoco-py
 numpy == 1.23.1
+opencv-python
 tensorflow
 torch
 pillow
