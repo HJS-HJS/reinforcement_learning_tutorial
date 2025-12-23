@@ -28,6 +28,8 @@
 |     |              | Descrete   | Cartpole     | tutorial_6_2_PPO_share.py          | actor and critic share the network |
 |     |              | Continous  | Half-Cheetah | tutorial_continuos_1_1_PPO.py      |  |
 |     |              | Continous  | Half-Cheetah | tutorial_continuos_1_2_PPO.py      | actor and critic share the network |
+|     |              | Continous  | Half-Cheetah | tutorial_continuos_1_3_PPO_multi.py| share network / multiprocessing |
+|     |              | Continous  | Car-Racing   | tutorial_continuos_1_4_PPO_multi.py| CNN / share network / multiprocessing |
 | 7   | SAC          | Continous  | Half-Cheetah | tutorial_continuos_2_1_SAC.py      |  |
 |     |              | Continous  | Car-Racing   | tutorial_continuos_2_2_SAC.py      | CNN |
 
