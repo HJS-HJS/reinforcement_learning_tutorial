@@ -3,11 +3,12 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
+import argparse
 
 def plot(total_steps, step):
     plt.figure(1)
     plt.xlabel('Episode')
-    plt.ylabel('Duration')
+    plt.ylabel('Avg Reward')
     plt.plot(np.linspace(1, len(total_steps) + 1, len(total_steps), endpoint=False) * step, total_steps, c='red')
     plt.grid(True)
 
@@ -40,3 +41,13 @@ def load_model(network:torch.nn.Module, save_dir:str, name:str):
     else:
         print(f"\tNo saved model found {save_path}")
     return network
+
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
