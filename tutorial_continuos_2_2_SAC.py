@@ -12,8 +12,8 @@ from utils.sac_dataset import SACDataset
 from utils.utils       import live_plot, show_result, save_model, load_model
 
 ## Parameters
-TRAIN           = False
-# TRAIN           = True
+# TRAIN           = False
+TRAIN           = True
 # Learning Parameters
 LEARNING_RATE   = 0.0005 # optimizer
 DISCOUNT_FACTOR = 0.99   # gamma
@@ -29,11 +29,11 @@ EPOCH_SIZE = 5
 # Other
 FRAME_SKIP = 6
 visulaize_step = 5
-MAX_STEP = 1024         # maximun available step per episode
+MAX_STEP = 512         # maximun available step per episode
 current_file_path = os.path.abspath(__file__)
 current_directory = os.path.dirname(current_file_path)
-SAVE_DIR = current_directory + "/model/tutorial_continuos_2_2_SAC"
-FILE_NAME = "310_actor"
+SAVE_DIR = current_directory + "/model/tutorial_continuos_2_2_SAC_test"
+FILE_NAME = "20_actor"
 
 sim = CarRacing(None, FRAME_SKIP)
 device = torch.device('cpu')
@@ -43,8 +43,8 @@ if torch.cuda.is_available():
 
 ## Parameters
 # Policy Parameters
-N_INPUTS    = sim.env.observation_space.shape[2] # 17
-N_OUTPUT    = sim.env.action_space.shape[0]      # 6
+N_INPUTS    = sim.N_INPUTS
+N_OUTPUT    = sim.N_OUTPUT
 
 # Memory
 memory = SACDataset(MEMORY_CAPACITY)
@@ -141,11 +141,11 @@ class QNetwork(nn.Module):
             target_param.data.copy_(target_param.data * (1.0 - TARGET_UPDATE_TAU) + param.data * TARGET_UPDATE_TAU)
 
 # Initialize network
-actor_net = ActorNetwork(FRAME_SKIP, N_OUTPUT).to(device)
-q1_net = QNetwork(FRAME_SKIP, N_OUTPUT).to(device)
-q2_net = QNetwork(FRAME_SKIP, N_OUTPUT).to(device)
-target_q1_net = QNetwork(FRAME_SKIP, N_OUTPUT).to(device)
-target_q2_net = QNetwork(FRAME_SKIP, N_OUTPUT).to(device)
+actor_net = ActorNetwork(N_INPUTS, N_OUTPUT).to(device)
+q1_net = QNetwork(N_INPUTS, N_OUTPUT).to(device)
+q2_net = QNetwork(N_INPUTS, N_OUTPUT).to(device)
+target_q1_net = QNetwork(N_INPUTS, N_OUTPUT).to(device)
+target_q2_net = QNetwork(N_INPUTS, N_OUTPUT).to(device)
 alpha = torch.tensor(np.log(ALPHA))
 alpha.requires_grad = True
 
@@ -228,10 +228,10 @@ if TRAIN:
 
             # 4. Save data
             memory.push(
-                state_curr.unsqueeze(0).to(torch.device('cpu')),
+                state_curr.unsqueeze(0),
                 action,
                 torch.tensor([reward], device=device).unsqueeze(0),
-                state_next.unsqueeze(0).to(torch.device('cpu')),
+                state_next.unsqueeze(0),
             )
 
             # 5. Update state
