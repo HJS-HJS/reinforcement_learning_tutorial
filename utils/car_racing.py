@@ -5,70 +5,61 @@ import numpy as np
 from pynput.keyboard import Key, Listener
 import matplotlib.pyplot as plt
 
-import gym
+import gymnasium as gym
 
 class CarRacing():
-    def __init__(self, visualize:str = 'human', frame_skip:int = 4):
+    def __init__(self, visualize:str = 'human', frame_skip:int = 4, state_size:int=3):
 
-        self.env = gym.make("CarRacing-v2", render_mode=visualize)
+        self.env = gym.make("CarRacing-v3", render_mode=visualize)
         self.obs = self.env.reset()
         self.frame = frame_skip
-        self._buffer_size = 5
-        self.reward_buffer = [True] * self._buffer_size
-        self.local_state = [0] * int(self.frame)
+        self.local_state = [0] * int(state_size)
+
+        self.state_size = state_size
+
+        self.N_INPUTS = state_size
+        self.N_OUTPUT = self.env.action_space.shape[0]
+
         return
 
+    def render(self):
+        return self.env.render()
+    
     def step(self, action):
         step_reward = 0.0
-        is_green = False
+        is_done = False
         for _ in range(self.frame):
             state_next, reward, done, _, _ = self.env.step(action)
-            if self._green_area_penalty(state_next): is_green = True
-            if (not is_green) and (reward > 1): step_reward += 2.
-        
+            step_reward += reward
+            if done: is_done = True 
+            
         self.local_state.pop(0)
         self.local_state.append(self._preprocessing(state_next))
 
-        # Finish step
-        self.reward_buffer.pop(0)
-        self.reward_buffer.append(not is_green)
-        if not any(self.reward_buffer):
-            done = True
-
-        return np.array(self.local_state), step_reward, done
+        return np.array(self.local_state), np.clip(step_reward, -1.0, 1.0), is_done
     
     def reset(self):
         self.env.reset()
-        self.reward_buffer = [True] * self._buffer_size
         for _ in range(50):
-            _ = self.env.step([0.,0.,0.])
+            _ = self.env.step(np.zeros(3))
 
-        for _ in range(self.frame):
-            state_next, _, _, _, _ = self.env.step([0.,0.,0.])
+        for _ in range(len(self.local_state)):
+            state_next, _, _, _, _ = self.env.step(np.zeros(3))
             self.local_state.pop(0)
             self.local_state.append(self._preprocessing(state_next))
 
         return np.array(self.local_state)
     
+    def close(self):
+        return self.env.close()
+    
     def _preprocessing(self, img):
         # Hide progress bar to avoid casuality problem
         crop_img = img[:-12, 6:-6]
-        # RGB to gray
-        gray_img = np.dot(crop_img[..., :], [0.299, 0.587, 0.114])
-        # Normalize image to [-1,1]
-        prepro_img = 2 * (gray_img / 255.0) - 1
+        gray_img = np.dot(crop_img[..., :], [0.299, 0.587, 0.114]) # RGB to gray
+        prepro_img = (gray_img / 255.0) * 2.0 - 1.0 # Normalize image to [-1,1]
         return prepro_img.T
     
-    def _green_area_penalty(self, img):
-        # car area  img[60:-12, 38:-38]
-        # front     img[60:65, 42:-42]
-        # left      img[65:77, 43:46]
-        # right     img[65:77, -46:-43]
-        def _is_penalty(area):
-            if np.mean(area[:,:1]) > 125: return True #penalty
-            else:                         return False#reward
-        return (_is_penalty(img[65:77, 43:46]) and _is_penalty(img[65:77, -46:-43]))
-
     @staticmethod
     def env(self):
         return(self.env)
@@ -117,7 +108,7 @@ class CarRacing():
             self.reset()
 
 if __name__=="__main__":
-    run = CarRacing()
+    run = CarRacing2()
     run.env.render()
     run.keyboard_input()
     time.sleep(5)
